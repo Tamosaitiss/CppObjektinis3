@@ -1,3 +1,0 @@
-C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/cmake-build-debug/CMakeFiles/ObjektinisProgramavimas.dir
-C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/cmake-build-debug/CMakeFiles/rebuild_cache.dir

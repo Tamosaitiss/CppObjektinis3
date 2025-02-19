@@ -1,1 +1,0 @@
-CMakeLists.txt not found in C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas Select CMakeLists.txt
