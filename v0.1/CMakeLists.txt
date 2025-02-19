@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.30)
-project(v0_1)
+project(ObjektinisProgramavimas)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 14)
 
-add_executable(v0_1
-        studentai_masyvas.cpp
+include_directories(.)
+
+add_executable(ObjektinisProgramavimas
         masyvu_funkcijos.cpp
-)
+        studentai_masyvas.cpp
+        studentai_masyvas.h)

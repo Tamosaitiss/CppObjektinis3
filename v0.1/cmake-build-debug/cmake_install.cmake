@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/Nikulinas/Documents/GitHub/v0.1
+# Install script for directory: C:/Users/Nikulinas/Documents/GitHub/1taco/ObjektinisProgramavimas
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/v0_1")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/ObjektinisProgramavimas")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -52,6 +52,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "C:/Users/Nikulinas/Documents/GitHub/v0.1/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "C:/Users/Nikulinas/Documents/GitHub/1taco/ObjektinisProgramavimas/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

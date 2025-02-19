@@ -22,4 +22,4 @@ void spausdintiStudentus(const Student studentai[], int studentu_kiekis);
 double skaiciuotiVidurki(const Student &studentas);
 double skaiciuotiMediana(const Student &studentas);
 
-#endif //STUDENTAI_MASYVAS_H
+#endif
