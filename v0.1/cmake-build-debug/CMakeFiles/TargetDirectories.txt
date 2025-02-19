@@ -1,0 +1,3 @@
+C:/Users/Nikulinas/Documents/GitHub/v0.1/cmake-build-debug/CMakeFiles/v0_1.dir
+C:/Users/Nikulinas/Documents/GitHub/v0.1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Nikulinas/Documents/GitHub/v0.1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
