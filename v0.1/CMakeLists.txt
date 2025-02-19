@@ -6,6 +6,5 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(ObjektinisProgramavimas
-        masyvu_funkcijos.cpp
-        studentai_masyvas.cpp
-        studentai_masyvas.h)
+        hibridine_versija.cpp
+        hibridas.h)
