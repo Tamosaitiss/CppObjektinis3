@@ -6,6 +6,10 @@
 #include <iomanip>
 #include <vector>
 #include <string>
+#include <cctype>
+#include <algorithm>
+#include <random>
+#include <ctime>
 
 using namespace std;
 
@@ -17,6 +21,13 @@ struct Student {
 };
 
 void ivestiStudenta(vector<Student> &studentai);
-void spausdintiStudentus(const vector<Student> &studentai);
+void spausdintiStudentus(const vector<Student> &studentai, bool naudotiMediana);
+double skaiciuotiMediana(vector<int> pazymiai);
+bool tikrintiTeksta(const string &tekstas);
+bool tikrintiSkaiciu(const string &input);
+vector<int> generuotiAtsitiktiniusPazymius(int kiekis);
+int generuotiAtsitiktiniEgzaminoBala();
+string generuotiVarda();
+string generuotiPavarde();
 
 #endif
