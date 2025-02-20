@@ -2,8 +2,14 @@
 #define HIBRIDAS_H
 
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <numeric>
+#include <cctype>
+#include <random>
+#include <ctime>
 
 using namespace std;
 
@@ -15,13 +21,14 @@ struct Student {
     int egzaminas;
 };
 
-// input
-void ivestiStudenta(Student*& studentai, int& studentu_kiekis);
-
-// output
-void spausdintiStudentus(const Student* studentai, int studentu_kiekis);
-
-// atminties valymas
-void atlaisvintiAtmintį(Student*& studentai, int studentu_kiekis);
+void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
+void spausdintiStudentus(const vector<Student>& studentai, bool naudotiMediana);
+double skaiciuotiMediana(int* pazymiai, int nd_kiekis);
+bool tikrintiTeksta(const string& tekstas);
+bool tikrintiSkaiciu(const string& input);
+int* generuotiAtsitiktiniusPazymius(int kiekis);
+int generuotiAtsitiktiniEgzaminoBala();
+string generuotiVarda();
+string generuotiPavarde();
 
 #endif
