@@ -5,14 +5,14 @@ void ivestiStudenta(Student*& studentai, int& studentu_kiekis) {
 
     cout << "Vardas: ";
     cin >> temp.vardas;
-    if (temp.vardas == "-1") return; // If "-1", return immediately and do NOT add to array
+    if (temp.vardas == "-1") return; // jei -1 tai neprideta prie amsyvo ir grazina reiksme
 
     cout << "Pavarde: ";
     cin >> temp.pavarde;
 
     cout << "Iveskite namu darbu rezultatus (-1 jei baigta):\n";
     temp.nd_kiekis = 0;
-    temp.namu_darbai = new int[100]; // Assume max 100 grades for safety
+    temp.namu_darbai = new int[100];
 
     while (true) {
         int pazymys;
@@ -24,24 +24,24 @@ void ivestiStudenta(Student*& studentai, int& studentu_kiekis) {
     cout << "Egzamino rezultatas: ";
     cin >> temp.egzaminas;
 
-    // Allocate new memory for students and copy
+    // dinaminis masyvas studentams
     Student* tempArray = new Student[studentu_kiekis + 1];
     for (int i = 0; i < studentu_kiekis; i++) {
-        tempArray[i] = studentai[i]; // Copy existing students
+        tempArray[i] = studentai[i]; // kad nesidvigubintu
     }
-    tempArray[studentu_kiekis] = temp; // Add new student
+    tempArray[studentu_kiekis] = temp; // naujas studentas
 
-    delete[] studentai; // Free old memory
-    studentai = tempArray; // Update pointer
-    studentu_kiekis++; // Increase count
+    delete[] studentai; // isvalo atminti
+    studentai = tempArray; // atnaujina rodykle
+    studentu_kiekis++;
 }
 
 void atlaisvintiAtmintį(Student*& studentai, int studentu_kiekis) {
     for (int i = 0; i < studentu_kiekis; i++) {
-        delete[] studentai[i].namu_darbai; // Free each student's dynamic array
+        delete[] studentai[i].namu_darbai; // isvalo dinamini masyva
     }
-    delete[] studentai; // Free the student array itself
-    studentai = nullptr; // Avoid dangling pointer
+    delete[] studentai; // isvalo masyva
+    studentai = nullptr; // nunulina rodykle
 }
 
 void spausdintiStudentus(const Student* studentai, int studentu_kiekis) {
@@ -72,7 +72,7 @@ int main(){
         int beforeCount = studentu_kiekis;
         ivestiStudenta(studentai, studentu_kiekis);
 
-        if (beforeCount == studentu_kiekis) { // If count didn't increase, "-1" was entered
+        if (beforeCount == studentu_kiekis) { // jei nepadidejo, tai -1 buvo ivestas
             break;
         }
     }
