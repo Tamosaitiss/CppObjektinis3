@@ -154,21 +154,28 @@ void issaugotiIFaila(const vector<Student>& studentai, const string &failoPavadi
 
 void rikiuotiStudentus(vector<Student> &studentai, int pasirinkimas) {
     switch (pasirinkimas) {
-    case 1:
+    case 1: // Sort by name
         sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
             return a.vardas < b.vardas;
         });
         break;
-    case 2:
+    case 2: // Sort by surname
         sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
             return a.pavarde < b.pavarde;
         });
         break;
-    case 3:
+    case 3: // Sort by final grade (using median)
         sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
             double galutinisA = 0.4 * skaiciuotiMediana(a.namu_darbai) + 0.6 * a.egzaminas;
             double galutinisB = 0.4 * skaiciuotiMediana(b.namu_darbai) + 0.6 * b.egzaminas;
             return galutinisA > galutinisB;
+        });
+        break;
+    case 4: // Sort by average grade
+        sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
+            double vidurkisA = accumulate(a.namu_darbai.begin(), a.namu_darbai.end(), 0.0) / a.namu_darbai.size();
+            double vidurkisB = accumulate(b.namu_darbai.begin(), b.namu_darbai.end(), 0.0) / b.namu_darbai.size();
+            return vidurkisA > vidurkisB;
         });
         break;
     }
