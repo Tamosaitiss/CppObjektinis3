@@ -134,26 +134,35 @@ void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinima
     fin.close();
 }
 
-void issaugotiIFaila(const vector<Student>& studentai, const string &failoPavadinimas) {
-    ofstream fout(failoPavadinimas);
-    if (!fout) {
-        cerr << "Klaida! Nepavyko sukurti failo: " << failoPavadinimas << endl;
+void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadinimas, bool naudotiMediana) {
+    ofstream outFile(failoPavadinimas);
+    if (!outFile) {
+        cout << "Nepavyko atidaryti failo " << failoPavadinimas << "!\n";
         return;
     }
 
-    fout << left << setw(15) << "Vardas" << setw(15) << "Pavarde" << setw(15) << "Galutinis (Vid.)" << setw(15) << "Galutinis (Med.)" << endl;
-    fout << string(70, '-') << endl;
+    // Išvedimo antraštė (jei norite ją pridėti)
+    outFile << left << setw(20) << "Vardas"
+            << setw(20) << "Pavarde"
+            << setw(15) << "Galutinis (Vid.)"
+            << setw(15) << "Galutinis (Med.)" << endl;
+    outFile << "-----------------------------------------------\n";
 
     for (const auto& s : studentai) {
         double vidurkis = accumulate(s.namu_darbai.begin(), s.namu_darbai.end(), 0.0) / s.namu_darbai.size();
         double galutinisVid = 0.4 * vidurkis + 0.6 * s.egzaminas;
         double galutinisMed = 0.4 * skaiciuotiMediana(s.namu_darbai) + 0.6 * s.egzaminas;
 
-        fout << left << setw(15) << s.vardas << setw(15) << s.pavarde << fixed << setprecision(2) << setw(15) << galutinisVid << setw(15) << galutinisMed << endl;
+        // Sulygiuoti duomenys pagal stulpelius
+        outFile << left << setw(20) << s.vardas
+                << setw(20) << s.pavarde
+                << fixed << setprecision(2) << setw(15) << galutinisVid
+                << setw(15) << galutinisMed << endl;
     }
-    fout.close();
-}
 
+    outFile.close();
+    cout << "Duomenys issaugoti faile " << failoPavadinimas << ".\n";
+}
 
 void rikiuotiStudentus(vector<Student> &studentai, int pasirinkimas) {
     switch (pasirinkimas) {
@@ -184,7 +193,7 @@ void rikiuotiStudentus(vector<Student> &studentai, int pasirinkimas) {
     }
 }
 
-void spausdintiStudentus(const vector<Student>& studentai, bool irasymas) {
+void spausdintiStudentus(const vector<Student>& studentai, bool naudotiMediana) {
     if (studentai.empty()) {
         cout << "Nera ivestu studentu duomenu.\n";
         return;
@@ -199,16 +208,13 @@ void spausdintiStudentus(const vector<Student>& studentai, bool irasymas) {
         double galutinisVid = 0.4 * vidurkis + 0.6 * s.egzaminas;
         double galutinisMed = 0.4 * skaiciuotiMediana(s.namu_darbai) + 0.6 * s.egzaminas;
 
-        // Spausdiname ir vidurkį, ir medianą
         cout << left << setw(15) << s.vardas << setw(15) << s.pavarde
              << fixed << setprecision(2) << setw(15) << galutinisVid
              << setw(15) << galutinisMed << endl;
     }
 
-    // Jei reikia išsaugoti į failą
-    if (irasymas) {
-        string failoPavadinimas = "rezultatai.txt";
-        issaugotiIFaila(studentai, failoPavadinimas);
+    if (naudotiMediana) {
+        issaugotiIFaila(studentai, "rezultatai.txt", naudotiMediana);
     }
 }
 
