@@ -131,30 +131,29 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
 }
 
 void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinimas) {
-    ifstream fin("kursiokai.txt");
+    ifstream fin("studentai10000.txt");
     if (!fin) {
-        cerr << "Klaida! Tokio failo nera: " << failoPavadinimas << endl;
+        cerr << "Klaida! Nepavyko atidaryti failo: " << failoPavadinimas << endl;
         return;
     }
 
-    string vardas, pavarde;
-    int egzaminas;
-    while (fin >> vardas >> pavarde) {
+    string eilute;
+    getline(fin, eilute); // ignoruoja headeri
+
+    while (!fin.eof()) {
         Student s;
-        s.vardas = vardas;
-        s.pavarde = pavarde;
+        fin >> s.vardas >> s.pavarde; // paima varda ir pavarde
 
         int pazymys;
         while (fin >> pazymys) {
-            if (pazymys == -1) break;
+            if (fin.peek() == '\n') { // paskutinis skaicius eiluteje yra egzamino balas
+                s.egzaminas = pazymys;
+                break;
+            }
             s.namu_darbai.push_back(pazymys);
         }
-
-        fin >> egzaminas;
-        s.egzaminas = egzaminas;
         studentai.push_back(s);
     }
-
     fin.close();
 }
 
@@ -171,8 +170,35 @@ void issaugotiIFaila(const vector<Student> &studentai, const string &failoPavadi
     for (const auto& s : studentai) {
         double galutinis;
         if (naudotiMediana) {
-            
+            galutinis = 0.4 * skaiciuotiMediana(s.namu_darbai) + 0.6 * s.egzaminas;
+        } else {
+            double vidurkis = accumulate(s.namu_darbai.begin(), s.namu_darbai.end(), 0.0) / s.namu_darbai.size();
+            galutinis = 0.4 * vidurkis + 0.6 * s.egzaminas;
         }
+        fout << left << setw(15) << s.vardas << setw(15) << s.pavarde << fixed << setprecision(2) << setw(15) << galutinis << endl;
+    }
+    fout.close();
+}
+
+void rikiuotiStudentus(vector<Student> &studentai, int pasirinkimas) {
+    switch (pasirinkimas) {
+    case 1:
+        sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
+            return a.vardas < b.vardas;
+        });
+        break;
+    case 2:
+        sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
+            return a.pavarde < b.pavarde;
+        });
+        break;
+    case 3:
+        sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
+            double galutinisA = 0.4 * skaiciuotiMediana(a.namu_darbai) + 0.6 * a.egzaminas;
+            double galutinisB = 0.4 * skaiciuotiMediana(b.namu_darbai) + 0.6 * b.egzaminas;
+            return galutinisA > galutinisB;
+        });
+        break;
     }
 }
 
@@ -215,55 +241,39 @@ int main() {
         cout << "1 - Rankinis ivedimas\n";
         cout << "2 - Generuoti tik pazymius\n";
         cout << "3 - Generuoti vardus, pavardes ir pazymius\n";
-        cout << "4 - Baigti darba\n";
+        cout << "4 - Nuskaityti is failo\n";
+        cout << "5 - Baigti darba\n";
         cout << "Pasirinkite: ";
         cin >> meniuPasirinkimas;
 
-        while (meniuPasirinkimas < 1 || meniuPasirinkimas > 4) {
-            cout << "Klaida! Pasirinkite 1, 2, 3 arba 4: ";
-            cin >> meniuPasirinkimas;
-        }
+        if (meniuPasirinkimas == 5) break;
 
         if (meniuPasirinkimas == 4) {
-            cout << "Programa baigta.\n";
-            break;
-        }
-
-        cout << "Iveskite studentu duomenis. Kad baigti iveskite '-1' vietoj vardo.\n";
-
-        if (meniuPasirinkimas == 3) {
-            int studentuKiekis;
-            cout << "Kiek studentu generuoti?: ";
-            cin >> studentuKiekis;
-
-            while (studentuKiekis <= 0) {
-                cout << "Klaida! Iveskite bent viena studenta: ";
-                cin >> studentuKiekis;
-            }
-
-            for (int i = 0; i < studentuKiekis; i++) {
-                ivestiStudenta(studentai, meniuPasirinkimas);
-            }
+            nuskaitytiIsFailo(studentai, "studentai10000.txt");
         } else {
             while (true) {
                 int before_size = studentai.size();
-                ivestiStudenta(studentai, meniuPasirinkimas);
+                ivestiStudenta(studentai, pasirinkimas);
                 if (studentai.size() == before_size) break;
             }
         }
 
-        cout << "Pasirinkite skaiciavimo buda:\n";
-        cout << "1 - Naudoti vidurki\n";
-        cout << "2 - Naudoti mediana\n";
+        cout << "Pasirinkite rikiavimo kriteriju:\n";
+        cout << "1 - Pagal varda\n";
+        cout << "2 - Pagal pavarde\n";
+        cout << "3 - Pagal galutini pazymi\n";
+        int rikiavimoPasirinkimas;
+        cin >> rikiavimoPasirinkimas;
+        rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
 
-        cin >> pasirinkimas;
-        while (pasirinkimas != '1' && pasirinkimas != '2') {
-            cout << "Klaida! Pasirinkite 1 arba 2: ";
-            cin >> pasirinkimas;
+        cout << "Rezultatus saugoti faile? (t/n): ";
+        char saugoti;
+        cin >> saugoti;
+        if (saugoti == 't') {
+            issaugotiIFaila(studentai, "rezultatai.txt", true);
+        } else {
+            spausdintiStudentus(studentai, true);
         }
-
-        bool naudotiMediana = (pasirinkimas == '2');
-        spausdintiStudentus(studentai, naudotiMediana);
     }
 
     return 0;

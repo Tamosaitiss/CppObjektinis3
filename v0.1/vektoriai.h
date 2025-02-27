@@ -21,7 +21,7 @@ struct Student {
     int egzaminas;
 };
 
-void ivestiStudenta(vector<Student> &studentai);
+void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
 void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinimas);
 void issaugotiIFaila(const vector<Student> &studentai, const string &failoPavadinimas, bool naudotiMediana);
 void rikiuotiStudentus(vector<Student> &studentai, int pasirinkimas);
