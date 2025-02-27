@@ -102,7 +102,9 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
         }
     }
 
+    // Pridėti studentą į vektorių
     studentai.push_back(s);
+    cout << "Studentas pridetas: " << s.vardas << " " << s.pavarde << endl;
 }
 
 void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinimas) {
@@ -152,42 +154,44 @@ void issaugotiIFaila(const vector<Student>& studentai, const string &failoPavadi
     fout.close();
 }
 
+
 void rikiuotiStudentus(vector<Student> &studentai, int pasirinkimas) {
     switch (pasirinkimas) {
-    case 1: // Sort by name
+    case 1: // Pagal varda
         sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
             return a.vardas < b.vardas;
         });
         break;
-    case 2: // Sort by surname
+    case 2: // Pagal pavarde
         sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
             return a.pavarde < b.pavarde;
         });
         break;
-    case 3: // Sort by final grade (using median)
+    case 3: // Pagal galutinį pagal vidurkį
+        sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
+            double galutinisA = 0.4 * accumulate(a.namu_darbai.begin(), a.namu_darbai.end(), 0.0) / a.namu_darbai.size() + 0.6 * a.egzaminas;
+            double galutinisB = 0.4 * accumulate(b.namu_darbai.begin(), b.namu_darbai.end(), 0.0) / b.namu_darbai.size() + 0.6 * b.egzaminas;
+            return galutinisA > galutinisB;
+        });
+        break;
+    case 4: // Pagal galutinį pagal medianą
         sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
             double galutinisA = 0.4 * skaiciuotiMediana(a.namu_darbai) + 0.6 * a.egzaminas;
             double galutinisB = 0.4 * skaiciuotiMediana(b.namu_darbai) + 0.6 * b.egzaminas;
             return galutinisA > galutinisB;
         });
         break;
-    case 4: // Sort by average grade
-        sort(studentai.begin(), studentai.end(), [](const Student &a, const Student &b) {
-            double vidurkisA = accumulate(a.namu_darbai.begin(), a.namu_darbai.end(), 0.0) / a.namu_darbai.size();
-            double vidurkisB = accumulate(b.namu_darbai.begin(), b.namu_darbai.end(), 0.0) / b.namu_darbai.size();
-            return vidurkisA > vidurkisB;
-        });
-        break;
     }
 }
 
-void spausdintiStudentus(const vector<Student>& studentai) {
+void spausdintiStudentus(const vector<Student>& studentai, bool irasymas) {
     if (studentai.empty()) {
         cout << "Nera ivestu studentu duomenu.\n";
         return;
     }
 
-    cout << left << setw(15) << "Vardas" << setw(15) << "Pavarde" << setw(15) << "Galutinis (Vid.)" << setw(15) << "Galutinis (Med.)" << endl;
+    cout << left << setw(15) << "Vardas" << setw(15) << "Pavarde"
+         << setw(15) << "Galutinis (Vid.)" << setw(15) << "Galutinis (Med.)" << endl;
     cout << string(70, '-') << endl;
 
     for (const auto& s : studentai) {
@@ -195,7 +199,16 @@ void spausdintiStudentus(const vector<Student>& studentai) {
         double galutinisVid = 0.4 * vidurkis + 0.6 * s.egzaminas;
         double galutinisMed = 0.4 * skaiciuotiMediana(s.namu_darbai) + 0.6 * s.egzaminas;
 
-        cout << left << setw(15) << s.vardas << setw(15) << s.pavarde << fixed << setprecision(2) << setw(15) << galutinisVid << setw(15) << galutinisMed << endl;
+        // Spausdiname ir vidurkį, ir medianą
+        cout << left << setw(15) << s.vardas << setw(15) << s.pavarde
+             << fixed << setprecision(2) << setw(15) << galutinisVid
+             << setw(15) << galutinisMed << endl;
+    }
+
+    // Jei reikia išsaugoti į failą
+    if (irasymas) {
+        string failoPavadinimas = "rezultatai.txt";
+        issaugotiIFaila(studentai, failoPavadinimas);
     }
 }
 
@@ -215,18 +228,31 @@ int main() {
 
         if (meniuPasirinkimas == 5) break;
 
-        if (meniuPasirinkimas == 4) {  //Nuskaitymas iš failo ir rikiavimo meniu
+        if (meniuPasirinkimas == 4) {  // Nuskaitymas iš failo ir rikiavimo meniu
             nuskaitytiIsFailo(studentai, "studentai10000.txt");
 
             cout << "Pasirinkite rikiavimo kriteriju:\n";
             cout << "1 - Pagal varda\n";
             cout << "2 - Pagal pavarde\n";
-            cout << "3 - Pagal galutini pazymi\n";
+            cout << "3 - Pagal galutini pazymi pagal vidurki\n";
+            cout << "4 - Pagal galutini pazymi pagal mediana\n";
             int rikiavimoPasirinkimas;
             cin >> rikiavimoPasirinkimas;
             rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
-        }
-        else {  //Įvedimas ar generavimas, bet be rikiavimo meniu
+
+            // Pasirinkimas, ar norite išsaugoti į failą
+            bool irasymas = false;
+            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
+            char saugoti;
+            cin >> saugoti;
+            if (saugoti == 't') {
+                irasymas = true;
+            }
+
+            // Spausdinimas ir, jei reikia, išsaugojimas
+            spausdintiStudentus(studentai, irasymas);
+
+        } else {  // Įvedimas ar generavimas, bet be rikiavimo meniu
             int kiekGeneruoti = 1;
             if (meniuPasirinkimas == 3) {
                 cout << "Kiek studentu generuoti?: ";
@@ -236,17 +262,20 @@ int main() {
             for (int i = 0; i < kiekGeneruoti; i++) {
                 ivestiStudenta(studentai, meniuPasirinkimas);
             }
-        }
 
-        //Išvedimas arba išsaugojimas – VISADA po bet kokio įvedimo ar nuskaitymo
-        cout << "Rezultatus saugoti faile? (t/n): ";
-        char saugoti;
-        cin >> saugoti;
-        if (saugoti == 't') {
-            issaugotiIFaila(studentai, "rezultatai.txt");
-        } else {
-            spausdintiStudentus(studentai);
+            // Pasirinkimas, ar norite išsaugoti į failą
+            bool irasymas = false;
+            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
+            char saugoti;
+            cin >> saugoti;
+            if (saugoti == 't') {
+                irasymas = true;
+            }
+
+            // Spausdinimas ir, jei reikia, išsaugojimas
+            spausdintiStudentus(studentai, irasymas);
         }
     }
+
     return 0;
 }
