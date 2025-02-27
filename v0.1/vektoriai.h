@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <cctype>
+#include <fstream>
 #include <algorithm>
 #include <random>
 #include <ctime>
@@ -21,6 +22,9 @@ struct Student {
 };
 
 void ivestiStudenta(vector<Student> &studentai);
+void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinimas);
+void issaugotiIFaila(const vector<Student> &studentai, const string &failoPavadinimas, bool naudotiMediana);
+void rikiuotiStudentus(vector<Student> &studentai, int pasirinkimas);
 void spausdintiStudentus(const vector<Student> &studentai, bool naudotiMediana);
 double skaiciuotiMediana(vector<int> pazymiai);
 bool tikrintiTeksta(const string &tekstas);

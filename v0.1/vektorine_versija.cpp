@@ -130,6 +130,52 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
     studentai.push_back(s);
 }
 
+void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinimas) {
+    ifstream fin("kursiokai.txt");
+    if (!fin) {
+        cerr << "Klaida! Tokio failo nera: " << failoPavadinimas << endl;
+        return;
+    }
+
+    string vardas, pavarde;
+    int egzaminas;
+    while (fin >> vardas >> pavarde) {
+        Student s;
+        s.vardas = vardas;
+        s.pavarde = pavarde;
+
+        int pazymys;
+        while (fin >> pazymys) {
+            if (pazymys == -1) break;
+            s.namu_darbai.push_back(pazymys);
+        }
+
+        fin >> egzaminas;
+        s.egzaminas = egzaminas;
+        studentai.push_back(s);
+    }
+
+    fin.close();
+}
+
+void issaugotiIFaila(const vector<Student> &studentai, const string &failoPavadinimas, bool naudotiMediana) {
+    ofstream fout("rezultatai.txt");
+    if (!fout) {
+        cerr << "Klaida! Nepavyko sukurti failo: " << failoPavadinimas << endl;
+        return;
+    }
+
+    fout << left << setw(15) << "Vardas" << setw(15) << "Pavarde" << setw(15) << (naudotiMediana?"Galutinis (Med.)" : "Galutinis (Vid.)") << endl;
+    fout << string(80, '-') << endl;
+
+    for (const auto& s : studentai) {
+        double galutinis;
+        if (naudotiMediana) {
+            
+        }
+    }
+}
+
 void spausdintiStudentus(const vector<Student>& studentai, bool naudotiMediana) {
     if (studentai.empty()) {
         cout << "Nera ivestu studentu duomenu.\n";
@@ -219,5 +265,6 @@ int main() {
         bool naudotiMediana = (pasirinkimas == '2');
         spausdintiStudentus(studentai, naudotiMediana);
     }
+
     return 0;
 }
