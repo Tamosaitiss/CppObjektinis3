@@ -1,4 +1,4 @@
-#include "vektoriai.h"
+#include "studentai.h"
 #include "student.h"
 
 vector<string> galimiVardai = {"Jonas", "Ignas", "Petras", "Justas", "Lukas", "Kristijonas", "Marius", "Matas"};
