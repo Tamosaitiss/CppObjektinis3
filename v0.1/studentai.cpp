@@ -32,16 +32,19 @@ bool tikrintiSkaiciu(const string &input) {
 }
 
 double skaiciuotiMediana(vector<int> pazymiai) {
-    if (pazymiai.empty()) return 0.0;
-    sort(pazymiai.begin(), pazymiai.end());
-    int dydis = pazymiai.size();
+    if (pazymiai.empty()) return 0.0; // Jei nėra pažymių, grąžinti 0
 
+    sort(pazymiai.begin(), pazymiai.end()); // Rūšiuojame pažymius
+
+    int dydis = pazymiai.size();
     if (dydis % 2 == 0) {
-        return (pazymiai[dydis / 2 - 1] + pazymiai[dydis / 2]) / 2.0;
+        return (pazymiai[dydis / 2 - 1] + pazymiai[dydis / 2]) / 2.0; // Pora elementų: grąžiname vidurkį
     } else {
         return pazymiai[dydis / 2];
     }
 }
+
+
 
 vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
     vector<int> pazymiai;
@@ -150,22 +153,23 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
     cout << "Studentas pridetas: " << s.vardas << " " << s.pavarde << endl;
 }
 
-void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinimas) {
+void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas) {
     ifstream fin(failoPavadinimas);
-    if (!fin) {
+    if (!fin.is_open()) {
         cerr << "Klaida! Nepavyko atidaryti failo: " << failoPavadinimas << endl;
         return;
     }
 
     string eilute;
-    getline(fin, eilute);
+    getline(fin, eilute);  // Skip header line
 
-    while (!fin.eof()) {
+    while (getline(fin, eilute)) {
         Student s;
-        fin >> s.vardas >> s.pavarde;
+        stringstream ss(eilute);
+        ss >> s.vardas >> s.pavarde;
         int pazymys;
-        while (fin >> pazymys) {
-            if (fin.peek() == '\n') {
+        while (ss >> pazymys) {
+            if (ss.peek() == '\n') {
                 s.egzaminas = pazymys;
                 break;
             }
@@ -173,6 +177,7 @@ void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinima
         }
         studentai.push_back(s);
     }
+
     fin.close();
 }
 
