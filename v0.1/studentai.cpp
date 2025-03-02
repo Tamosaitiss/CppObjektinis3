@@ -62,6 +62,10 @@ int generuotiAtsitiktiniEgzaminoBala() {
     return dist(gen);
 }
 
+void isvestiKlaida(const string &klausimas) {
+    cerr << "Klaida: " << klausimas << endl;
+}
+
 void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
     Student s;
 
@@ -74,12 +78,32 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
         s.egzaminas = generuotiAtsitiktiniEgzaminoBala();
     }
     else {
-        cout << "Vardas: ";
-        cin >> s.vardas;
-        if (s.vardas == "-1") return;
+        // Vardas
+        bool ivestasVardasTeisingai = false;
+        while (!ivestasVardasTeisingai) {
+            cout << "Vardas: ";
+            cin >> s.vardas;
+            if (s.vardas == "-1") return;
 
-        cout << "Pavarde: ";
-        cin >> s.pavarde;
+            if (!tikrintiTeksta(s.vardas)) {
+                isvestiKlaida("Varda gali sudaryti tik raides!");
+            } else {
+                ivestasVardasTeisingai = true;  // Teisingas įvestas vardas
+            }
+        }
+
+        // Pavarde
+        bool ivestaPavardeTeisingai = false;
+        while (!ivestaPavardeTeisingai) {
+            cout << "Pavarde: ";
+            cin >> s.pavarde;
+
+            if (!tikrintiTeksta(s.pavarde)) {
+                isvestiKlaida("Pavarde gali sudaryti tik raides!");
+            } else {
+                ivestaPavardeTeisingai = true;  // Teisingas įvestas pavardė
+            }
+        }
 
         if (pasirinkimas == 2) {
             int ndKiekis = rand() % 10 + 1;
@@ -90,12 +114,35 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
             int pazymys;
             while (true) {
                 cin >> pazymys;
-                if (pazymys == -1) break;
+
+                // Patikriname, ar įvestas duomuo yra skaičius
+                if (cin.fail()) {
+                    cin.clear(); // Išvalome klaidą
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignoruojame neteisingą įvestį
+                    isvestiKlaida("Namu darbo rezultatas turi buti skaicius!");
+                    continue;  // Pirmiausia grįžtame į ciklą ir prašome naujos įvesties
+                }
+
+                if (pazymys == -1) break;  // Jei įvedame -1, išėjimas iš ciklo
+
                 s.namu_darbai.push_back(pazymys);
             }
 
-            cout << "Egzamino rezultatas: ";
-            cin >> s.egzaminas;
+            // Tikriname, ar egzaminų rezultatas yra teisingas (tik skaičius)
+            bool egzaminasTeisingai = false;
+            while (!egzaminasTeisingai) {
+                cout << "Egzamino rezultatas: ";
+                cin >> s.egzaminas;
+
+                // Patikriname, ar įvestas egzaminų rezultatas yra skaičius
+                if (cin.fail()) {
+                    cin.clear(); // Išvalome klaidą
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignoruojame neteisingą įvestį
+                    isvestiKlaida("Egzamino rezultatas turi buti skaicius!");
+                } else {
+                    egzaminasTeisingai = true;  // Teisingai įvestas egzaminų rezultatas
+                }
+            }
         }
     }
 
@@ -154,7 +201,7 @@ void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadi
     }
 
     outFile.close();
-    cout << "Duomenys issaugoti faile " << failoPavadinimas << ".\n";
+    cout << "Duomenys issaugoti faile: " << failoPavadinimas << ".\n";
 }
 
 void rikiuotiStudentus(vector<Student>& studentai, int pasirinkimas) {
@@ -211,7 +258,7 @@ void spausdintiStudentus(const vector<Student>& studentai, bool naudotiMediana) 
     }
 }
 
-void vykdytiPrograma(){
+void vykdytiPrograma() {
     vector<Student> studentai;
     int meniuPasirinkimas;
 
@@ -239,10 +286,12 @@ void vykdytiPrograma(){
             cin >> rikiavimoPasirinkimas;
             rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
 
-            bool irasymas = false;
-            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
             char saugoti;
+            bool irasymas = false;
+
+            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
             cin >> saugoti;
+
             if (saugoti == 't') {
                 irasymas = true;
             }
@@ -260,10 +309,17 @@ void vykdytiPrograma(){
                 ivestiStudenta(studentai, meniuPasirinkimas);
             }
 
-            bool irasymas = false;
-            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
+            if (studentai.empty()) {
+                cout << endl;
+                continue;  // Grįžtame į meniu, jei nėra studentų
+            }
+
             char saugoti;
+            bool irasymas = false;
+
+            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
             cin >> saugoti;
+
             if (saugoti == 't') {
                 irasymas = true;
             }
