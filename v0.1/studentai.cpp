@@ -56,3 +56,17 @@ void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinima
     fin.close();
 }
 
+bool tikrintiTeksta(const string &tekstas) {
+    for (char c : tekstas) {
+        if (isdigit(c)) throw invalid_argument("Tekste negali buti skaiciu!");
+    }
+    return true;
+}
+
+bool tikrintiSkaiciu(const string &input) {
+    for (char c : input) {
+        if (!isdigit(c)) throw invalid_argument("Ivestyje turi buti tik skaiciai!");
+    }
+    return true;
+}
+
