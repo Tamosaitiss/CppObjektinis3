@@ -30,3 +30,29 @@ double skaiciuotiMediana(vector<int> pazymiai) {
     return (dydis % 2 == 0) ? (pazymiai[dydis / 2 - 1] + pazymiai[dydis / 2]) / 2.0 : pazymiai[dydis / 2];
 }
 
+void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinimas) {
+    ifstream fin(failoPavadinimas);
+    if (!fin) {
+        cerr << "Klaida! Nepavyko atidaryti failo: " << failoPavadinimas << endl;
+        return;
+    }
+
+    string eilute;
+    getline(fin, eilute);
+
+    while (!fin.eof()) {
+        Student s;
+        fin >> s.vardas >> s.pavarde;
+        int pazymys;
+        while (fin >> pazymys) {
+            if (fin.peek() == '\n') {
+                s.egzaminas = pazymys;
+                break;
+            }
+            s.namu_darbai.push_back(pazymys);
+        }
+        studentai.push_back(s);
+    }
+    fin.close();
+}
+
