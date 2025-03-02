@@ -32,19 +32,17 @@ bool tikrintiSkaiciu(const string &input) {
 }
 
 double skaiciuotiMediana(vector<int> pazymiai) {
-    if (pazymiai.empty()) return 0.0; // Jei nėra pažymių, grąžinti 0
+    if (pazymiai.empty()) return 0.0;
 
-    sort(pazymiai.begin(), pazymiai.end()); // Rūšiuojame pažymius
+    sort(pazymiai.begin(), pazymiai.end());
 
     int dydis = pazymiai.size();
     if (dydis % 2 == 0) {
-        return (pazymiai[dydis / 2 - 1] + pazymiai[dydis / 2]) / 2.0; // Pora elementų: grąžiname vidurkį
+        return (pazymiai[dydis / 2 - 1] + pazymiai[dydis / 2]) / 2.0;
     } else {
         return pazymiai[dydis / 2];
     }
 }
-
-
 
 vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
     vector<int> pazymiai;
@@ -91,7 +89,7 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
             if (!tikrintiTeksta(s.vardas)) {
                 isvestiKlaida("Varda gali sudaryti tik raides!");
             } else {
-                ivestasVardasTeisingai = true;  // Teisingas įvestas vardas
+                ivestasVardasTeisingai = true;
             }
         }
 
@@ -104,7 +102,7 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
             if (!tikrintiTeksta(s.pavarde)) {
                 isvestiKlaida("Pavarde gali sudaryti tik raides!");
             } else {
-                ivestaPavardeTeisingai = true;  // Teisingas įvestas pavardė
+                ivestaPavardeTeisingai = true;
             }
         }
 
@@ -120,13 +118,13 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
 
                 // Patikriname, ar įvestas duomuo yra skaičius
                 if (cin.fail()) {
-                    cin.clear(); // Išvalome klaidą
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignoruojame neteisingą įvestį
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     isvestiKlaida("Namu darbo rezultatas turi buti skaicius!");
-                    continue;  // Pirmiausia grįžtame į ciklą ir prašome naujos įvesties
+                    continue;
                 }
 
-                if (pazymys == -1) break;  // Jei įvedame -1, išėjimas iš ciklo
+                if (pazymys == -1) break;
 
                 s.namu_darbai.push_back(pazymys);
             }
@@ -140,10 +138,10 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
                 // Patikriname, ar įvestas egzaminų rezultatas yra skaičius
                 if (cin.fail()) {
                     cin.clear(); // Išvalome klaidą
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignoruojame neteisingą įvestį
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     isvestiKlaida("Egzamino rezultatas turi buti skaicius!");
                 } else {
-                    egzaminasTeisingai = true;  // Teisingai įvestas egzaminų rezultatas
+                    egzaminasTeisingai = true;
                 }
             }
         }
@@ -161,7 +159,7 @@ void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinima
     }
 
     string eilute;
-    getline(fin, eilute);  // Skip header line
+    getline(fin, eilute);
 
     while (getline(fin, eilute)) {
         Student s;
@@ -316,7 +314,7 @@ void vykdytiPrograma() {
 
             if (studentai.empty()) {
                 cout << endl;
-                continue;  // Grįžtame į meniu, jei nėra studentų
+                continue;
             }
 
             char saugoti;
