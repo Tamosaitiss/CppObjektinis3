@@ -179,7 +179,7 @@ void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinima
 void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadinimas, bool naudotiMediana) {
     ofstream outFile(failoPavadinimas);
     if (!outFile) {
-        cout << "Nepavyko atidaryti failo " << failoPavadinimas << "!\n";
+        cout << "Nepavyko atidaryti failo: " << failoPavadinimas << "!\n";
         return;
     }
 
@@ -280,8 +280,8 @@ void vykdytiPrograma() {
             cout << "Pasirinkite rikiavimo kriteriju:\n";
             cout << "1 - Pagal varda\n";
             cout << "2 - Pagal pavarde\n";
-            cout << "3 - Pagal galutini pazymi pagal vidurki\n";
-            cout << "4 - Pagal galutini pazymi pagal mediana\n";
+            cout << "3 - Pagal vidurki\n";
+            cout << "4 - Pagal mediana\n";
             int rikiavimoPasirinkimas;
             cin >> rikiavimoPasirinkimas;
             rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
