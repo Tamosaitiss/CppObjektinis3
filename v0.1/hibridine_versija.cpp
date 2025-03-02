@@ -1,4 +1,4 @@
-#include "hibridas.h"
+/*#include "hibridas.h"
 
 vector<string> galimiVardai = {"Giedre", "Ona", "Vanesa", "Ieva", "Liepa", "Ema", "Martyna", "Goda"};
 vector<string> galimosPavardes = {"Giedraitiene", "Petraitiene", "Kazlauskiene", "Balciuniene", "Jankauskiene", "Rutkauskiene", "Sabaliauskiene"};

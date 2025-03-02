@@ -1,2 +1,9 @@
 # ninja log v6
-5	1092	7616854998457530	CMakeFiles/ObjektinisProgramavimas.dir/hibridine_versija.cpp.obj	a569de25ddf7dd8e
+4	25	7626508774691800	clean	f1c0810b4f0350db
+11	1830	7626505068324111	CMakeFiles/ObjektinisProgramavimas.dir/hibridine_versija.cpp.obj	a569de25ddf7dd8e
+1831	2211	7626505086528176	ObjektinisProgramavimas.exe	10a5ae96c3c70bd4
+10	1268	7626508776343510	CMakeFiles/ObjektinisProgramavimas.dir/vektorine_versija.cpp.obj	9e95e9ffa0b3788e
+5	426	7626509686031564	build.ninja	96e23abc71bcdb6f
+4	434	7626509686031564	build.ninja	96e23abc71bcdb6f
+11	2158	7626509686987981	CMakeFiles/ObjektinisProgramavimas.dir/studentai.cpp.obj	9237bdc848691dfa
+2159	2471	7626509708469248	ObjektinisProgramavimas.exe	765661cb083853f

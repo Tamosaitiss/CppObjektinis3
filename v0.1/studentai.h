@@ -1,11 +1,25 @@
 #ifndef STUDENTAI_H
 #define STUDENTAI_H
 
-#include "student.h"
+#include <iostream>
+#include <numeric>
+#include <iomanip>
 #include <vector>
 #include <string>
+#include <cctype>
+#include <fstream>
+#include <algorithm>
+#include <random>
+#include <ctime>
 
 using namespace std;
+
+struct Student {
+    string vardas;
+    string pavarde;
+    vector<int> namu_darbai;
+    int egzaminas;
+};
 
 void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
 void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas);
@@ -19,5 +33,6 @@ vector<int> generuotiAtsitiktiniusPazymius(int kiekis);
 int generuotiAtsitiktiniEgzaminoBala();
 string generuotiVarda();
 string generuotiPavarde();
+void vykdytiPrograma();
 
 #endif

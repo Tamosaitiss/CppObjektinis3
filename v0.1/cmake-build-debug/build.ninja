@@ -49,8 +49,15 @@ cmake_ninja_workdir = C$:/Users/Nikulinas/Documents/GitHub/1taco/ObjektinisProgr
 
 build cmake_object_order_depends_target_ObjektinisProgramavimas: phony || .
 
-build CMakeFiles/ObjektinisProgramavimas.dir/hibridine_versija.cpp.obj: CXX_COMPILER__ObjektinisProgramavimas_unscanned_Debug C$:/Users/Nikulinas/Documents/GitHub/1taco/ObjektinisProgramavimas/v0.1/hibridine_versija.cpp || cmake_object_order_depends_target_ObjektinisProgramavimas
-  DEP_FILE = CMakeFiles\ObjektinisProgramavimas.dir\hibridine_versija.cpp.obj.d
+build CMakeFiles/ObjektinisProgramavimas.dir/vektorine_versija.cpp.obj: CXX_COMPILER__ObjektinisProgramavimas_unscanned_Debug C$:/Users/Nikulinas/Documents/GitHub/1taco/ObjektinisProgramavimas/v0.1/vektorine_versija.cpp || cmake_object_order_depends_target_ObjektinisProgramavimas
+  DEP_FILE = CMakeFiles\ObjektinisProgramavimas.dir\vektorine_versija.cpp.obj.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/Nikulinas/Documents/GitHub/1taco/ObjektinisProgramavimas/v0.1/.
+  OBJECT_DIR = CMakeFiles\ObjektinisProgramavimas.dir
+  OBJECT_FILE_DIR = CMakeFiles\ObjektinisProgramavimas.dir
+
+build CMakeFiles/ObjektinisProgramavimas.dir/studentai.cpp.obj: CXX_COMPILER__ObjektinisProgramavimas_unscanned_Debug C$:/Users/Nikulinas/Documents/GitHub/1taco/ObjektinisProgramavimas/v0.1/studentai.cpp || cmake_object_order_depends_target_ObjektinisProgramavimas
+  DEP_FILE = CMakeFiles\ObjektinisProgramavimas.dir\studentai.cpp.obj.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
   INCLUDES = -IC:/Users/Nikulinas/Documents/GitHub/1taco/ObjektinisProgramavimas/v0.1/.
   OBJECT_DIR = CMakeFiles\ObjektinisProgramavimas.dir
@@ -64,7 +71,7 @@ build CMakeFiles/ObjektinisProgramavimas.dir/hibridine_versija.cpp.obj: CXX_COMP
 #############################################
 # Link the executable ObjektinisProgramavimas.exe
 
-build ObjektinisProgramavimas.exe: CXX_EXECUTABLE_LINKER__ObjektinisProgramavimas_Debug CMakeFiles/ObjektinisProgramavimas.dir/hibridine_versija.cpp.obj
+build ObjektinisProgramavimas.exe: CXX_EXECUTABLE_LINKER__ObjektinisProgramavimas_Debug CMakeFiles/ObjektinisProgramavimas.dir/vektorine_versija.cpp.obj CMakeFiles/ObjektinisProgramavimas.dir/studentai.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\ObjektinisProgramavimas.dir
