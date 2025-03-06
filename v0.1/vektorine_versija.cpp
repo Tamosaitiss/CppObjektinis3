@@ -2,6 +2,7 @@
 
 int main() {
     vykdytiPrograma();
+    generuotiFailus(1000);
 
     return 0;
 }

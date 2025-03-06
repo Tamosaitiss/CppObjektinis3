@@ -1,20 +1,13 @@
 #include "studentai.h"
 
-vector<string> galimiVardai = {"Jonas", "Ignas", "Petras", "Justas", "Lukas", "Kristijonas", "Marius", "Matas"};
-vector<string> galimosPavardes = {"Jonaitis", "Petraitis", "Kazlauskas", "Balciunas", "Jankauskas", "Rutkauskas", "Sabaliauskas"};
-
-string generuotiVarda() {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(0, galimiVardai.size() - 1);
-    return galimiVardai[dist(gen)];
+// Funkcija sugeneruoja studento vardą
+string gautiVarda(int indeksas) {
+    return "Vardas" + to_string(indeksas);
 }
 
-string generuotiPavarde() {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(0, galimosPavardes.size() - 1);
-    return galimosPavardes[dist(gen)];
+// Funkcija sugeneruoja studento pavardę
+string gautiPavarde(int indeksas) {
+    return "Pavarde" + to_string(indeksas);
 }
 
 bool tikrintiTeksta(const string &tekstas) {
@@ -70,14 +63,30 @@ void isvestiKlaida(const string &klausimas) {
 void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
     Student s;
 
+    // Pasirinkimas 3: Generuoti studentus su vardais, pavardėmis ir pažymiais
     if (pasirinkimas == 3) {
-        s.vardas = generuotiVarda();
-        s.pavarde = generuotiPavarde();
-        cout << "Generuojamas studentas: " << s.vardas << " " << s.pavarde << endl;
-        int ndKiekis = rand() % 10 + 1;
-        s.namu_darbai = generuotiAtsitiktiniusPazymius(ndKiekis);
-        s.egzaminas = generuotiAtsitiktiniEgzaminoBala();
+        static bool buvoGeneruota = false;  // Patikrina, ar studentai jau buvo generuoti
+
+        if (!buvoGeneruota) {  // Jei dar nebuvo generuota
+            int kiekis;
+            cout << "Kiek studentu generuoti?: ";
+            cin >> kiekis;
+
+            for (int i = 0; i < kiekis; ++i) {
+                s.vardas = gautiVarda(i + 1);
+                s.pavarde = gautiPavarde(i + 1);
+                cout << "Generuojamas studentas: " << s.vardas << " " << s.pavarde << endl;
+                int ndKiekis = rand() % 10 + 1;
+                s.namu_darbai = generuotiAtsitiktiniusPazymius(ndKiekis);
+                s.egzaminas = generuotiAtsitiktiniEgzaminoBala();
+                studentai.push_back(s);
+            }
+            buvoGeneruota = true;  // Užtikriname, kad generavimas nepasikartotų
+        } else {
+            cout << "Studentai jau buvo sugeneruoti." << endl;
+        }
     }
+    // Kitų pasirinkimų atveju įvedame rankiniu būdu
     else {
         // Vardas
         bool ivestasVardasTeisingai = false;
@@ -145,10 +154,10 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
                 }
             }
         }
-    }
 
-    studentai.push_back(s);
-    cout << "Studentas pridetas: " << s.vardas << " " << s.pavarde << endl;
+        studentai.push_back(s);
+        cout << "Studentas pridetas: " << s.vardas << " " << s.pavarde << endl;
+    }
 }
 
 void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas) {
@@ -261,6 +270,36 @@ void spausdintiStudentus(const vector<Student>& studentai, bool naudotiMediana) 
     }
 }
 
+void generuotiFailus(int kiekis) {
+    vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
+
+    for (int kiekis : kiekiai) {
+        string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
+        ofstream failas(failoPavadinimas);
+
+        if (!failas) {
+            cerr << "Klaida kuriant failą: " << failoPavadinimas << endl;
+            continue;
+        }
+
+        failas << "Vardas Pavarde Namu_darbai Egzaminas\n"; // Antraste
+
+        for (int i = 1; i <= kiekis; ++i) {
+            vector<int> pazymiai = generuotiAtsitiktiniusPazymius(10); // Generuojame 10 atsitiktinių pažymių
+            int egzaminas = generuotiAtsitiktiniEgzaminoBala(); // Generuojame atsitiktinį egzamino balą
+
+            failas << gautiVarda(i) << " " << gautiPavarde(i) << " ";
+            for (int pazymys : pazymiai) {
+                failas << pazymys << " "; // Rašome namų darbų pažymius
+            }
+            failas << egzaminas << "\n"; // Rašome egzamino rezultatą
+        }
+
+        failas.close();
+        cout << "Failas sukurtas: " << failoPavadinimas << endl;
+    }
+}
+
 void vykdytiPrograma() {
     vector<Student> studentai;
     int meniuPasirinkimas;
@@ -304,8 +343,8 @@ void vykdytiPrograma() {
         } else {
             int kiekGeneruoti = 1;
             if (meniuPasirinkimas == 3) {
-                cout << "Kiek studentu generuoti?: ";
-                cin >> kiekGeneruoti;
+                //cout << "Kiek studentu generuoti?: ";
+                //cin >> kiekGeneruoti;
             }
 
             for (int i = 0; i < kiekGeneruoti; i++) {

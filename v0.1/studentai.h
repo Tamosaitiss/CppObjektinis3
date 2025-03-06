@@ -31,8 +31,9 @@ bool tikrintiTeksta(const string& tekstas);
 bool tikrintiSkaiciu(const string& input);
 vector<int> generuotiAtsitiktiniusPazymius(int kiekis);
 int generuotiAtsitiktiniEgzaminoBala();
-string generuotiVarda();
-string generuotiPavarde();
+string gautiVarda(int indeksas);
+string gautiPavarde(int indeksas);
+void generuotiFailus(int kiekis);
 void vykdytiPrograma();
 
 #endif
