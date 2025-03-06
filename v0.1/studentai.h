@@ -35,6 +35,7 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
 void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas);
 void rikiuotiStudentus(vector<Student>& studentai, int rikiavimoPasirinkimas);
 void spausdintiStudentus(const vector<Student>& studentai, bool irasyti);
+void suskirstytiStudentusIrIrasytiISFailus(const vector<Student>& studentai);
 void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadinimas, bool naudotiMediana);
 void generuotiFailus(int kiekis);
 void vykdytiPrograma();
