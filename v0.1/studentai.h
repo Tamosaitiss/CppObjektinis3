@@ -9,11 +9,12 @@
 #include <sstream>
 #include <algorithm>
 #include <random>
-#include <ctime>
 #include <numeric>
+#include <limits>
 
 using namespace std;
 
+// Student structure
 struct Student {
     string vardas;
     string pavarde;
@@ -21,20 +22,21 @@ struct Student {
     int egzaminas;
 };
 
-bool tikrintiTeksta(const string& tekstas);
-bool tikrintiSkaiciu(const string& input);
-double skaiciuotiMediana(vector<int> pazymiai);
-vector<int> generuotiAtsitiktiniusPazymius(int kiekis);
-int generuotiAtsitiktiniEgzaminoBala();
-void isvestiKlaida(const string& klausimas);
-void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
-void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas);
-void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadinimas, bool naudotiMediana);
-void generuotiFailus(int kiekis);
-void spausdintiStudentus(const vector<Student>& studentai, bool irasyti);
-void rikiuotiStudentus(vector<Student>& studentai, int kriterijus);
 string gautiVarda(int indeksas);
 string gautiPavarde(int indeksas);
+bool tikrintiTeksta(const string &tekstas);
+bool tikrintiSkaiciu(const string &input);
+double skaiciuotiVidurki(const vector<int>& pazymiai, int egzaminas);
+double skaiciuotiMediana(vector<int>& pazymiai, int egzaminas);
+vector<int> generuotiAtsitiktiniusPazymius(int kiekis);
+int generuotiAtsitiktiniEgzaminoBala();
+void isvestiKlaida(const string &klausimas);
+void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
+void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas);
+void rikiuotiStudentus(vector<Student>& studentai, int rikiavimoPasirinkimas);
+void spausdintiStudentus(const vector<Student>& studentai, bool irasyti);
+void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadinimas, bool naudotiMediana);
+void generuotiFailus(int kiekis);
 void vykdytiPrograma();
 
 #endif // STUDENTAI_H

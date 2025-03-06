@@ -24,17 +24,33 @@ bool tikrintiSkaiciu(const string &input) {
     return true;
 }
 
-double skaiciuotiMediana(vector<int> pazymiai) {
+double skaiciuotiVidurki(const vector<int>& pazymiai, int egzaminas) {
     if (pazymiai.empty()) return 0.0;
 
-    sort(pazymiai.begin(), pazymiai.end());
+    double vidurkis = accumulate(pazymiai.begin(), pazymiai.end(), 0.0) / pazymiai.size();
+    return 0.4 * vidurkis + 0.6 * egzaminas;
+}
 
-    int dydis = pazymiai.size();
+double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas) {
+    if (pazymiai.empty()) return 0.0;
+
+    // Sukuriame kopiją ir į ją įtraukiame egzaminą
+    vector<int> visiPazymiai = pazymiai;
+    visiPazymiai.push_back(egzaminas);
+
+    // Rūšiuojame visus pažymius
+    sort(visiPazymiai.begin(), visiPazymiai.end());
+
+    int dydis = visiPazymiai.size();
+    double mediana;
     if (dydis % 2 == 0) {
-        return (pazymiai[dydis / 2 - 1] + pazymiai[dydis / 2]) / 2.0;
+        // Jei pažymių skaičius lygus, mediana bus dviejų vidurinių reikšmių vidurkis
+        mediana = (visiPazymiai[dydis / 2 - 1] + visiPazymiai[dydis / 2]) / 2.0;
     } else {
-        return pazymiai[dydis / 2];
+        // Jei pažymių skaičius nelygus, mediana bus vidurinė reikšmė
+        mediana = visiPazymiai[dydis / 2];
     }
+    return mediana;
 }
 
 vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
@@ -188,27 +204,35 @@ void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinima
     fin.close();
 }
 
-void rikiuotiStudentus(vector<Student>& studentai, int kriterijus) {
-    if (kriterijus == 1) {
+void rikiuotiStudentus(vector<Student>& studentai, int rikiavimoPasirinkimas) {
+    switch (rikiavimoPasirinkimas) {
+    case 1:
         sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            return a.vardas < b.vardas; // Sort by name
+            return a.vardas < b.vardas;
         });
-    }
-    else if (kriterijus == 2) {
+        break;
+    case 2:
         sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            return a.pavarde < b.pavarde; // Sort by surname
+            return a.pavarde < b.pavarde;
         });
-    }
-    else if (kriterijus == 3) {
+        break;
+    case 3:
         sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            double vidurkisA = accumulate(a.namu_darbai.begin(), a.namu_darbai.end(), 0.0) / a.namu_darbai.size();
-            double galutinisVidA = 0.4 * vidurkisA + 0.6 * a.egzaminas;
-
-            double vidurkisB = accumulate(b.namu_darbai.begin(), b.namu_darbai.end(), 0.0) / b.namu_darbai.size();
-            double galutinisVidB = 0.4 * vidurkisB + 0.6 * b.egzaminas;
-
-            return galutinisVidA < galutinisVidB; // Sort by final grade (average)
+            double aVidurkis = skaiciuotiVidurki(a.namu_darbai, a.egzaminas);
+            double bVidurkis = skaiciuotiVidurki(b.namu_darbai, b.egzaminas);
+            return aVidurkis > bVidurkis;
         });
+        break;
+    case 4:
+        sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+            double aMediana = skaiciuotiMediana(a.namu_darbai, a.egzaminas);
+            double bMediana = skaiciuotiMediana(b.namu_darbai, b.egzaminas);
+            return aMediana > bMediana;
+        });
+        break;
+    default:
+        cout << "Klaida! Netinkami kriterijai rusiavimui." << endl;
+        break;
     }
 }
 
@@ -220,20 +244,35 @@ void spausdintiStudentus(const vector<Student>& studentai, bool irasyti) {
 
     cout << left << setw(15) << "Vardas" << setw(15) << "Pavarde"
          << setw(15) << "Galutinis (Vid.)" << setw(15) << "Galutinis (Med.)" << endl;
-    cout << string(70, '-') << endl;
 
-    for (const auto& s : studentai) {
-        double vidurkis = accumulate(s.namu_darbai.begin(), s.namu_darbai.end(), 0.0) / s.namu_darbai.size();
-        double galutinisVid = 0.4 * vidurkis + 0.6 * s.egzaminas;
-        double galutinisMed = 0.4 * skaiciuotiMediana(s.namu_darbai) + 0.6 * s.egzaminas;
+    for (const auto& studentas : studentai) {
+        double vidurkis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+        double mediana = skaiciuotiMediana(studentas.namu_darbai, studentas.egzaminas);
 
-        cout << left << setw(15) << s.vardas << setw(15) << s.pavarde
-             << fixed << setprecision(2) << setw(15) << galutinisVid
-             << setw(15) << galutinisMed << endl;
+        cout << left << setw(15) << studentas.vardas << setw(15) << studentas.pavarde
+             << setw(15) << fixed << setprecision(2) << vidurkis
+             << setw(15) << fixed << setprecision(2) << mediana << endl;
     }
 
     if (irasyti) {
-        issaugotiIFaila(studentai, "rezultatai.txt", irasyti);
+        string failoPavadinimas = "studentai.txt";
+        ofstream fout(failoPavadinimas);
+        if (!fout.is_open()) {
+            cout << "Nepavyko atidaryti failo rašymui." << endl;
+            return;
+        }
+
+        fout << left << setw(15) << "Vardas" << setw(15) << "Pavarde"
+             << setw(15) << "Galutinis (Vid.)" << setw(15) << "Galutinis (Med.)" << endl;
+
+        for (const auto& studentas : studentai) {
+            double vidurkis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+            double mediana = skaiciuotiMediana(studentas.namu_darbai, studentas.egzaminas);
+
+            fout << left << setw(15) << studentas.vardas << setw(15) << studentas.pavarde
+                 << setw(15) << fixed << setprecision(2) << vidurkis
+                 << setw(15) << fixed << setprecision(2) << mediana << endl;
+        }
     }
 }
 
@@ -253,7 +292,7 @@ void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadi
     for (const auto& s : studentai) {
         double vidurkis = accumulate(s.namu_darbai.begin(), s.namu_darbai.end(), 0.0) / s.namu_darbai.size();
         double galutinisVid = 0.4 * vidurkis + 0.6 * s.egzaminas;
-        double galutinisMed = 0.4 * skaiciuotiMediana(s.namu_darbai) + 0.6 * s.egzaminas;
+        double galutinisMed = 0.4 * skaiciuotiMediana(s.namu_darbai, s.egzaminas) + 0.6 * s.egzaminas;
 
         outFile << left << setw(20) << s.vardas
                 << setw(20) << s.pavarde
@@ -277,10 +316,29 @@ void generuotiFailus(int kiekis) {
             continue;
         }
 
-        failas << "Vardas Pavarde\n"; // Antraste
+        failas << "Vardas Pavarde Namu_darbai Egzaminas\n"; // Antraste su pažymiais ir egzaminu
 
         for (int i = 1; i <= kiekis; ++i) {
-            failas << gautiVarda(i) << " " << gautiPavarde(i) << "\n";
+            string vardas = gautiVarda(i);
+            string pavarde = gautiPavarde(i);
+
+            // Generuojame atsitiktinius pažymius
+            int ndKiekis = 10; // Namu darbų kiekis, visada 10
+            vector<int> namu_darbai = generuotiAtsitiktiniusPazymius(ndKiekis);
+
+            // Generuojame atsitiktinį egzamino balą
+            int egzaminas = generuotiAtsitiktiniEgzaminoBala();
+
+            // Įrašome vardą ir pavardę
+            failas << vardas << " " << pavarde << " ";
+
+            // Įrašome namų darbų pažymius
+            for (int pazymys : namu_darbai) {
+                failas << pazymys << " ";
+            }
+
+            // Įrašome egzamino balą
+            failas << egzaminas << "\n";
         }
 
         failas.close();
@@ -346,6 +404,19 @@ void vykdytiPrograma() {
                 continue;
             }
 
+            // Ask for sorting criteria after input
+            cout << "Pasirinkite rikiavimo kriteriju:\n";
+            cout << "1 - Pagal varda\n";
+            cout << "2 - Pagal pavarde\n";
+            cout << "3 - Pagal vidurki\n";
+            cout << "4 - Pagal mediana\n";
+            int rikiavimoPasirinkimas;
+            cin >> rikiavimoPasirinkimas;
+
+            // Sort students based on the selected criteria
+            rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
+
+            // Ask if the user wants to save the results
             char saugoti;
             bool irasymas = false;
 
