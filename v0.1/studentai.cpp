@@ -1,4 +1,7 @@
 #include "studentai.h"
+#include <chrono>
+
+using namespace std::chrono;
 
 // Funkcija sugeneruoja studento vardą
 string gautiVarda(int indeksas) {
@@ -371,7 +374,44 @@ void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& fa
     cout << "Studentai issaugoti faile: " << failoPavadinimas << endl;
 }
 
+void matuotiFailuKurimoLaika() {
+    auto start = high_resolution_clock::now();
+    generuotiFailus();
+    auto end = high_resolution_clock::now();
+    duration<double> trukme = end - start;
+    cout << "Failų kūrimo laikas: " << trukme.count() << " s" << endl;
+}
 
+void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
+    vector<Student> studentai;
+    vector<Student> vargsiukai;
+    vector<Student> kietiakiai;
+
+    // 1. Duomenų nuskaitymo laikas
+    auto start = high_resolution_clock::now();
+    nuskaitytiIsFailo(studentai, failoPavadinimas);
+    auto end = high_resolution_clock::now();
+    duration<double> nuskaitymoLaikas = end - start;
+    cout << "Duomenų nuskaitymo laikas: " << nuskaitymoLaikas.count() << " s" << endl;
+
+    // 2. Studentų rūšiavimo laikas
+    start = high_resolution_clock::now();
+    suskirstytiStudentus(studentai, vargsiukai, kietiakiai);
+    end = high_resolution_clock::now();
+    duration<double> rusiavimoLaikas = end - start;
+    cout << "Studentų rūšiavimo laikas: " << rusiavimoLaikas.count() << " s" << endl;
+
+    // 3. Surūšiuotų studentų išvedimo laikas
+    start = high_resolution_clock::now();
+    issaugotiStudentusIFaila(vargsiukai, "vargsiukai.txt");
+    issaugotiStudentusIFaila(kietiakiai, "kietiakiai.txt");
+    end = high_resolution_clock::now();
+    duration<double> isvedimoLaikas = end - start;
+    cout << "Surūšiuotų studentų išvedimo laikas: " << isvedimoLaikas.count() << " s" << endl;
+
+    // 4. Bendras duomenų apdorojimo laikas
+    cout << "Bendras duomenų apdorojimo laikas: " << (nuskaitymoLaikas + rusiavimoLaikas + isvedimoLaikas).count() << " s" << endl;
+}
 
 void vykdytiPrograma() {
     vector<Student> studentai;
