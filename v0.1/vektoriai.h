@@ -21,17 +21,31 @@ struct Student {
     int egzaminas;
 };
 
-void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
-void nuskaitytiIsFailo(vector<Student> &studentai, const string &failoPavadinimas);
-void issaugotiIFaila(const vector<Student> &studentai, const string &failoPavadinimas, bool naudotiMediana);
-void rikiuotiStudentus(vector<Student> &studentai, int pasirinkimas);
-void spausdintiStudentus(const vector<Student> &studentai, bool naudotiMediana);
-double skaiciuotiMediana(vector<int> pazymiai);
-bool tikrintiTeksta(const string &tekstas);
-bool tikrintiSkaiciu(const string &input);
+// Funkcijos, susijusios su studentų generavimu ir įvedimu
+string gautiVarda(int indeksas);
+string gautiPavarde(int indeksas);
 vector<int> generuotiAtsitiktiniusPazymius(int kiekis);
 int generuotiAtsitiktiniEgzaminoBala();
-string generuotiVarda();
-string generuotiPavarde();
+void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
+
+// Duomenų apdorojimo funkcijos
+double skaiciuotiVidurki(const vector<int>& pazymiai, int egzaminas);
+double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas);
+void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas);
+void rikiuotiStudentus(vector<Student>& studentai, int pasirinkimas);
+void spausdintiStudentus(const vector<Student>& studentai, bool irasyti);
+
+// Failų apdorojimo funkcijos
+void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadinimas, bool naudotiMediana);
+void suskirstytiStudentusIrIrasytiISFailus(const vector<Student>& studentai);
+void generuotiFailus(int kiekis);
+void generuotiVienaFaila(int kiekis);
+
+// Laiko matavimo funkcijos
+void matuotiFailuGeneravimoLaika();
+void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas);
+
+// Pagrindinė programos vykdymo funkcija
+void vykdytiPrograma();
 
 #endif

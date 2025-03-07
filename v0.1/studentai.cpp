@@ -323,45 +323,57 @@ void suskirstytiStudentusIrIrasytiISFailus(const vector<Student>& studentai) {
     issaugotiIFaila(kietiakiai, "kietiakiai.txt", false);
 }
 
+// studentai.cpp
+void generuotiVienaFaila(int kiekis) {
+    string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
+    ofstream failas(failoPavadinimas);
+
+    if (!failas) {
+        cerr << "Klaida kuriant failą: " << failoPavadinimas << endl;
+        return;
+    }
+
+    failas << "Vardas Pavarde Namu_darbai Egzaminas\n";
+
+    for (int i = 1; i <= kiekis; ++i) {
+        string vardas = gautiVarda(i);
+        string pavarde = gautiPavarde(i);
+        vector<int> namu_darbai = generuotiAtsitiktiniusPazymius(10);
+        int egzaminas = generuotiAtsitiktiniEgzaminoBala();
+
+        failas << vardas << " " << pavarde << " ";
+        for (int pazymys : namu_darbai) {
+            failas << pazymys << " ";
+        }
+        failas << egzaminas << "\n";
+    }
+
+    failas.close();
+    cout << "Failas sukurtas: " << failoPavadinimas << endl;
+}
+
 void generuotiFailus(int kiekis) {
     vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
 
-    for (int kiekis : kiekiai) {
-        string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
-        ofstream failas(failoPavadinimas);
+    cout << "Pasirinkite, kurį failą generuoti:\n";
+    for (size_t i = 0; i < kiekiai.size(); ++i) {
+        cout << i + 1 << " - " << kiekiai[i] << " studentų\n";
+    }
+    cout << "0 - Generuoti visus failus\n";
 
-        if (!failas) {
-            cerr << "Klaida kuriant failą: " << failoPavadinimas << endl;
-            continue;
+    int pasirinkimas;
+    cin >> pasirinkimas;
+
+    if (pasirinkimas == 0) {
+        // Generuojami visi failai
+        for (int kiekis : kiekiai) {
+            generuotiVienaFaila(kiekis);
         }
-
-        failas << "Vardas Pavarde Namu_darbai Egzaminas\n"; // Antraste su pažymiais ir egzaminu
-
-        for (int i = 1; i <= kiekis; ++i) {
-            string vardas = gautiVarda(i);
-            string pavarde = gautiPavarde(i);
-
-            // Generuojame atsitiktinius pažymius
-            int ndKiekis = 10; // Namu darbų kiekis, visada 10
-            vector<int> namu_darbai = generuotiAtsitiktiniusPazymius(ndKiekis);
-
-            // Generuojame atsitiktinį egzamino balą
-            int egzaminas = generuotiAtsitiktiniEgzaminoBala();
-
-            // Įrašome vardą ir pavardę
-            failas << vardas << " " << pavarde << " ";
-
-            // Įrašome namų darbų pažymius
-            for (int pazymys : namu_darbai) {
-                failas << pazymys << " ";
-            }
-
-            // Įrašome egzamino balą
-            failas << egzaminas << "\n";
-        }
-
-        failas.close();
-        cout << "Failas sukurtas: " << failoPavadinimas << endl;
+    } else if (pasirinkimas >= 1 && pasirinkimas <= kiekiai.size()) {
+        // Generuojamas tik pasirinktas failas
+        generuotiVienaFaila(kiekiai[pasirinkimas - 1]);
+    } else {
+        cout << "Neteisingas pasirinkimas!\n";
     }
 }
 
@@ -383,7 +395,7 @@ void vykdytiPrograma() {
         if (meniuPasirinkimas == 6) break;
 
         if (meniuPasirinkimas == 5) {
-            generuotiFailus(5); // Generuojame 5 failus pagal pasirinkimą
+            generuotiFailus(5); // Call the function with the argument 5
         } else if (meniuPasirinkimas == 4) {
             nuskaitytiIsFailo(studentai, "studentai10000.txt");
 
