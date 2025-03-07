@@ -352,6 +352,25 @@ void suskirstytiStudentus(const vector<Student>& studentai, vector<Student>& var
     }
 }
 
+void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& failoPavadinimas) {
+    ofstream failas(failoPavadinimas);
+
+    if (!failas) {
+        cerr << "Klaida kuriant failą: " << failoPavadinimas << endl;
+        return;
+    }
+
+    failas << "Vardas Pavarde Galutinis (Vid.)\n";
+
+    for (const auto& studentas : studentai) {
+        double galutinisBalas = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+        failas << studentas.vardas << " " << studentas.pavarde << " " << fixed << setprecision(2) << galutinisBalas << "\n";
+    }
+
+    failas.close();
+    cout << "Studentai issaugoti faile: " << failoPavadinimas << endl;
+}
+
 
 
 void vykdytiPrograma() {
