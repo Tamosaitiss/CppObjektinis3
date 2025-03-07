@@ -61,7 +61,7 @@ void suskirstytiStudentusIrIrasytiISFailus(const vector<Student>& studentai);
 void generuotiVienaFaila(int kiekis);
 
 // Function to generate multiple files with student data
-void generuotiFailus();
+void generuotiFailus(int kiekis);
 
 // Function to measure file generation time
 void matuotiFailuGeneravimoLaika();

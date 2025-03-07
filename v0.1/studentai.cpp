@@ -334,7 +334,7 @@ void generuotiFaila(int kiekis, const string& failoPavadinimas) {
     cout << "Failas sukurtas: " << failoPavadinimas << endl;
 }
 
-void generuotiFailus() {
+void generuotiFailus(int kiekis) {
     vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
 
     for (int kiekis : kiekiai) {
