@@ -304,25 +304,6 @@ void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadi
     cout << "Duomenys issaugoti faile: " << failoPavadinimas << ".\n";
 }
 
-void suskirstytiStudentusIrIrasytiISFailus(const vector<Student>& studentai) {
-    vector<Student> vargsiukai;
-    vector<Student> kietiakiai;
-
-    // Suskirstome studentus pagal galutinį balą
-    for (const auto& studentas : studentai) {
-        double galutinisBalas = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-
-        if (galutinisBalas < 5.0) {
-            vargsiukai.push_back(studentas);
-        } else {
-            kietiakiai.push_back(studentas);
-        }
-    }
-
-    issaugotiIFaila(vargsiukai, "vargsiukai.txt", false);
-    issaugotiIFaila(kietiakiai, "kietiakiai.txt", false);
-}
-
 void generuotiFaila(int kiekis, const string& failoPavadinimas) {
     ofstream failas(failoPavadinimas);
 
@@ -358,6 +339,20 @@ void generuotiFailus() {
         generuotiFaila(kiekis, failoPavadinimas);
     }
 }
+
+void suskirstytiStudentus(const vector<Student>& studentai, vector<Student>& vargsiukai, vector<Student>& kietiakiai) {
+    for (const auto& studentas : studentai) {
+        double galutinisBalas = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+
+        if (galutinisBalas < 5.0) {
+            vargsiukai.push_back(studentas);
+        } else {
+            kietiakiai.push_back(studentas);
+        }
+    }
+}
+
+
 
 void vykdytiPrograma() {
     vector<Student> studentai;
