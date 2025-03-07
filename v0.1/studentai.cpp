@@ -323,9 +323,7 @@ void suskirstytiStudentusIrIrasytiISFailus(const vector<Student>& studentai) {
     issaugotiIFaila(kietiakiai, "kietiakiai.txt", false);
 }
 
-// studentai.cpp
-void generuotiVienaFaila(int kiekis) {
-    string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
+void generuotiFaila(int kiekis, const string& failoPavadinimas) {
     ofstream failas(failoPavadinimas);
 
     if (!failas) {
@@ -333,11 +331,11 @@ void generuotiVienaFaila(int kiekis) {
         return;
     }
 
-    failas << "Vardas Pavarde Namu_darbai Egzaminas\n";
+    failas << "Vardas Pavarde ND1 ND2 ND3 ND4 ND5 ND6 ND7 ND8 ND9 ND10 Egzaminas\n";
 
     for (int i = 1; i <= kiekis; ++i) {
-        string vardas = gautiVarda(i);
-        string pavarde = gautiPavarde(i);
+        string vardas = "Vardas" + to_string(i);
+        string pavarde = "Pavarde" + to_string(i);
         vector<int> namu_darbai = generuotiAtsitiktiniusPazymius(10);
         int egzaminas = generuotiAtsitiktiniEgzaminoBala();
 
@@ -352,28 +350,12 @@ void generuotiVienaFaila(int kiekis) {
     cout << "Failas sukurtas: " << failoPavadinimas << endl;
 }
 
-void generuotiFailus(int kiekis) {
+void generuotiFailus() {
     vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
 
-    cout << "Pasirinkite, kurį failą generuoti:\n";
-    for (size_t i = 0; i < kiekiai.size(); ++i) {
-        cout << i + 1 << " - " << kiekiai[i] << " studentų\n";
-    }
-    cout << "0 - Generuoti visus failus\n";
-
-    int pasirinkimas;
-    cin >> pasirinkimas;
-
-    if (pasirinkimas == 0) {
-        // Generuojami visi failai
-        for (int kiekis : kiekiai) {
-            generuotiVienaFaila(kiekis);
-        }
-    } else if (pasirinkimas >= 1 && pasirinkimas <= kiekiai.size()) {
-        // Generuojamas tik pasirinktas failas
-        generuotiVienaFaila(kiekiai[pasirinkimas - 1]);
-    } else {
-        cout << "Neteisingas pasirinkimas!\n";
+    for (int kiekis : kiekiai) {
+        string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
+        generuotiFaila(kiekis, failoPavadinimas);
     }
 }
 
