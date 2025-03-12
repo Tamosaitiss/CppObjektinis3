@@ -1,5 +1,6 @@
 #include "studentai.h"
 #include <chrono>
+#include <stdexcept>
 
 using namespace std::chrono;
 
@@ -15,14 +16,14 @@ string gautiPavarde(int indeksas) {
 
 bool tikrintiTeksta(const string &tekstas) {
     for (char c : tekstas) {
-        if (isdigit(c)) return false;
+        if (isdigit(c)) throw invalid_argument("Teksta turi sudaryti tik raides.");
     }
     return true;
 }
 
 bool tikrintiSkaiciu(const string &input) {
     for (char c : input) {
-        if (!isdigit(c)) return false;
+        if (!isdigit(c)) throw invalid_argument("Skaicius turi sudaryti tik skaičiai.");
     }
     return true;
 }
@@ -71,7 +72,7 @@ vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
 int generuotiAtsitiktiniEgzaminoBala() {
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<int> dist(1, 100);
+    uniform_int_distribution<int> dist(1, 10);
     return dist(gen);
 }
 
@@ -110,27 +111,29 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
         // Vardas
         bool ivestasVardasTeisingai = false;
         while (!ivestasVardasTeisingai) {
-            cout << "Vardas: ";
-            cin >> s.vardas;
-            if (s.vardas == "-1") return;
+            try {
+                cout << "Vardas: ";
+                cin >> s.vardas;
+                if (s.vardas == "-1") return;
 
-            if (!tikrintiTeksta(s.vardas)) {
-                isvestiKlaida("Varda gali sudaryti tik raides!");
-            } else {
+                tikrintiTeksta(s.vardas);
                 ivestasVardasTeisingai = true;
+            } catch (const invalid_argument &e) {
+                isvestiKlaida(e.what());
             }
         }
 
         // Pavarde
         bool ivestaPavardeTeisingai = false;
         while (!ivestaPavardeTeisingai) {
-            cout << "Pavarde: ";
-            cin >> s.pavarde;
+            try {
+                cout << "Pavarde: ";
+                cin >> s.pavarde;
 
-            if (!tikrintiTeksta(s.pavarde)) {
-                isvestiKlaida("Pavarde gali sudaryti tik raides!");
-            } else {
+                tikrintiTeksta(s.pavarde);
                 ivestaPavardeTeisingai = true;
+            } catch (const invalid_argument &e) {
+                isvestiKlaida(e.what());
             }
         }
 
@@ -142,34 +145,41 @@ void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
             cout << "Iveskite namu darbu rezultatus (-1 jei baigta):\n";
             int pazymys;
             while (true) {
-                cin >> pazymys;
+                try {
+                    cin >> pazymys;
 
-                // Patikriname, ar įvestas duomuo yra skaičius
-                if (cin.fail()) {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    isvestiKlaida("Namu darbo rezultatas turi buti skaicius!");
-                    continue;
+                    // Patikriname, ar įvestas duomuo yra skaičius
+                    if (cin.fail()) {
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        throw invalid_argument("Namu darbo rezultatas turi buti skaicius!");
+                    }
+
+                    if (pazymys == -1) break;
+
+                    s.namu_darbai.push_back(pazymys);
+                } catch (const invalid_argument &e) {
+                    isvestiKlaida(e.what());
                 }
-
-                if (pazymys == -1) break;
-
-                s.namu_darbai.push_back(pazymys);
             }
 
             // Tikriname, ar egzaminų rezultatas yra teisingas (tik skaičius)
             bool egzaminasTeisingai = false;
             while (!egzaminasTeisingai) {
-                cout << "Egzamino rezultatas: ";
-                cin >> s.egzaminas;
+                try {
+                    cout << "Egzamino rezultatas: ";
+                    cin >> s.egzaminas;
 
-                // Patikriname, ar įvestas egzaminų rezultatas yra skaičius
-                if (cin.fail()) {
-                    cin.clear(); // Išvalome klaidą
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    isvestiKlaida("Egzamino rezultatas turi buti skaicius!");
-                } else {
-                    egzaminasTeisingai = true;
+                    // Patikriname, ar įvestas egzaminų rezultatas yra skaičius
+                    if (cin.fail()) {
+                        cin.clear(); // Išvalome klaidą
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        throw invalid_argument("Egzamino rezultatas turi buti skaicius!");
+                    } else {
+                        egzaminasTeisingai = true;
+                    }
+                } catch (const invalid_argument &e) {
+                    isvestiKlaida(e.what());
                 }
             }
         }
@@ -261,7 +271,7 @@ void spausdintiStudentus(const vector<Student>& studentai, bool irasyti) {
         string failoPavadinimas = "studentai.txt";
         ofstream fout(failoPavadinimas);
         if (!fout.is_open()) {
-            cout << "Nepavyko atidaryti failo rašymui." << endl;
+            cout << "Nepavyko atidaryti failo rasymui." << endl;
             return;
         }
 
@@ -311,7 +321,7 @@ void generuotiFaila(int kiekis, const string& failoPavadinimas) {
     ofstream failas(failoPavadinimas);
 
     if (!failas) {
-        cerr << "Klaida kuriant failą: " << failoPavadinimas << endl;
+        cerr << "Klaida kuriant faila: " << failoPavadinimas << endl;
         return;
     }
 
@@ -359,7 +369,7 @@ void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& fa
     ofstream failas(failoPavadinimas);
 
     if (!failas) {
-        cerr << "Klaida kuriant failą: " << failoPavadinimas << endl;
+        cerr << "Klaida kuriant faila: " << failoPavadinimas << endl;
         return;
     }
 
@@ -376,10 +386,10 @@ void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& fa
 
 void matuotiFailuKurimoLaika() {
     auto start = high_resolution_clock::now();
-    generuotiFailus();
+    generuotiFailus(5);
     auto end = high_resolution_clock::now();
     duration<double> trukme = end - start;
-    cout << "Failų kūrimo laikas: " << trukme.count() << " s" << endl;
+    cout << "Failu kurimo laikas: " << trukme.count() << " s" << endl;
 }
 
 void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
@@ -392,14 +402,14 @@ void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
     nuskaitytiIsFailo(studentai, failoPavadinimas);
     auto end = high_resolution_clock::now();
     duration<double> nuskaitymoLaikas = end - start;
-    cout << "Duomenų nuskaitymo laikas: " << nuskaitymoLaikas.count() << " s" << endl;
+    cout << "Duomenu nuskaitymo laikas: " << nuskaitymoLaikas.count() << " s" << endl;
 
     // 2. Studentų rūšiavimo laikas
     start = high_resolution_clock::now();
     suskirstytiStudentus(studentai, vargsiukai, kietiakiai);
     end = high_resolution_clock::now();
     duration<double> rusiavimoLaikas = end - start;
-    cout << "Studentų rūšiavimo laikas: " << rusiavimoLaikas.count() << " s" << endl;
+    cout << "Studentu rusiavimo laikas: " << rusiavimoLaikas.count() << " s" << endl;
 
     // 3. Surūšiuotų studentų išvedimo laikas
     start = high_resolution_clock::now();
@@ -407,10 +417,10 @@ void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
     issaugotiStudentusIFaila(kietiakiai, "kietiakiai.txt");
     end = high_resolution_clock::now();
     duration<double> isvedimoLaikas = end - start;
-    cout << "Surūšiuotų studentų išvedimo laikas: " << isvedimoLaikas.count() << " s" << endl;
+    cout << "Surusiuotų studentu isvedimo laikas: " << isvedimoLaikas.count() << " s" << endl;
 
     // 4. Bendras duomenų apdorojimo laikas
-    cout << "Bendras duomenų apdorojimo laikas: " << (nuskaitymoLaikas + rusiavimoLaikas + isvedimoLaikas).count() << " s" << endl;
+    cout << "Bendras duomenu apdorojimo laikas: " << (nuskaitymoLaikas + rusiavimoLaikas + isvedimoLaikas).count() << " s" << endl;
 }
 
 void vykdytiPrograma() {
