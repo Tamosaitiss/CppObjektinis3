@@ -58,10 +58,10 @@ void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadi
 void suskirstytiStudentusIrIrasytiISFailus(const vector<Student>& studentai);
 
 // Function to generate a single file with student data
-void generuotiVienaFaila(int kiekis);
+void generuotiFaila(int kiekis, const std::string& failoPavadinimas);
 
 // Function to generate multiple files with student data
-void generuotiFailus(int kiekis);
+void generuotiFailus(const std::vector<int>& kiekiai);
 
 // Function to measure file generation time
 void matuotiFailuGeneravimoLaika();
