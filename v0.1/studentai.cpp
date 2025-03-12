@@ -387,11 +387,11 @@ void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& fa
 }
 
 void matuotiFailuKurimoLaika() {
-    auto start = std::chrono::high_resolution_clock::now();
+    auto start = chrono::high_resolution_clock::now();
     generuotiFailus({1000, 10000, 100000, 1000000, 10000000});
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> trukme = end - start;
-    std::cout << "Failų kūrimo laikas: " << trukme.count() << " s" << std::endl;
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> trukme = end - start;
+    cout << "Failų kūrimo laikas: " << trukme.count() << " s" << endl;
 }
 
 void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
@@ -426,47 +426,47 @@ void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
 }
 
 void vykdytiPrograma() {
-    std::vector<Student> studentai;
+    vector<Student> studentai;
     int meniuPasirinkimas;
 
     while (true) {
-        std::cout << "\nMeniu:\n";
-        std::cout << "1 - Rankinis ivedimas\n";
-        std::cout << "2 - Generuoti tik pazymius\n";
-        std::cout << "3 - Generuoti vardus, pavardes ir pazymius\n";
-        std::cout << "4 - Nuskaityti is failo\n";
-        std::cout << "5 - Generuoti studentu failus\n";
-        std::cout << "6 - Baigti darba\n";
-        std::cout << "Pasirinkite: ";
-        std::cin >> meniuPasirinkimas;
+        cout << "\nMeniu:\n";
+        cout << "1 - Rankinis ivedimas\n";
+        cout << "2 - Generuoti tik pazymius\n";
+        cout << "3 - Generuoti vardus, pavardes ir pazymius\n";
+        cout << "4 - Nuskaityti is failo\n";
+        cout << "5 - Generuoti studentu failus\n";
+        cout << "6 - Baigti darba\n";
+        cout << "Pasirinkite: ";
+        cin >> meniuPasirinkimas;
 
         if (meniuPasirinkimas == 6) break;
 
         if (meniuPasirinkimas == 5) {
-            std::vector<int> kiekiai;
+            vector<int> kiekiai;
             int kiekis;
-            std::cout << "Iveskite failu kiekius (iveskite -1 baigti): ";
-            while (std::cin >> kiekis && kiekis != -1) {
+            cout << "Iveskite failu kiekius (iveskite -1 baigti): ";
+            while (cin >> kiekis && kiekis != -1) {
                 kiekiai.push_back(kiekis);
             }
             generuotiFailus(kiekiai);
         } else if (meniuPasirinkimas == 4) {
             nuskaitytiIsFailo(studentai, "studentai10000.txt");
 
-            std::cout << "Pasirinkite rikiavimo kriteriju:\n";
-            std::cout << "1 - Pagal varda\n";
-            std::cout << "2 - Pagal pavarde\n";
-            std::cout << "3 - Pagal vidurki\n";
-            std::cout << "4 - Pagal mediana\n";
+            cout << "Pasirinkite rikiavimo kriteriju:\n";
+            cout << "1 - Pagal varda\n";
+            cout << "2 - Pagal pavarde\n";
+            cout << "3 - Pagal vidurki\n";
+            cout << "4 - Pagal mediana\n";
             int rikiavimoPasirinkimas;
-            std::cin >> rikiavimoPasirinkimas;
+            cin >> rikiavimoPasirinkimas;
             rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
 
             char saugoti;
             bool irasymas = false;
 
-            std::cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
-            std::cin >> saugoti;
+            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
+            cin >> saugoti;
 
             if (saugoti == 't') {
                 irasymas = true;
@@ -485,18 +485,18 @@ void vykdytiPrograma() {
             }
 
             if (studentai.empty()) {
-                std::cout << std::endl;
+                cout << endl;
                 continue;
             }
 
             // Ask for sorting criteria after input
-            std::cout << "Pasirinkite rikiavimo kriteriju:\n";
-            std::cout << "1 - Pagal varda\n";
-            std::cout << "2 - Pagal pavarde\n";
-            std::cout << "3 - Pagal vidurki\n";
-            std::cout << "4 - Pagal mediana\n";
+            cout << "Pasirinkite rikiavimo kriteriju:\n";
+            cout << "1 - Pagal varda\n";
+            cout << "2 - Pagal pavarde\n";
+            cout << "3 - Pagal vidurki\n";
+            cout << "4 - Pagal mediana\n";
             int rikiavimoPasirinkimas;
-            std::cin >> rikiavimoPasirinkimas;
+            cin >> rikiavimoPasirinkimas;
 
             // Sort students based on the selected criteria
             rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
@@ -505,8 +505,8 @@ void vykdytiPrograma() {
             char saugoti;
             bool irasymas = false;
 
-            std::cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
-            std::cin >> saugoti;
+            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
+            cin >> saugoti;
 
             if (saugoti == 't') {
                 irasymas = true;
