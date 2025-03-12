@@ -387,12 +387,12 @@ void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& fa
     cout << "Studentai issaugoti faile: " << failoPavadinimas << endl;
 }
 
-void matuotiFailuKurimoLaika() {
+void matuotiFailuKurimoLaika(int kiekis, const string& failoPavadinimas) {
     auto start = chrono::high_resolution_clock::now();
-    generuotiFailus({1000, 10000, 100000, 1000000, 10000000});
+    generuotiFaila(kiekis, failoPavadinimas);
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double> trukme = end - start;
-    cout << "Failų kūrimo laikas: " << trukme.count() << " s" << endl;
+    cout << "Failo " << failoPavadinimas << " kurimo laikas: " << trukme.count() << " s" << endl;
 }
 
 void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
@@ -401,25 +401,25 @@ void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
     vector<Student> kietiakiai;
 
     // 1. Duomenu nuskaitymo laikas
-    auto start = high_resolution_clock::now();
+    auto start = chrono::high_resolution_clock::now();
     nuskaitytiIsFailo(studentai, failoPavadinimas);
-    auto end = high_resolution_clock::now();
-    duration<double> nuskaitymoLaikas = end - start;
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> nuskaitymoLaikas = end - start;
     cout << "Duomenu nuskaitymo laikas: " << nuskaitymoLaikas.count() << " s" << endl;
 
     // 2. Studentu rusiavimo laikas
-    start = high_resolution_clock::now();
+    start = chrono::high_resolution_clock::now();
     suskirstytiStudentus(studentai, vargsiukai, kietiakiai);
-    end = high_resolution_clock::now();
-    duration<double> rusiavimoLaikas = end - start;
+    end = chrono::high_resolution_clock::now();
+    chrono::duration<double> rusiavimoLaikas = end - start;
     cout << "Studentu rusiavimo laikas: " << rusiavimoLaikas.count() << " s" << endl;
 
     // 3. Surusiuotu studentu isvedimo laikas
-    start = high_resolution_clock::now();
+    start = chrono::high_resolution_clock::now();
     issaugotiStudentusIFaila(vargsiukai, "vargsiukai.txt");
     issaugotiStudentusIFaila(kietiakiai, "kietiakiai.txt");
-    end = high_resolution_clock::now();
-    duration<double> isvedimoLaikas = end - start;
+    end = chrono::high_resolution_clock::now();
+    chrono::duration<double> isvedimoLaikas = end - start;
     cout << "Surusiuotu studentu isvedimo laikas: " << isvedimoLaikas.count() << " s" << endl;
 
     // 4. Bendras duomenu apdorojimo laikas
@@ -437,11 +437,12 @@ void vykdytiPrograma() {
         cout << "3 - Generuoti vardus, pavardes ir pazymius\n";
         cout << "4 - Nuskaityti is failo\n";
         cout << "5 - Generuoti studentu failus ir suskirstyti i dvi grupes\n";
-        cout << "6 - Baigti darba\n";
+        cout << "6 - Atlikti spartos analize\n";
+        cout << "7 - Baigti darba\n";
         cout << "Pasirinkite: ";
         cin >> meniuPasirinkimas;
 
-        if (meniuPasirinkimas == 6) break;
+        if (meniuPasirinkimas == 7) break;
 
         if (meniuPasirinkimas == 5) {
             vector<int> kiekiai;
@@ -493,6 +494,15 @@ void vykdytiPrograma() {
             }
 
             spausdintiStudentus(studentai, irasymas);
+        } else if (meniuPasirinkimas == 6) {
+            int kiekis;
+            string failoPavadinimas;
+            cout << "Iveskite studentu skaiciu failui kurti: ";
+            cin >> kiekis;
+            failoPavadinimas = "studentai_test.txt";
+            matuotiFailuKurimoLaika(kiekis, failoPavadinimas);
+            matuotiDuomenuApdorojimoLaika(failoPavadinimas);
+
         } else {
             int kiekGeneruoti = 1;
             if (meniuPasirinkimas == 3) {
