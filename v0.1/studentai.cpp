@@ -28,11 +28,13 @@ bool tikrintiSkaiciu(const string &input) {
     return true;
 }
 
-double skaiciuotiVidurki(const vector<int>& pazymiai, int egzaminas) {
+double skaiciuotiVidurki(const std::vector<int>& pazymiai, int egzaminas) {
     if (pazymiai.empty()) return 0.0;
 
-    double vidurkis = accumulate(pazymiai.begin(), pazymiai.end(), 0.0) / pazymiai.size();
-    return 0.4 * vidurkis + 0.6 * egzaminas;
+    double vidurkis = std::accumulate(pazymiai.begin(), pazymiai.end(), 0.0);
+    vidurkis += egzaminas; // Include the exam grade in the total sum
+    vidurkis /= (pazymiai.size() + 1); // Divide by the total number of grades (homework + exam)
+    return vidurkis;
 }
 
 double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas) {
@@ -61,7 +63,7 @@ vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
     vector<int> pazymiai;
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<int> dist(1, 10);
+    uniform_int_distribution<int> dist(1, 10); // Generate grades between 1 and 10
 
     for (int i = 0; i < kiekis; i++) {
         pazymiai.push_back(dist(gen));
@@ -72,7 +74,7 @@ vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
 int generuotiAtsitiktiniEgzaminoBala() {
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<int> dist(1, 10);
+    uniform_int_distribution<int> dist(1, 10); // Generate exam scores between 1 and 10
     return dist(gen);
 }
 
@@ -355,10 +357,9 @@ void generuotiFailus(const vector<int>& kiekiai) {
     }
 }
 
-void suskirstytiStudentus(const vector<Student>& studentai, vector<Student>& vargsiukai, vector<Student>& kietiakiai) {
+void suskirstytiStudentus(vector<Student>& studentai, vector<Student>& vargsiukai, vector<Student>& kietiakiai) {
     for (const auto& studentas : studentai) {
         double galutinisBalas = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-
         if (galutinisBalas < 5.0) {
             vargsiukai.push_back(studentas);
         } else {
@@ -368,18 +369,18 @@ void suskirstytiStudentus(const vector<Student>& studentai, vector<Student>& var
 }
 
 void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& failoPavadinimas) {
-    ofstream failas(failoPavadinimas);
+    ofstream failas(failoPavadinimas.c_str());
 
     if (!failas) {
         cerr << "Klaida kuriant faila: " << failoPavadinimas << endl;
         return;
     }
 
-    failas << "Vardas Pavarde Galutinis (Vid.)\n";
+    failas << left << setw(15) << "Vardas" << setw(15) << "Pavarde" << setw(15) << "Galutinis (Vid.)" << endl;
 
     for (const auto& studentas : studentai) {
         double galutinisBalas = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-        failas << studentas.vardas << " " << studentas.pavarde << " " << fixed << setprecision(2) << galutinisBalas << "\n";
+        failas << left << setw(15) << studentas.vardas << setw(15) << studentas.pavarde << setw(15) << fixed << setprecision(2) << galutinisBalas << endl;
     }
 
     failas.close();
@@ -399,29 +400,29 @@ void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
     vector<Student> vargsiukai;
     vector<Student> kietiakiai;
 
-    // 1. Duomenų nuskaitymo laikas
+    // 1. Duomenu nuskaitymo laikas
     auto start = high_resolution_clock::now();
     nuskaitytiIsFailo(studentai, failoPavadinimas);
     auto end = high_resolution_clock::now();
     duration<double> nuskaitymoLaikas = end - start;
     cout << "Duomenu nuskaitymo laikas: " << nuskaitymoLaikas.count() << " s" << endl;
 
-    // 2. Studentų rūšiavimo laikas
+    // 2. Studentu rusiavimo laikas
     start = high_resolution_clock::now();
     suskirstytiStudentus(studentai, vargsiukai, kietiakiai);
     end = high_resolution_clock::now();
     duration<double> rusiavimoLaikas = end - start;
     cout << "Studentu rusiavimo laikas: " << rusiavimoLaikas.count() << " s" << endl;
 
-    // 3. Surūšiuotų studentų išvedimo laikas
+    // 3. Surusiuotu studentu isvedimo laikas
     start = high_resolution_clock::now();
     issaugotiStudentusIFaila(vargsiukai, "vargsiukai.txt");
     issaugotiStudentusIFaila(kietiakiai, "kietiakiai.txt");
     end = high_resolution_clock::now();
     duration<double> isvedimoLaikas = end - start;
-    cout << "Surusiuotų studentu isvedimo laikas: " << isvedimoLaikas.count() << " s" << endl;
+    cout << "Surusiuotu studentu isvedimo laikas: " << isvedimoLaikas.count() << " s" << endl;
 
-    // 4. Bendras duomenų apdorojimo laikas
+    // 4. Bendras duomenu apdorojimo laikas
     cout << "Bendras duomenu apdorojimo laikas: " << (nuskaitymoLaikas + rusiavimoLaikas + isvedimoLaikas).count() << " s" << endl;
 }
 
@@ -435,7 +436,7 @@ void vykdytiPrograma() {
         cout << "2 - Generuoti tik pazymius\n";
         cout << "3 - Generuoti vardus, pavardes ir pazymius\n";
         cout << "4 - Nuskaityti is failo\n";
-        cout << "5 - Generuoti studentu failus\n";
+        cout << "5 - Generuoti studentu failus ir suskirstyti i dvi grupes\n";
         cout << "6 - Baigti darba\n";
         cout << "Pasirinkite: ";
         cin >> meniuPasirinkimas;
@@ -450,6 +451,25 @@ void vykdytiPrograma() {
                 kiekiai.push_back(kiekis);
             }
             generuotiFailus(kiekiai);
+
+            char skirstyti;
+            cout << "Ar norite suskirstyti studentus i dvi grupes ir issaugoti rezultatus faile? (t/n): ";
+            cin >> skirstyti;
+
+            if (skirstyti == 't') {
+                vector<Student> vargsiukai;
+                vector<Student> kietiakiai;
+                for (const auto& failoPavadinimas : kiekiai) {
+                    string failas = "studentai_" + to_string(failoPavadinimas) + ".txt";
+                    nuskaitytiIsFailo(studentai, failas);
+                    suskirstytiStudentus(studentai, vargsiukai, kietiakiai);
+                    issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + to_string(failoPavadinimas) + ".txt");
+                    issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + to_string(failoPavadinimas) + ".txt");
+                    vargsiukai.clear();
+                    kietiakiai.clear();
+                }
+            }
+
         } else if (meniuPasirinkimas == 4) {
             nuskaitytiIsFailo(studentai, "studentai10000.txt");
 
@@ -476,8 +496,8 @@ void vykdytiPrograma() {
         } else {
             int kiekGeneruoti = 1;
             if (meniuPasirinkimas == 3) {
-                //cout << "Kiek studentu generuoti?: ";
-                //cin >> kiekGeneruoti;
+                cout << "Kiek studentu generuoti?: ";
+                cin >> kiekGeneruoti;
             }
 
             for (int i = 0; i < kiekGeneruoti; i++) {
@@ -489,7 +509,6 @@ void vykdytiPrograma() {
                 continue;
             }
 
-            // Ask for sorting criteria after input
             cout << "Pasirinkite rikiavimo kriteriju:\n";
             cout << "1 - Pagal varda\n";
             cout << "2 - Pagal pavarde\n";
@@ -498,10 +517,8 @@ void vykdytiPrograma() {
             int rikiavimoPasirinkimas;
             cin >> rikiavimoPasirinkimas;
 
-            // Sort students based on the selected criteria
             rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
 
-            // Ask if the user wants to save the results
             char saugoti;
             bool irasymas = false;
 
