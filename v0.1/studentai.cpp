@@ -28,13 +28,12 @@ bool tikrintiSkaiciu(const string &input) {
     return true;
 }
 
-double skaiciuotiVidurki(const std::vector<int>& pazymiai, int egzaminas) {
-    if (pazymiai.empty()) return 0.0;
+double skaiciuotiVidurki(const vector<int>& pazymiai, int egzaminas) {
+    if (pazymiai.empty()) return egzaminas;
 
-    double vidurkis = std::accumulate(pazymiai.begin(), pazymiai.end(), 0.0);
-    vidurkis += egzaminas; // Include the exam grade in the total sum
-    vidurkis /= (pazymiai.size() + 1); // Divide by the total number of grades (homework + exam)
-    return vidurkis;
+    double suma = accumulate(pazymiai.begin(), pazymiai.end(), 0);
+    double vidurkis = suma / pazymiai.size();
+    return 0.4 * vidurkis + 0.6 * egzaminas;
 }
 
 double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas) {
@@ -65,8 +64,12 @@ vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
     mt19937 gen(rd());
     uniform_int_distribution<int> dist(1, 10); // Generate grades between 1 and 10
 
-    for (int i = 0; i < kiekis; i++) {
-        pazymiai.push_back(dist(gen));
+    try {
+        for (int i = 0; i < kiekis; i++) {
+            pazymiai.push_back(dist(gen));
+        }
+    } catch (const std::exception& e) {
+        throw runtime_error("Nepavyko sugeneruoti atsitiktinių pažymių: " + string(e.what()));
     }
     return pazymiai;
 }
@@ -75,7 +78,12 @@ int generuotiAtsitiktiniEgzaminoBala() {
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<int> dist(1, 10); // Generate exam scores between 1 and 10
-    return dist(gen);
+
+    try {
+        return dist(gen);
+    } catch (const std::exception& e) {
+        throw runtime_error("Nepavyko sugeneruoti egzaminų balo: " + string(e.what()));
+    }
 }
 
 void isvestiKlaida(const string &klausimas) {
@@ -85,138 +93,114 @@ void isvestiKlaida(const string &klausimas) {
 void ivestiStudenta(vector<Student>& studentai, int pasirinkimas) {
     Student s;
 
-    // Pasirinkimas 3: Generuoti studentus su vardais, pavardėmis ir pažymiais
-    if (pasirinkimas == 3) {
-        static bool buvoGeneruota = false;  // Patikrina, ar studentai jau buvo generuoti
+    try {
+        // Pasirinkimas 3: Generuoti studentus su vardais, pavardėmis ir pažymiais
+        if (pasirinkimas == 3) {
+            static bool buvoGeneruota = false;  // Patikrina, ar studentai jau buvo generuoti
 
-        if (!buvoGeneruota) {  // Jei dar nebuvo generuota
-            int kiekis;
-            cout << "Kiek studentu generuoti?: ";
-            cin >> kiekis;
+            if (!buvoGeneruota) {  // Jei dar nebuvo generuota
+                int kiekis;
+                cout << "Kiek studentu generuoti?: ";
+                cin >> kiekis;
 
-            for (int i = 0; i < kiekis; ++i) {
-                s.vardas = gautiVarda(i + 1);
-                s.pavarde = gautiPavarde(i + 1);
-                cout << "Generuojamas studentas: " << s.vardas << " " << s.pavarde << endl;
+                for (int i = 0; i < kiekis; ++i) {
+                    s.vardas = gautiVarda(i + 1);
+                    s.pavarde = gautiPavarde(i + 1);
+                    cout << "Generuojamas studentas: " << s.vardas << " " << s.pavarde << endl;
+                    int ndKiekis = rand() % 10 + 1;
+                    s.namu_darbai = generuotiAtsitiktiniusPazymius(ndKiekis);
+                    s.egzaminas = generuotiAtsitiktiniEgzaminoBala();
+                    studentai.push_back(s);
+                }
+                buvoGeneruota = true;  // Užtikriname, kad generavimas nepasikartotų
+            } else {
+                cout << "Studentai jau buvo sugeneruoti." << endl;
+            }
+        }
+        // Kitų pasirinkimų atveju įvedame rankiniu būdu
+        else {
+            // Vardas
+            bool ivestasVardasTeisingai = false;
+            while (!ivestasVardasTeisingai) {
+                try {
+                    cout << "Vardas: ";
+                    cin >> s.vardas;
+                    if (s.vardas == "-1") return;
+
+                    tikrintiTeksta(s.vardas);
+                    ivestasVardasTeisingai = true;
+                } catch (const invalid_argument &e) {
+                    isvestiKlaida(e.what());
+                }
+            }
+
+            // Pavarde
+            bool ivestaPavardeTeisingai = false;
+            while (!ivestaPavardeTeisingai) {
+                try {
+                    cout << "Pavarde: ";
+                    cin >> s.pavarde;
+
+                    tikrintiTeksta(s.pavarde);
+                    ivestaPavardeTeisingai = true;
+                } catch (const invalid_argument &e) {
+                    isvestiKlaida(e.what());
+                }
+            }
+
+            if (pasirinkimas == 2) {
                 int ndKiekis = rand() % 10 + 1;
                 s.namu_darbai = generuotiAtsitiktiniusPazymius(ndKiekis);
                 s.egzaminas = generuotiAtsitiktiniEgzaminoBala();
-                studentai.push_back(s);
-            }
-            buvoGeneruota = true;  // Užtikriname, kad generavimas nepasikartotų
-        } else {
-            cout << "Studentai jau buvo sugeneruoti." << endl;
-        }
-    }
-    // Kitų pasirinkimų atveju įvedame rankiniu būdu
-    else {
-        // Vardas
-        bool ivestasVardasTeisingai = false;
-        while (!ivestasVardasTeisingai) {
-            try {
-                cout << "Vardas: ";
-                cin >> s.vardas;
-                if (s.vardas == "-1") return;
+            } else {
+                cout << "Iveskite namu darbu rezultatus (-1 jei baigta):\n";
+                int pazymys;
+                while (true) {
+                    try {
+                        cin >> pazymys;
 
-                tikrintiTeksta(s.vardas);
-                ivestasVardasTeisingai = true;
-            } catch (const invalid_argument &e) {
-                isvestiKlaida(e.what());
-            }
-        }
+                        // Patikriname, ar įvestas duomuo yra skaičius
+                        if (cin.fail()) {
+                            cin.clear();
+                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            throw invalid_argument("Namu darbo rezultatas turi buti skaicius!");
+                        }
 
-        // Pavarde
-        bool ivestaPavardeTeisingai = false;
-        while (!ivestaPavardeTeisingai) {
-            try {
-                cout << "Pavarde: ";
-                cin >> s.pavarde;
+                        if (pazymys == -1) break;
 
-                tikrintiTeksta(s.pavarde);
-                ivestaPavardeTeisingai = true;
-            } catch (const invalid_argument &e) {
-                isvestiKlaida(e.what());
-            }
-        }
-
-        if (pasirinkimas == 2) {
-            int ndKiekis = rand() % 10 + 1;
-            s.namu_darbai = generuotiAtsitiktiniusPazymius(ndKiekis);
-            s.egzaminas = generuotiAtsitiktiniEgzaminoBala();
-        } else {
-            cout << "Iveskite namu darbu rezultatus (-1 jei baigta):\n";
-            int pazymys;
-            while (true) {
-                try {
-                    cin >> pazymys;
-
-                    // Patikriname, ar įvestas duomuo yra skaičius
-                    if (cin.fail()) {
-                        cin.clear();
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        throw invalid_argument("Namu darbo rezultatas turi buti skaicius!");
+                        s.namu_darbai.push_back(pazymys);
+                    } catch (const invalid_argument &e) {
+                        isvestiKlaida(e.what());
                     }
+                }
 
-                    if (pazymys == -1) break;
+                // Tikriname, ar egzaminų rezultatas yra teisingas (tik skaičius)
+                bool egzaminasTeisingai = false;
+                while (!egzaminasTeisingai) {
+                    try {
+                        cout << "Egzamino rezultatas: ";
+                        cin >> s.egzaminas;
 
-                    s.namu_darbai.push_back(pazymys);
-                } catch (const invalid_argument &e) {
-                    isvestiKlaida(e.what());
+                        // Patikriname, ar įvestas egzaminų rezultatas yra skaičius
+                        if (cin.fail()) {
+                            cin.clear(); // Išvalome klaidą
+                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            throw invalid_argument("Egzamino rezultatas turi buti skaicius!");
+                        } else {
+                            egzaminasTeisingai = true;
+                        }
+                    } catch (const invalid_argument &e) {
+                        isvestiKlaida(e.what());
+                    }
                 }
             }
 
-            // Tikriname, ar egzaminų rezultatas yra teisingas (tik skaičius)
-            bool egzaminasTeisingai = false;
-            while (!egzaminasTeisingai) {
-                try {
-                    cout << "Egzamino rezultatas: ";
-                    cin >> s.egzaminas;
-
-                    // Patikriname, ar įvestas egzaminų rezultatas yra skaičius
-                    if (cin.fail()) {
-                        cin.clear(); // Išvalome klaidą
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        throw invalid_argument("Egzamino rezultatas turi buti skaicius!");
-                    } else {
-                        egzaminasTeisingai = true;
-                    }
-                } catch (const invalid_argument &e) {
-                    isvestiKlaida(e.what());
-                }
-            }
+            studentai.push_back(s);
+            cout << "Studentas pridetas: " << s.vardas << " " << s.pavarde << endl;
         }
-
-        studentai.push_back(s);
-        cout << "Studentas pridetas: " << s.vardas << " " << s.pavarde << endl;
+    } catch (const runtime_error &e) {
+        isvestiKlaida(e.what());
     }
-}
-
-void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas) {
-    ifstream fin(failoPavadinimas);
-    if (!fin.is_open()) {
-        cerr << "Klaida! Nepavyko atidaryti failo: " << failoPavadinimas << endl;
-        return;
-    }
-
-    string eilute;
-    getline(fin, eilute);
-
-    while (getline(fin, eilute)) {
-        Student s;
-        stringstream ss(eilute);
-        ss >> s.vardas >> s.pavarde;
-        int pazymys;
-        while (ss >> pazymys) {
-            if (ss.peek() == '\n') {
-                s.egzaminas = pazymys;
-                break;
-            }
-            s.namu_darbai.push_back(pazymys);
-        }
-        studentai.push_back(s);
-    }
-
-    fin.close();
 }
 
 void rikiuotiStudentus(vector<Student>& studentai, int rikiavimoPasirinkimas) {
@@ -320,34 +304,36 @@ void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadi
 }
 
 void generuotiFaila(int kiekis, const string& failoPavadinimas) {
-    ofstream failas(failoPavadinimas);
-
-    if (!failas) {
-        cerr << "Klaida kuriant failą: " << failoPavadinimas << std::endl;
+    ofstream out(failoPavadinimas);
+    if (!out) {
+        cerr << "Klaida: Nepavyko sukurti failo " << failoPavadinimas << endl;
         return;
     }
 
-    failas << left << setw(10) << "Vardas" << setw(15) << "Pavarde";
-    for (int i = 1; i <= 10; ++i) {
-        failas << setw(5) << ("ND" + to_string(i));
-    }
-    failas << setw(10) << "Egzaminas" << "\n";
+    out << left << setw(20) << "Vardas" << setw(25) << "Pavarde";
+    for (int i = 1; i <= 15; i++) out << setw(10) << ("ND" + to_string(i));
+    out << setw(10) << "Egz." << endl;
 
-    for (int i = 1; i <= kiekis; ++i) {
-        string vardas = "Vardas" + to_string(i);
-        string pavarde = "Pavarde" + to_string(i);
-        vector<int> namu_darbai = generuotiAtsitiktiniusPazymius(10);
-        int egzaminas = generuotiAtsitiktiniEgzaminoBala();
+    for (int i = 1; i <= kiekis; i++) {
+        out << left << setw(20) << ("Vardas" + to_string(i))
+            << setw(25) << ("Pavarde" + to_string(i));
 
-        failas << left << setw(10) << vardas << setw(15) << pavarde;
-        for (int pazymys : namu_darbai) {
-            failas << setw(5) << pazymys;
+        int pazymiuSkaicius = rand() % 15 + 1;  // Random number of marks (1-15)
+        vector<int> pazymiai;
+
+        for (int j = 0; j < pazymiuSkaicius; j++) {
+            int pazymys = rand() % 10 + 1;
+            pazymiai.push_back(pazymys);
         }
-        failas << setw(10) << egzaminas << "\n";
+
+        while (pazymiai.size() < 15) pazymiai.push_back(0);  // Fill missing grades with 0
+
+        for (int j = 0; j < 15; j++) out << setw(10) << pazymiai[j];
+
+        out << setw(10) << (rand() % 10 + 1) << endl;  // Final exam mark
     }
 
-    failas.close();
-    cout << "Failas sukurtas: " << failoPavadinimas << endl;
+    out.close();
 }
 
 void generuotiFailus(const vector<int>& kiekiai) {
@@ -357,10 +343,40 @@ void generuotiFailus(const vector<int>& kiekiai) {
     }
 }
 
-void suskirstytiStudentus(vector<Student>& studentai, vector<Student>& vargsiukai, vector<Student>& kietiakiai) {
+void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas) {
+    ifstream in(failoPavadinimas);
+    if (!in) {
+        cerr << "Klaida: Nepavyko atidaryti failo " << failoPavadinimas << endl;
+        return;
+    }
+
+    studentai.clear();
+    string line;
+    getline(in, line); // Skip header row
+
+    while (getline(in, line)) {
+        istringstream iss(line);
+        Student studentas;
+        iss >> studentas.vardas >> studentas.pavarde;
+
+        for (int i = 0; i < 15; i++) {
+            int pazymys;
+            iss >> pazymys;
+            if (pazymys > 0) studentas.namu_darbai.push_back(pazymys);
+        }
+
+        iss >> studentas.egzaminas;
+        studentai.push_back(studentas);
+    }
+
+    in.close();
+}
+
+void suskirstytiStudentus(const vector<Student>& studentai, vector<Student>& vargsiukai, vector<Student>& kietiakiai) {
     for (const auto& studentas : studentai) {
-        double galutinisBalas = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-        if (galutinisBalas < 5.0) {
+        double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+
+        if (galutinis < 5.0) {
             vargsiukai.push_back(studentas);
         } else {
             kietiakiai.push_back(studentas);
@@ -369,22 +385,27 @@ void suskirstytiStudentus(vector<Student>& studentai, vector<Student>& vargsiuka
 }
 
 void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& failoPavadinimas) {
-    ofstream failas(failoPavadinimas.c_str());
-
-    if (!failas) {
-        cerr << "Klaida kuriant faila: " << failoPavadinimas << endl;
+    ofstream out(failoPavadinimas);
+    if (!out) {
+        cerr << "Klaida: Nepavyko sukurti failo " << failoPavadinimas << endl;
         return;
     }
 
-    failas << left << setw(15) << "Vardas" << setw(15) << "Pavarde" << setw(15) << "Galutinis (Vid.)" << endl;
+    // Print header
+    out << left << setw(20) << "Vardas"
+        << setw(25) << "Pavarde"
+        << setw(10) << "Galutinis" << endl;
 
+    // Print student data
     for (const auto& studentas : studentai) {
-        double galutinisBalas = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-        failas << left << setw(15) << studentas.vardas << setw(15) << studentas.pavarde << setw(15) << fixed << setprecision(2) << galutinisBalas << endl;
+        double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+
+        out << left << setw(20) << studentas.vardas
+            << setw(25) << studentas.pavarde
+            << fixed << setprecision(2) << setw(10) << galutinis << endl;
     }
 
-    failas.close();
-    cout << "Studentai issaugoti faile: " << failoPavadinimas << endl;
+    out.close();
 }
 
 void matuotiFailuKurimoLaika(int kiekis, const string& failoPavadinimas) {
@@ -444,14 +465,69 @@ void vykdytiPrograma() {
 
         if (meniuPasirinkimas == 7) break;
 
-        if (meniuPasirinkimas == 5) {
-            vector<int> kiekiai;
-            int kiekis;
-            cout << "Iveskite failu kiekius (iveskite -1 baigti): ";
-            while (cin >> kiekis && kiekis != -1) {
-                kiekiai.push_back(kiekis);
+        // Option 3 - Generate Students' Names, Surnames and Grades
+        if (meniuPasirinkimas == 3) {
+            int kiekGeneruoti = 0; // Only ask for the number of students once
+            cout << "Kiek studentu generuoti?: ";
+            cin >> kiekGeneruoti;
+
+            // Generate students
+            for (int i = 0; i < kiekGeneruoti; i++) {
+                ivestiStudenta(studentai, meniuPasirinkimas);
             }
-            generuotiFailus(kiekiai);
+
+            if (studentai.empty()) {
+                cout << "Nera studentu!\n";
+                continue;
+            }
+
+            cout << "Pasirinkite rikiavimo kriteriju:\n";
+            cout << "1 - Pagal varda\n";
+            cout << "2 - Pagal pavarde\n";
+            cout << "3 - Pagal vidurki\n";
+            cout << "4 - Pagal mediana\n";
+            int rikiavimoPasirinkimas;
+            cin >> rikiavimoPasirinkimas;
+
+            rikiuotiStudentus(studentai, rikiavimoPasirinkimas);
+
+            char saugoti;
+            bool irasymas = false;
+
+            cout << "Ar norite issaugoti rezultatus faile? (t/n): ";
+            cin >> saugoti;
+
+            if (saugoti == 't') {
+                irasymas = true;
+            }
+
+            spausdintiStudentus(studentai, irasymas);
+        }
+
+        // Option 5 - File Generation and Sorting into Groups
+        else if (meniuPasirinkimas == 5) {
+            int dydisPasirinkimas;
+            cout << "Pasirinkite failo dydi:\n";
+            cout << "1 - 1000 studentu\n";
+            cout << "2 - 10000 studentu\n";
+            cout << "3 - 100000 studentu\n";
+            cout << "4 - 1000000 studentu\n";
+            cout << "Pasirinkite: ";
+            cin >> dydisPasirinkimas;
+
+            int kiekis;
+            switch (dydisPasirinkimas) {
+                case 1: kiekis = 1000; break;
+                case 2: kiekis = 10000; break;
+                case 3: kiekis = 100000; break;
+                case 4: kiekis = 1000000; break;
+                default:
+                    cout << "Klaida! Netinkamas pasirinkimas." << endl;
+                    continue;
+            }
+
+            string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
+            generuotiFaila(kiekis, failoPavadinimas);
 
             char skirstyti;
             cout << "Ar norite suskirstyti studentus i dvi grupes ir issaugoti rezultatus faile? (t/n): ";
@@ -460,18 +536,38 @@ void vykdytiPrograma() {
             if (skirstyti == 't') {
                 vector<Student> vargsiukai;
                 vector<Student> kietiakiai;
-                for (const auto& failoPavadinimas : kiekiai) {
-                    string failas = "studentai_" + to_string(failoPavadinimas) + ".txt";
-                    nuskaitytiIsFailo(studentai, failas);
-                    suskirstytiStudentus(studentai, vargsiukai, kietiakiai);
-                    issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + to_string(failoPavadinimas) + ".txt");
-                    issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + to_string(failoPavadinimas) + ".txt");
-                    vargsiukai.clear();
-                    kietiakiai.clear();
-                }
-            }
+                studentai.clear();  // Clear to avoid appending to old data
+                nuskaitytiIsFailo(studentai, failoPavadinimas);
 
-        } else if (meniuPasirinkimas == 4) {
+                cout << "Is failo nuskaityta studentu: " << studentai.size() << endl;
+
+                for (auto& studentas : studentai) {
+                    // Validate if the student has grades
+                    if (studentas.namu_darbai.empty()) {
+                        cout << "Klaida: Studentas " << studentas.vardas << " neturi namu darbu!" << endl;
+                        continue;
+                    }
+
+                    // Calculate final grade
+                    double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+
+                    if (galutinis < 5.0) {
+                        vargsiukai.push_back(studentas);
+                    } else {
+                        kietiakiai.push_back(studentas);
+                    }
+                }
+
+                cout << "Vargsiukai: " << vargsiukai.size() << ", Kietiakiai: " << kietiakiai.size() << endl;
+
+                issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + to_string(kiekis) + ".txt");
+                issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + to_string(kiekis) + ".txt");
+            }
+            continue;
+        }
+
+        // Option 4 - Read from file
+        else if (meniuPasirinkimas == 4) {
             nuskaitytiIsFailo(studentai, "studentai10000.txt");
 
             cout << "Pasirinkite rikiavimo kriteriju:\n";
@@ -494,7 +590,10 @@ void vykdytiPrograma() {
             }
 
             spausdintiStudentus(studentai, irasymas);
-        } else if (meniuPasirinkimas == 6) {
+        }
+
+        // Option 6 - Performance analysis
+        else if (meniuPasirinkimas == 6) {
             int kiekis;
             string failoPavadinimas;
             cout << "Iveskite studentu skaiciu failui kurti: ";
@@ -502,14 +601,18 @@ void vykdytiPrograma() {
             failoPavadinimas = "studentai_test.txt";
             matuotiFailuKurimoLaika(kiekis, failoPavadinimas);
             matuotiDuomenuApdorojimoLaika(failoPavadinimas);
+        }
 
-        } else {
-            int kiekGeneruoti = 1;
+        // Option 1 or 2 - Manual input or generate grades only
+        else {
+            int kiekGeneruoti = 1;  // Default value to 1
             if (meniuPasirinkimas == 3) {
+                // Ask only once for the number of students to generate
                 cout << "Kiek studentu generuoti?: ";
                 cin >> kiekGeneruoti;
             }
 
+            // Generate students based on menu option
             for (int i = 0; i < kiekGeneruoti; i++) {
                 ivestiStudenta(studentai, meniuPasirinkimas);
             }
