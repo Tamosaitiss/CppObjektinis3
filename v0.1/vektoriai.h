@@ -29,7 +29,7 @@ double skaiciuotiVidurki(const vector<int>& pazymiai, int egzaminas);
 double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas);
 vector<int> generuotiAtsitiktiniusPazymius(int kiekis);
 int generuotiAtsitiktiniEgzaminoBala();
-void ivestiStudenta(vector<Student>& studentai, int pasirinkimas);
+void ivestiStudenta(vector<Student>& studentai, int pasirinkimas, bool& buvoGeneruota);
 void nuskaitytiIsFailo(vector<Student>& studentai, const string& failoPavadinimas);
 void rikiuotiStudentus(vector<Student>& studentai, int rikiavimoPasirinkimas);
 void spausdintiStudentus(const vector<Student>& studentai, bool irasyti);

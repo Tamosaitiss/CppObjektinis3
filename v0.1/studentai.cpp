@@ -304,12 +304,21 @@ void issaugotiIFaila(const vector<Student>& studentai, const string& failoPavadi
 }
 
 void generuotiFaila(int kiekis, const string& failoPavadinimas) {
+    // Check if the file already exists
+    ifstream fileCheck(failoPavadinimas);
+    if (fileCheck) {
+        cerr << "Klaida: Failas " << failoPavadinimas << " jau egzistuoja." << endl;
+        fileCheck.close();
+        return;
+    }
+
     ofstream out(failoPavadinimas);
     if (!out) {
         cerr << "Klaida: Nepavyko sukurti failo " << failoPavadinimas << endl;
         return;
     }
 
+    // Write header and data to the file
     out << left << setw(20) << "Vardas" << setw(25) << "Pavarde";
     for (int i = 1; i <= 15; i++) out << setw(10) << ("ND" + to_string(i));
     out << setw(10) << "Egz." << endl;
@@ -410,13 +419,45 @@ void issaugotiStudentusIFaila(const vector<Student>& studentai, const string& fa
 
 void matuotiFailuKurimoLaika(int kiekis, const string& failoPavadinimas) {
     auto start = chrono::high_resolution_clock::now();
-    generuotiFaila(kiekis, failoPavadinimas);
+
+    // Simulate file creation without actually writing to disk
+    ofstream out; // No file is opened
+    out.setstate(ios_base::badbit); // Simulate a file stream without writing to disk
+
+    // Simulate writing header to the file
+    out << left << setw(20) << "Vardas" << setw(25) << "Pavarde";
+    for (int i = 1; i <= 15; i++) out << setw(10) << ("ND" + to_string(i));
+    out << setw(10) << "Egz." << endl;
+
+    // Simulate writing student data to the file
+    for (int i = 1; i <= kiekis; i++) {
+        out << left << setw(20) << ("Vardas" + to_string(i))
+            << setw(25) << ("Pavarde" + to_string(i));
+
+        // Simulate generating random grades (1-10) and writing them to the file
+        for (int j = 0; j < 15; j++) {
+            int pazymys = rand() % 10 + 1;
+            out << setw(10) << pazymys;
+        }
+
+        // Simulate writing exam grade
+        out << setw(10) << (rand() % 10 + 1) << endl;
+    }
+
     auto end = chrono::high_resolution_clock::now();
     chrono::duration<double> trukme = end - start;
-    cout << "Failo " << failoPavadinimas << " kurimo laikas: " << trukme.count() << " s" << endl;
+    cout << "Simuliuotas failo " << failoPavadinimas << " kurimo laikas: " << trukme.count() << " s" << endl;
 }
 
 void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
+    // Check if the file exists before proceeding
+    ifstream fileCheck(failoPavadinimas);
+    if (!fileCheck) {
+        cerr << "Klaida: Failas " << failoPavadinimas << " neegzistuoja. Pirmiausia sugeneruokite faila naudodami meniu 5." << endl;
+        return;
+    }
+    fileCheck.close();
+
     vector<Student> studentai;
     vector<Student> vargsiukai;
     vector<Student> kietiakiai;
@@ -436,9 +477,6 @@ void matuotiDuomenuApdorojimoLaika(const string& failoPavadinimas) {
     cout << "Studentu rusiavimo laikas: " << rusiavimoLaikas.count() << " s" << endl;
 
     // 3. Surusiuotu studentu isvedimo laikas
-    start = chrono::high_resolution_clock::now();
-    issaugotiStudentusIFaila(vargsiukai, "vargsiukai.txt");
-    issaugotiStudentusIFaila(kietiakiai, "kietiakiai.txt");
     end = chrono::high_resolution_clock::now();
     chrono::duration<double> isvedimoLaikas = end - start;
     cout << "Surusiuotu studentu isvedimo laikas: " << isvedimoLaikas.count() << " s" << endl;
@@ -504,67 +542,71 @@ void vykdytiPrograma() {
             spausdintiStudentus(studentai, irasymas);
         }
 
-        // Option 5 - File Generation and Sorting into Groups
-        else if (meniuPasirinkimas == 5) {
-            int dydisPasirinkimas;
-            cout << "Pasirinkite failo dydi:\n";
-            cout << "1 - 1000 studentu\n";
-            cout << "2 - 10000 studentu\n";
-            cout << "3 - 100000 studentu\n";
-            cout << "4 - 1000000 studentu\n";
-            cout << "Pasirinkite: ";
-            cin >> dydisPasirinkimas;
+else if (meniuPasirinkimas == 5) {
+    int dydisPasirinkimas;
+    cout << "Pasirinkite failo dydi:\n";
+    cout << "1 - 1000 studentu\n";
+    cout << "2 - 10000 studentu\n";
+    cout << "3 - 100000 studentu\n";
+    cout << "4 - 1000000 studentu\n";
+    cout << "Pasirinkite: ";
+    cin >> dydisPasirinkimas;
 
-            int kiekis;
-            switch (dydisPasirinkimas) {
-                case 1: kiekis = 1000; break;
-                case 2: kiekis = 10000; break;
-                case 3: kiekis = 100000; break;
-                case 4: kiekis = 1000000; break;
-                default:
-                    cout << "Klaida! Netinkamas pasirinkimas." << endl;
-                    continue;
-            }
-
-            string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
-            generuotiFaila(kiekis, failoPavadinimas);
-
-            char skirstyti;
-            cout << "Ar norite suskirstyti studentus i dvi grupes ir issaugoti rezultatus faile? (t/n): ";
-            cin >> skirstyti;
-
-            if (skirstyti == 't') {
-                vector<Student> vargsiukai;
-                vector<Student> kietiakiai;
-                studentai.clear();  // Clear to avoid appending to old data
-                nuskaitytiIsFailo(studentai, failoPavadinimas);
-
-                cout << "Is failo nuskaityta studentu: " << studentai.size() << endl;
-
-                for (auto& studentas : studentai) {
-                    // Validate if the student has grades
-                    if (studentas.namu_darbai.empty()) {
-                        cout << "Klaida: Studentas " << studentas.vardas << " neturi namu darbu!" << endl;
-                        continue;
-                    }
-
-                    // Calculate final grade
-                    double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-
-                    if (galutinis < 5.0) {
-                        vargsiukai.push_back(studentas);
-                    } else {
-                        kietiakiai.push_back(studentas);
-                    }
-                }
-
-                cout << "Vargsiukai: " << vargsiukai.size() << ", Kietiakiai: " << kietiakiai.size() << endl;
-
-                issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + to_string(kiekis) + ".txt");
-                issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + to_string(kiekis) + ".txt");
-            }
+    int kiekis;
+    switch (dydisPasirinkimas) {
+        case 1: kiekis = 1000; break;
+        case 2: kiekis = 10000; break;
+        case 3: kiekis = 100000; break;
+        case 4: kiekis = 1000000; break;
+        default:
+            cout << "Klaida! Netinkamas pasirinkimas." << endl;
             continue;
+    }
+
+    string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
+
+    // Measure simulated file creation time
+    matuotiFailuKurimoLaika(kiekis, failoPavadinimas);
+
+    // Actually create the file (if needed)
+    generuotiFaila(kiekis, failoPavadinimas);
+
+    char skirstyti;
+    cout << "Ar norite suskirstyti studentus i dvi grupes ir issaugoti rezultatus faile? (t/n): ";
+    cin >> skirstyti;
+
+    if (skirstyti == 't') {
+        vector<Student> vargsiukai;
+        vector<Student> kietiakiai;
+        studentai.clear();  // Clear to avoid appending to old data
+        nuskaitytiIsFailo(studentai, failoPavadinimas);
+
+        cout << "Is failo nuskaityta studentu: " << studentai.size() << endl;
+
+        for (auto& studentas : studentai) {
+            // Validate if the student has grades
+            if (studentas.namu_darbai.empty()) {
+                cout << "Klaida: Studentas " << studentas.vardas << " neturi namu darbu!" << endl;
+                continue;
+            }
+
+            // Calculate final grade
+            double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+
+            if (galutinis < 5.0) {
+                vargsiukai.push_back(studentas);
+            } else {
+                kietiakiai.push_back(studentas);
+            }
         }
+
+        cout << "Vargsiukai: " << vargsiukai.size() << ", Kietiakiai: " << kietiakiai.size() << endl;
+
+        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + to_string(kiekis) + ".txt");
+        issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + to_string(kiekis) + ".txt");
+    }
+    continue;
+}
 
         // Option 4 - Read from file
         else if (meniuPasirinkimas == 4) {
@@ -594,12 +636,37 @@ void vykdytiPrograma() {
 
         // Option 6 - Performance analysis
         else if (meniuPasirinkimas == 6) {
+            int dydisPasirinkimas;
+            cout << "Pasirinkite failo dydi:\n";
+            cout << "1 - 1000 studentu\n";
+            cout << "2 - 10000 studentu\n";
+            cout << "3 - 100000 studentu\n";
+            cout << "4 - 1000000 studentu\n";
+            cout << "Pasirinkite: ";
+            cin >> dydisPasirinkimas;
+
             int kiekis;
-            string failoPavadinimas;
-            cout << "Iveskite studentu skaiciu failui kurti: ";
-            cin >> kiekis;
-            failoPavadinimas = "studentai_test.txt";
-            matuotiFailuKurimoLaika(kiekis, failoPavadinimas);
+            switch (dydisPasirinkimas) {
+            case 1: kiekis = 1000; break;
+            case 2: kiekis = 10000; break;
+            case 3: kiekis = 100000; break;
+            case 4: kiekis = 1000000; break;
+            default:
+                cout << "Klaida! Netinkamas pasirinkimas." << endl;
+                continue;
+            }
+
+            string failoPavadinimas = "studentai_" + to_string(kiekis) + ".txt";
+
+            // Check if the file exists before performing analysis
+            ifstream fileCheck(failoPavadinimas);
+            if (!fileCheck) {
+                cerr << "Klaida: Failas " << failoPavadinimas << " neegzistuoja. Pirmiausia sugeneruokite faila naudodami meniu 5." << endl;
+                continue;
+            }
+            fileCheck.close();
+
+            // Perform analysis
             matuotiDuomenuApdorojimoLaika(failoPavadinimas);
         }
 
