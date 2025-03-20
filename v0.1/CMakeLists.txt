@@ -1,11 +1,32 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.10)
 project(ObjektinisProgramavimas)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
-include_directories(.)
-
-add_executable(ObjektinisProgramavimas
-        v0.4/vektorine_versija.cpp
-        v0.4/studentai.cpp
+# Add vector version
+add_executable(vector_version
+        "Vektoriu_versija/vector_versija.cpp"
+        "Vektoriu_versija/studentai.cpp"
 )
+
+# Add list version
+add_executable(list_version
+        "List_versija/list_versija.cpp"
+        "List_versija/studentai.cpp"
+)
+
+# Add deque version
+add_executable(deque_version
+        "Deque_versija/deque_versija.cpp"
+        "Deque_versija/studentai.cpp"
+)
+
+# Include headers
+include_directories("Vektoriu_versija" "List_versija" "Deque_versija")
+
+# Compiler flags for warnings & optimizations
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(vector_version PRIVATE -O2 -Wall -Wextra -pedantic)
+    target_compile_options(list_version PRIVATE -O2 -Wall -Wextra -pedantic)
+    target_compile_options(deque_version PRIVATE -O2 -Wall -Wextra -pedantic)
+endif()

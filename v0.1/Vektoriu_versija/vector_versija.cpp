@@ -8,7 +8,7 @@ using namespace std::chrono;
 int main() {
     vector<Student> studentai;
     vector<Student> vargsiukai, kietiakiai;
-    string failoPavadinimas = "studentai_100000.txt"; // Pakeisk pagal testavimą
+    string failoPavadinimas = "studentai100000.txt"; // Pakeisk pagal testavimą
 
     // 1. Duomenų nuskaitymo matavimas
     auto start = high_resolution_clock::now();

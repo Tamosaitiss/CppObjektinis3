@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <random>
 #include <numeric>
+#include <filesystem>
 
 using namespace std;
 
@@ -35,14 +36,12 @@ int generuotiAtsitiktiniEgzaminoBala();
 template <typename Container>
 void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
     ifstream in(failoPavadinimas);
-    if (!in) {
-        cerr << "Klaida: Nepavyko atidaryti failo " << failoPavadinimas << endl;
-        return;
-    }
+
+    cout << "Failas '" << failoPavadinimas << "' sekmingai atidarytas.\n";
 
     studentai.clear();
     string line;
-    getline(in, line); // Praleidžiame antraštę
+    getline(in, line); // Skip header row
 
     while (getline(in, line)) {
         istringstream iss(line);
@@ -58,7 +57,10 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
         iss >> studentas.egzaminas;
         studentai.push_back(studentas);
     }
+
+    cout << "Studentu kiekis: " << studentai.size() << endl;
 }
+\
 
 template <typename Container>
 void suskirstytiStudentus(const Container& studentai, Container& vargsiukai, Container& kietiakiai) {

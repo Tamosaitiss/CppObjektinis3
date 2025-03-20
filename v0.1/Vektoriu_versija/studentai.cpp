@@ -1,6 +1,6 @@
 #include "vektoriai.h"
 
-// ✅ Pilnai atkurtos funkcijos iš `v0.4`
+//Pilnai atkurtos funkcijos iš `v0.4`
 
 vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
     vector<int> pazymiai;
@@ -43,7 +43,7 @@ double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas) {
     }
 }
 
-// ✅ Pridėtos funkcijos studentų duomenų spausdinimui ir rikiavimui
+//Pridėtos funkcijos studentų duomenų spausdinimui ir rikiavimui
 void spausdintiStudentus(const vector<Student>& studentai, bool irasyti) {
     if (studentai.empty()) {
         cout << "Nėra įvestų studentų duomenų.\n";

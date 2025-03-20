@@ -116,65 +116,187 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ObjektinisProgramavimas
+# Target rules for targets named vector_version
 
 # Build rule for target.
-ObjektinisProgramavimas: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 ObjektinisProgramavimas
-.PHONY : ObjektinisProgramavimas
+vector_version: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 vector_version
+.PHONY : vector_version
 
 # fast build rule for target.
-ObjektinisProgramavimas/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ObjektinisProgramavimas.dir\build.make CMakeFiles/ObjektinisProgramavimas.dir/build
-.PHONY : ObjektinisProgramavimas/fast
+vector_version/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vector_version.dir\build.make CMakeFiles/vector_version.dir/build
+.PHONY : vector_version/fast
 
-studentai.obj: studentai.cpp.obj
-.PHONY : studentai.obj
+#=============================================================================
+# Target rules for targets named list_version
+
+# Build rule for target.
+list_version: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 list_version
+.PHONY : list_version
+
+# fast build rule for target.
+list_version/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\list_version.dir\build.make CMakeFiles/list_version.dir/build
+.PHONY : list_version/fast
+
+#=============================================================================
+# Target rules for targets named deque_version
+
+# Build rule for target.
+deque_version: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 deque_version
+.PHONY : deque_version
+
+# fast build rule for target.
+deque_version/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\deque_version.dir\build.make CMakeFiles/deque_version.dir/build
+.PHONY : deque_version/fast
+
+Deque_versija/deque_versija.obj: Deque_versija/deque_versija.cpp.obj
+.PHONY : Deque_versija/deque_versija.obj
 
 # target to build an object file
-studentai.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ObjektinisProgramavimas.dir\build.make CMakeFiles/ObjektinisProgramavimas.dir/studentai.cpp.obj
-.PHONY : studentai.cpp.obj
+Deque_versija/deque_versija.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\deque_version.dir\build.make CMakeFiles/deque_version.dir/Deque_versija/deque_versija.cpp.obj
+.PHONY : Deque_versija/deque_versija.cpp.obj
 
-studentai.i: studentai.cpp.i
-.PHONY : studentai.i
+Deque_versija/deque_versija.i: Deque_versija/deque_versija.cpp.i
+.PHONY : Deque_versija/deque_versija.i
 
 # target to preprocess a source file
-studentai.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ObjektinisProgramavimas.dir\build.make CMakeFiles/ObjektinisProgramavimas.dir/studentai.cpp.i
-.PHONY : studentai.cpp.i
+Deque_versija/deque_versija.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\deque_version.dir\build.make CMakeFiles/deque_version.dir/Deque_versija/deque_versija.cpp.i
+.PHONY : Deque_versija/deque_versija.cpp.i
 
-studentai.s: studentai.cpp.s
-.PHONY : studentai.s
+Deque_versija/deque_versija.s: Deque_versija/deque_versija.cpp.s
+.PHONY : Deque_versija/deque_versija.s
 
 # target to generate assembly for a file
-studentai.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ObjektinisProgramavimas.dir\build.make CMakeFiles/ObjektinisProgramavimas.dir/studentai.cpp.s
-.PHONY : studentai.cpp.s
+Deque_versija/deque_versija.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\deque_version.dir\build.make CMakeFiles/deque_version.dir/Deque_versija/deque_versija.cpp.s
+.PHONY : Deque_versija/deque_versija.cpp.s
 
-vektorine_versija.obj: vektorine_versija.cpp.obj
-.PHONY : vektorine_versija.obj
+Deque_versija/studentai.obj: Deque_versija/studentai.cpp.obj
+.PHONY : Deque_versija/studentai.obj
 
 # target to build an object file
-vektorine_versija.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ObjektinisProgramavimas.dir\build.make CMakeFiles/ObjektinisProgramavimas.dir/vektorine_versija.cpp.obj
-.PHONY : vektorine_versija.cpp.obj
+Deque_versija/studentai.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\deque_version.dir\build.make CMakeFiles/deque_version.dir/Deque_versija/studentai.cpp.obj
+.PHONY : Deque_versija/studentai.cpp.obj
 
-vektorine_versija.i: vektorine_versija.cpp.i
-.PHONY : vektorine_versija.i
+Deque_versija/studentai.i: Deque_versija/studentai.cpp.i
+.PHONY : Deque_versija/studentai.i
 
 # target to preprocess a source file
-vektorine_versija.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ObjektinisProgramavimas.dir\build.make CMakeFiles/ObjektinisProgramavimas.dir/vektorine_versija.cpp.i
-.PHONY : vektorine_versija.cpp.i
+Deque_versija/studentai.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\deque_version.dir\build.make CMakeFiles/deque_version.dir/Deque_versija/studentai.cpp.i
+.PHONY : Deque_versija/studentai.cpp.i
 
-vektorine_versija.s: vektorine_versija.cpp.s
-.PHONY : vektorine_versija.s
+Deque_versija/studentai.s: Deque_versija/studentai.cpp.s
+.PHONY : Deque_versija/studentai.s
 
 # target to generate assembly for a file
-vektorine_versija.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\ObjektinisProgramavimas.dir\build.make CMakeFiles/ObjektinisProgramavimas.dir/vektorine_versija.cpp.s
-.PHONY : vektorine_versija.cpp.s
+Deque_versija/studentai.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\deque_version.dir\build.make CMakeFiles/deque_version.dir/Deque_versija/studentai.cpp.s
+.PHONY : Deque_versija/studentai.cpp.s
+
+List_versija/list_versija.obj: List_versija/list_versija.cpp.obj
+.PHONY : List_versija/list_versija.obj
+
+# target to build an object file
+List_versija/list_versija.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\list_version.dir\build.make CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj
+.PHONY : List_versija/list_versija.cpp.obj
+
+List_versija/list_versija.i: List_versija/list_versija.cpp.i
+.PHONY : List_versija/list_versija.i
+
+# target to preprocess a source file
+List_versija/list_versija.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\list_version.dir\build.make CMakeFiles/list_version.dir/List_versija/list_versija.cpp.i
+.PHONY : List_versija/list_versija.cpp.i
+
+List_versija/list_versija.s: List_versija/list_versija.cpp.s
+.PHONY : List_versija/list_versija.s
+
+# target to generate assembly for a file
+List_versija/list_versija.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\list_version.dir\build.make CMakeFiles/list_version.dir/List_versija/list_versija.cpp.s
+.PHONY : List_versija/list_versija.cpp.s
+
+List_versija/studentai.obj: List_versija/studentai.cpp.obj
+.PHONY : List_versija/studentai.obj
+
+# target to build an object file
+List_versija/studentai.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\list_version.dir\build.make CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj
+.PHONY : List_versija/studentai.cpp.obj
+
+List_versija/studentai.i: List_versija/studentai.cpp.i
+.PHONY : List_versija/studentai.i
+
+# target to preprocess a source file
+List_versija/studentai.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\list_version.dir\build.make CMakeFiles/list_version.dir/List_versija/studentai.cpp.i
+.PHONY : List_versija/studentai.cpp.i
+
+List_versija/studentai.s: List_versija/studentai.cpp.s
+.PHONY : List_versija/studentai.s
+
+# target to generate assembly for a file
+List_versija/studentai.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\list_version.dir\build.make CMakeFiles/list_version.dir/List_versija/studentai.cpp.s
+.PHONY : List_versija/studentai.cpp.s
+
+Vektoriu_versija/studentai.obj: Vektoriu_versija/studentai.cpp.obj
+.PHONY : Vektoriu_versija/studentai.obj
+
+# target to build an object file
+Vektoriu_versija/studentai.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vector_version.dir\build.make CMakeFiles/vector_version.dir/Vektoriu_versija/studentai.cpp.obj
+.PHONY : Vektoriu_versija/studentai.cpp.obj
+
+Vektoriu_versija/studentai.i: Vektoriu_versija/studentai.cpp.i
+.PHONY : Vektoriu_versija/studentai.i
+
+# target to preprocess a source file
+Vektoriu_versija/studentai.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vector_version.dir\build.make CMakeFiles/vector_version.dir/Vektoriu_versija/studentai.cpp.i
+.PHONY : Vektoriu_versija/studentai.cpp.i
+
+Vektoriu_versija/studentai.s: Vektoriu_versija/studentai.cpp.s
+.PHONY : Vektoriu_versija/studentai.s
+
+# target to generate assembly for a file
+Vektoriu_versija/studentai.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vector_version.dir\build.make CMakeFiles/vector_version.dir/Vektoriu_versija/studentai.cpp.s
+.PHONY : Vektoriu_versija/studentai.cpp.s
+
+Vektoriu_versija/vector_versija.obj: Vektoriu_versija/vector_versija.cpp.obj
+.PHONY : Vektoriu_versija/vector_versija.obj
+
+# target to build an object file
+Vektoriu_versija/vector_versija.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vector_version.dir\build.make CMakeFiles/vector_version.dir/Vektoriu_versija/vector_versija.cpp.obj
+.PHONY : Vektoriu_versija/vector_versija.cpp.obj
+
+Vektoriu_versija/vector_versija.i: Vektoriu_versija/vector_versija.cpp.i
+.PHONY : Vektoriu_versija/vector_versija.i
+
+# target to preprocess a source file
+Vektoriu_versija/vector_versija.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vector_version.dir\build.make CMakeFiles/vector_version.dir/Vektoriu_versija/vector_versija.cpp.i
+.PHONY : Vektoriu_versija/vector_versija.cpp.i
+
+Vektoriu_versija/vector_versija.s: Vektoriu_versija/vector_versija.cpp.s
+.PHONY : Vektoriu_versija/vector_versija.s
+
+# target to generate assembly for a file
+Vektoriu_versija/vector_versija.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\vector_version.dir\build.make CMakeFiles/vector_version.dir/Vektoriu_versija/vector_versija.cpp.s
+.PHONY : Vektoriu_versija/vector_versija.cpp.s
 
 # Help Target
 help:
@@ -184,13 +306,27 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... ObjektinisProgramavimas
-	@echo ... studentai.obj
-	@echo ... studentai.i
-	@echo ... studentai.s
-	@echo ... vektorine_versija.obj
-	@echo ... vektorine_versija.i
-	@echo ... vektorine_versija.s
+	@echo ... deque_version
+	@echo ... list_version
+	@echo ... vector_version
+	@echo ... Deque_versija/deque_versija.obj
+	@echo ... Deque_versija/deque_versija.i
+	@echo ... Deque_versija/deque_versija.s
+	@echo ... Deque_versija/studentai.obj
+	@echo ... Deque_versija/studentai.i
+	@echo ... Deque_versija/studentai.s
+	@echo ... List_versija/list_versija.obj
+	@echo ... List_versija/list_versija.i
+	@echo ... List_versija/list_versija.s
+	@echo ... List_versija/studentai.obj
+	@echo ... List_versija/studentai.i
+	@echo ... List_versija/studentai.s
+	@echo ... Vektoriu_versija/studentai.obj
+	@echo ... Vektoriu_versija/studentai.i
+	@echo ... Vektoriu_versija/studentai.s
+	@echo ... Vektoriu_versija/vector_versija.obj
+	@echo ... Vektoriu_versija/vector_versija.i
+	@echo ... Vektoriu_versija/vector_versija.s
 .PHONY : help
 
 
