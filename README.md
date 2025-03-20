@@ -1,45 +1,46 @@
-# ObjektinisProgramavimas
-**README - Objektinis Programavimas (v0.4)**
+**Studentų Duomenų Apdorojimo Testavimas (v1.0)
+Čia aprašyta studentų duomenų nuskaitymo, rūšiavimo ir skirstymo į dvi grupes (vargsiukai, kietiakiai) našumo testavimas naudojant skirtingus konteinerius (std::vector, std::list, std::deque)**
 
-**Apžvalga:**
-Šis projektas skirtas studentų duomenų generavimui, rūšiavimui ir našumo analizei. Pagrindinė funkcionalumo dalis apima studentų sąrašų kūrimą, jų rūšiavimą pagal įvairius aspektus ir vykdymo greičio matavimus.
 
-**Pagrindinės funkcijos:**
-1. Failų kūrimas su atsitiktiniais studentų duomenimis, įskaitant vardus, pavardes ir pažymius.
-2. Studentų rūšiavimas į dvi grupes pagal jų galutinį pažymį:
-   - „vargšiukai“ (pažymys < 5.0)
-   - „kietiakiai“ (pažymys >= 5.0)
-3. Našumo analizė, įskaitant failų kūrimo, nuskaitymo, rūšiavimo bei rašymo laikus.
+**Kompiuterio specifikacija atliekant testavimus:**
+**Procesorius**: (CPU)	Intel Core i9-14900K
+**Operatyvioji atmintis (RAM)**:	64 GB DDR5 (Kingston FURY Beast)
+**Diskas (SSD)**:	Samsung 990 PRO 1TB (NVMe)
+**OS**: Windows 11 Pro 64-bit
+**Kompiliatorius**:	GCC
 
-**Naudojimas:**
-1. Generuokite studentų failus pasirinkę meniu 5 opciją.
-2. Atlikite našumo analizę pasirinkę meniu 6 opciją (reikia būti sugeneravus failus iš meniu 5).
-3. Naudokite meniu 1-4 opcijas rankiniam įvedimui arba failų nuskaitymui.
 
-**Diegimas:**
-1. Reikalingas C++ kompiliatorius (pvz., g++ ar gcc).
-2. Atsisiųskite arba klonuokite šį projektą į savo IDE.
-3. Kompiliuokite su Makefile arba CMake.
+**Testavimo rezultatai (v1.0)**
+**Testavimas atliekamas su std::vector, std::list ir std::deque
+Kiekvienas konteineris testuojamas su visais failų dydžiais**
 
-**Našumo analizė:**
-- Matuojami failų kūrimo, nuskaitymo, rūšiavimo ir rašymo laikai.
-- Tik failai, sukurti naudojant meniu 5 opciją, bus analizuojami.
-- Skaičiuojamas bendras vykdymo laikas.
+**Konteineris	Failo dydis	Nuskaitymo laikas (s) Rūšiavimo laikas (s) Skirstymo laikas (s)**
+std::vector	1000	      0.000988	            0.000017	             0.0001623
+            10,000	   0.0088772	         0.0015587	          0.0009355
+            100,000	   0.0788088	         0.0173394	          0.0074201
+            1,000,000	0.673929	            0.225253	             0.0804325
+std::list	1000	      0.0010048	         0.0001545	          0.0001307
+            10,000	   0.0080566	         0.0007065	          0.0009017
+            100,000	   0.081352	            0.007855	             0.0085647
+            1,000,000	0.695045	            0.0975908	          0.0904832
+std::deque	1000	      0.0010414	         0.0001276	          0.0006452
+            10,000	   0.0080305	         0.0015489	          0.0007036
+            100,000	   0.0776795	         0.0214414	          0.0064133
+            1,000,000	0.667129	            0.282987	             0.0608517
 
-**Klaidų apdorojimas:**
-- Apsaugota nuo failų perrašymo.
-- Pridėtos klaidos žinutės trūkstamiems failams arba neteisingam įvedimui.
+**Analizė ir išvados**
 
-**Klaidos ir palaikymas:**
-Jei kyla klausimų ar problemų, kreipkites.
+**1️. Rūšiavimas (sort())**
+std::vector yra greičiausias didelėms duomenų aibėms
+std::list yra lėtesnis rūšiuojant, bet efektyvus įterpiant ir šalinant elementus
+std::deque prasčiau veikia su didelėmis duomenų aibėmis, rūšiuojant jis lėčiausias
 
-Autorius:
-Ignas Tamošaitis
+**2️. Skirstymas (std::partition)**
+std::deque pasirodė geriausiai dėl dvipusio įterpimo
+std::list veikia stabiliai, bet yra kiek lėtesnis nei std::deque
+std::vector yra lėčiausias skirstant, nes reikalingi perstumdymai atmintyje
 
-**Licencija:**
-Šis projektas yra licencijuotas pagal GPL-3.0 licenciją.
-
-![image](https://github.com/user-attachments/assets/f5a869ce-6c80-4eff-aa78-ec3f6d8026f3)
-![image](https://github.com/user-attachments/assets/b388f6d6-21ac-40d1-bc29-fe4920a13442)
-![image](https://github.com/user-attachments/assets/3133d800-10b0-468c-8a81-88727b10c9ed)
-![image](https://github.com/user-attachments/assets/bce06ede-45d9-4992-b688-8c9faa1331cd)
+**3️. Bendras našumas**
+Jei reikia greito rūšiavimo → naudoti std::vector
+Jei reikia dažnų įterpimų ir trynimų → naudoti std::list
+Jei reikia greito skirstymo → naudoti std::deque
