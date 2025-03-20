@@ -38,3 +38,8 @@ Ignas Tamošaitis
 
 **Licencija:**
 Šis projektas yra licencijuotas pagal GPL-3.0 licenciją.
+
+![image](https://github.com/user-attachments/assets/f5a869ce-6c80-4eff-aa78-ec3f6d8026f3)
+![image](https://github.com/user-attachments/assets/b388f6d6-21ac-40d1-bc29-fe4920a13442)
+![image](https://github.com/user-attachments/assets/3133d800-10b0-468c-8a81-88727b10c9ed)
+![image](https://github.com/user-attachments/assets/bce06ede-45d9-4992-b688-8c9faa1331cd)
