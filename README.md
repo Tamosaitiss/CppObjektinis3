@@ -14,7 +14,7 @@
 **Testavimas atliekamas su std::vector, std::list ir std::deque
 Kiekvienas konteineris testuojamas su visais failų dydžiais**
 
-![image](https://github.com/user-attachments/assets/df9f5399-39ce-4473-947c-ad2680d16798)
+![image](https://github.com/user-attachments/assets/aca19f37-1b2e-4b0e-acbc-756175435921)
 
 **Analizė ir išvados**
 
