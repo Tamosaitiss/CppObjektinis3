@@ -36,8 +36,10 @@ int generuotiAtsitiktiniEgzaminoBala();
 template <typename Container>
 void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
     ifstream in(failoPavadinimas);
-
-    cout << "Failas '" << failoPavadinimas << "' sekmingai atidarytas.\n";
+    if (!in) {
+        cerr << "Klaida: Nepavyko atidaryti failo '" << failoPavadinimas << "'!\n";
+        return;
+    }
 
     studentai.clear();
     string line;
@@ -48,19 +50,22 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
         Student studentas;
         iss >> studentas.vardas >> studentas.pavarde;
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 5; i++) {  // Read 5 ND scores
             int pazymys;
             iss >> pazymys;
-            if (pazymys > 0) studentas.namu_darbai.push_back(pazymys);
+            studentas.namu_darbai.push_back(pazymys);
         }
 
-        iss >> studentas.egzaminas;
+        // Read egzaminas
+        if (!(iss >> studentas.egzaminas)) {
+            cerr << "Klaida: Nepavyko nuskaityti egzamino studentui " << studentas.vardas << " " << studentas.pavarde << endl;
+            studentas.egzaminas = -1; // Assign an invalid value to detect errors
+        }
+
         studentai.push_back(studentas);
     }
-
-    cout << "Studentu kiekis: " << studentai.size() << endl;
 }
-\
+
 
 template <typename Container>
 void suskirstytiStudentus(const Container& studentai, Container& vargsiukai, Container& kietiakiai) {
@@ -78,8 +83,15 @@ void suskirstytiStudentus(const Container& studentai, Container& vargsiukai, Con
 template <typename Container>
 void issaugotiStudentusIFaila(const Container& studentai, const string& failoPavadinimas) {
     ofstream out(failoPavadinimas);
+
     if (!out) {
-        cerr << "Klaida: Nepavyko sukurti failo " << failoPavadinimas << endl;
+        cerr << "Klaida: Nepavyko sukurti failo '" << failoPavadinimas << "'!" << endl;
+        return;
+    }
+
+    // Write only if there are students
+    if (studentai.empty()) {
+        cerr << "Ispejimas: failas '" << failoPavadinimas << "' yra tuscias, nes nera studentu." << endl;
         return;
     }
 
@@ -94,7 +106,10 @@ void issaugotiStudentusIFaila(const Container& studentai, const string& failoPav
             << setw(25) << studentas.pavarde
             << fixed << setprecision(2) << setw(10) << galutinis << endl;
     }
+
+    cout << "Failas '" << failoPavadinimas << "' sekmingai sukurtas su " << studentai.size() << " studentu(-ais)." << endl;
 }
+
 
 //papildomos funkcijos iš `v0.4`
 void generuotiFailus(const vector<int>& kiekiai);

@@ -8,7 +8,7 @@ using namespace std::chrono;
 int main() {
     deque<Student> studentai;
     deque<Student> vargsiukai, kietiakiai;
-    string failoPavadinimas = "studentai_100000.txt"; // Keisk pagal testavimą
+    string failoPavadinimas = "studentai1000000.txt"; // Keisk pagal testavimą
 
     // 1. Duomenų nuskaitymo laikas
     auto start = high_resolution_clock::now();

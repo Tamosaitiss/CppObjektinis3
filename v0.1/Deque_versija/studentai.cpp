@@ -1,7 +1,6 @@
 #include "vektoriai.h"
 
 //Pilnai atkurtos funkcijos iš `v0.4`
-
 vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
     vector<int> pazymiai;
     random_device rd;
@@ -21,12 +20,17 @@ int generuotiAtsitiktiniEgzaminoBala() {
     return dist(gen);
 }
 
-double skaiciuotiVidurki(const vector<int>& pazymiai, int egzaminas) {
-    if (pazymiai.empty()) return egzaminas;
-    double suma = accumulate(pazymiai.begin(), pazymiai.end(), 0);
-    double vidurkis = suma / pazymiai.size();
-    return 0.4 * vidurkis + 0.6 * egzaminas;
+double skaiciuotiVidurki(const vector<int>& namu_darbai, int egzaminas) {
+    if (namu_darbai.empty()) return egzaminas;  // Prevent division by zero
+
+    double suma = accumulate(namu_darbai.begin(), namu_darbai.end(), 0.0);
+    double vidurkis = suma / namu_darbai.size();
+    double galutinis = 0.4 * vidurkis + 0.6 * egzaminas;
+
+
+    return galutinis;
 }
+
 
 double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas) {
     if (pazymiai.empty()) return egzaminas;

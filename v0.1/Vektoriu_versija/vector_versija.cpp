@@ -8,7 +8,7 @@ using namespace std::chrono;
 int main() {
     vector<Student> studentai;
     vector<Student> vargsiukai, kietiakiai;
-    string failoPavadinimas = "studentai100000.txt"; // Pakeisk pagal testavimą
+    string failoPavadinimas = "studentai1000000.txt"; // Pakeisk pagal testavimą
 
     // 1. Duomenų nuskaitymo matavimas
     auto start = high_resolution_clock::now();
@@ -29,6 +29,9 @@ int main() {
     // 3. Studentų skirstymo matavimas
     start = high_resolution_clock::now();
     suskirstytiStudentus(studentai, vargsiukai, kietiakiai);
+    //cout << "Kietiakai kiekis: " << kietiakiai.size() << endl;
+    //cout << "Vargsiukai kiekis: " << vargsiukai.size() << endl;
+
     end = high_resolution_clock::now();
     duration<double> skirstymoLaikas = end - start;
     cout << "Studentu skirstymo laikas: " << skirstymoLaikas.count() << " s" << endl;
