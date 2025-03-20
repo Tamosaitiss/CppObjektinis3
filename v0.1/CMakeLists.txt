@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(ObjektinisProgramavimas
-        vektorine_versija.cpp
-        studentai.cpp
-        studentai.h)
+        v0.4/vektorine_versija.cpp
+        v0.4/studentai.cpp
+)

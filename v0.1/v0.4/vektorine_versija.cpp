@@ -1,4 +1,4 @@
-#include "studentai.h"
+#include "vektoriai.h"
 
 int main() {
     vykdytiPrograma();
