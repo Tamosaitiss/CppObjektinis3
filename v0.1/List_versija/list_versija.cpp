@@ -6,50 +6,56 @@
 using namespace std;
 using namespace chrono;
 
-void testuotiFaila(const string& failoPavadinimas) {
-    list<Student> visi, vargsiukai, kietiakiai;
-
-    auto start = high_resolution_clock::now();
-    nuskaitytiIsFailo(visi, failoPavadinimas);
-    auto end = high_resolution_clock::now();
-    double nuskaitymoLaikas = duration<double>(end - start).count();
-
-    start = high_resolution_clock::now();
-    visi.sort([](const Student& a, const Student& b) {
-        return a.vardas < b.vardas;
-    });
-    end = high_resolution_clock::now();
-    double rusiavimoLaikas = duration<double>(end - start).count();
-
-    start = high_resolution_clock::now();
-    suskirstytiStudentus(visi, vargsiukai, kietiakiai);
-    end = high_resolution_clock::now();
-    double skirstymoLaikas = duration<double>(end - start).count();
-
+void testuotiStrategijas(const string& failoPavadinimas) {
+    list<Student> pradiniai;
+    nuskaitytiIsFailo(pradiniai, failoPavadinimas);
     string dydis = failoPavadinimas.substr(9, failoPavadinimas.find(".") - 9);
 
-    issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_list.txt");
-    issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + dydis + "_list.txt");
+    // Strategija 1
+    {
+        list<Student> vargsiukai, kietiakiai;
+        auto start = high_resolution_clock::now();
+        skirstymas_1(pradiniai, vargsiukai, kietiakiai);
+        auto end = high_resolution_clock::now();
+        double laikas = duration<double>(end - start).count();
 
-    for (const auto& s : vargsiukai) {
-        double galutinis = skaiciuotiVidurki(s.namu_darbai, s.egzaminas);
-        if (galutinis >= 5.0) {
-            cerr << "Klaida: i vargsiukai patenka studentas su galutiniu >= 5.0: " << galutinis << endl;
-        }
+        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija1_list.txt");
+        issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + dydis + "_strategija1_list.txt");
+
+        cout << "Strategija 1: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << kietiakiai.size() << ")" << endl;
     }
 
-    for (const auto& s : kietiakiai) {
-        double galutinis = skaiciuotiVidurki(s.namu_darbai, s.egzaminas);
-        if (galutinis < 5.0) {
-            cerr << "Klaida: i kietiakiai patenka studentas su galutiniu < 5.0: " << galutinis << endl;
-        }
+    // Strategija 2
+    {
+        list<Student> studentai = pradiniai;
+        list<Student> vargsiukai;
+        auto start = high_resolution_clock::now();
+        skirstymas_2(studentai, vargsiukai);
+        auto end = high_resolution_clock::now();
+        double laikas = duration<double>(end - start).count();
+
+        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija2_list.txt");
+        issaugotiStudentusIFaila(studentai, "kietiakiai_" + dydis + "_strategija2_list.txt");
+
+        cout << "Strategija 2: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << studentai.size() << ")" << endl;
     }
 
-    cout << "Failas: " << failoPavadinimas << endl;
-    cout << "  Nuskaitymo laikas: " << nuskaitymoLaikas << " s" << endl;
-    cout << "  Rusiavimo laikas: " << rusiavimoLaikas << " s" << endl;
-    cout << "  Skirstymo laikas: " << skirstymoLaikas << " s" << endl;
-    cout << "  Kietiakiai: " << kietiakiai.size() << ", Vargsiukai: " << vargsiukai.size() << endl << endl;
+    // Strategija 3
+    {
+        list<Student> studentai = pradiniai;
+        list<Student> vargsiukai;
+        auto start = high_resolution_clock::now();
+        skirstymas_3(studentai, vargsiukai);
+        auto end = high_resolution_clock::now();
+        double laikas = duration<double>(end - start).count();
+
+        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija3_list.txt");
+        issaugotiStudentusIFaila(studentai, "kietiakiai_" + dydis + "_strategija3_list.txt");
+
+        cout << "Strategija 3: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << studentai.size() << ")" << endl;
+    }
+
+    cout << "---------------------------------------------\n";
 }
 
 int main() {
@@ -61,7 +67,8 @@ int main() {
     };
 
     for (const auto& failas : failai) {
-        testuotiFaila(failas);
+        cout << "Failas: " << failas << endl;
+        testuotiStrategijas(failas);
     }
 
     return 0;
