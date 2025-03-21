@@ -1,41 +1,68 @@
 #include "vektoriai.h"
-#include <deque>
+#include <list>
 #include <chrono>
+#include <iostream>
 
 using namespace std;
-using namespace std::chrono;
+using namespace chrono;
 
-int main() {
-    deque<Student> studentai;
-    deque<Student> vargsiukai, kietiakiai;
-    string failoPavadinimas = "studentai1000000.txt"; // Keisk pagal testavimą
+void testuotiFaila(const string& failoPavadinimas) {
+    list<Student> visi, vargsiukai, kietiakiai;
 
-    // 1. Duomenų nuskaitymo laikas
     auto start = high_resolution_clock::now();
-    nuskaitytiIsFailo(studentai, failoPavadinimas);
+    nuskaitytiIsFailo(visi, failoPavadinimas);
     auto end = high_resolution_clock::now();
-    duration<double> nuskaitymoLaikas = end - start;
-    cout << "Duomenu nuskaitymo laikas: " << nuskaitymoLaikas.count() << " s" << endl;
+    double nuskaitymoLaikas = duration<double>(end - start).count();
 
-    // 2. Rūšiavimo laikas
     start = high_resolution_clock::now();
-    sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
+    visi.sort([](const Student& a, const Student& b) {
         return a.vardas < b.vardas;
     });
     end = high_resolution_clock::now();
-    duration<double> rusiuLaikas = end - start;
-    cout << "Rusiavimo laikas: " << rusiuLaikas.count() << " s" << endl;
+    double rusiavimoLaikas = duration<double>(end - start).count();
 
-    // 3. Skirstymo laikas
     start = high_resolution_clock::now();
-    suskirstytiStudentus(studentai, vargsiukai, kietiakiai);
+    suskirstytiStudentus(visi, vargsiukai, kietiakiai);
     end = high_resolution_clock::now();
-    duration<double> skirstymoLaikas = end - start;
-    cout << "Studentu skirstymo laikas: " << skirstymoLaikas.count() << " s" << endl;
+    double skirstymoLaikas = duration<double>(end - start).count();
 
-    // Išsaugome rezultatus į failus
-    issaugotiStudentusIFaila(vargsiukai, "vargsiukai_deque.txt");
-    issaugotiStudentusIFaila(kietiakiai, "kietiakiai_deque.txt");
+    string dydis = failoPavadinimas.substr(9, failoPavadinimas.find(".") - 9);
+
+    issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_list.txt");
+    issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + dydis + "_list.txt");
+
+    for (const auto& s : vargsiukai) {
+        double galutinis = skaiciuotiVidurki(s.namu_darbai, s.egzaminas);
+        if (galutinis >= 5.0) {
+            cerr << "Klaida: i vargsiukai patenka studentas su galutiniu >= 5.0: " << galutinis << endl;
+        }
+    }
+
+    for (const auto& s : kietiakiai) {
+        double galutinis = skaiciuotiVidurki(s.namu_darbai, s.egzaminas);
+        if (galutinis < 5.0) {
+            cerr << "Klaida: i kietiakiai patenka studentas su galutiniu < 5.0: " << galutinis << endl;
+        }
+    }
+
+    cout << "Failas: " << failoPavadinimas << endl;
+    cout << "  Nuskaitymo laikas: " << nuskaitymoLaikas << " s" << endl;
+    cout << "  Rusiavimo laikas: " << rusiavimoLaikas << " s" << endl;
+    cout << "  Skirstymo laikas: " << skirstymoLaikas << " s" << endl;
+    cout << "  Kietiakiai: " << kietiakiai.size() << ", Vargsiukai: " << vargsiukai.size() << endl << endl;
+}
+
+int main() {
+    vector<string> failai = {
+        "studentai1000.txt",
+        "studentai10000.txt",
+        "studentai100000.txt",
+        "studentai1000000.txt"
+    };
+
+    for (const auto& failas : failai) {
+        testuotiFaila(failas);
+    }
 
     return 0;
 }
