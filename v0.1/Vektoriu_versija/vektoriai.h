@@ -68,7 +68,7 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
 
 
 template <typename Container>
-void suskirstytiStudentus(const Container& visi, Container& vargsiukai, Container& kietiakiai) {
+void skirstymas_1(const Container& visi, Container& vargsiukai, Container& kietiakiai) {
     for (const auto& s : visi) {
         if (skaiciuotiVidurki(s.namu_darbai, s.egzaminas) < 5.0)
             vargsiukai.push_back(s);
@@ -77,6 +77,26 @@ void suskirstytiStudentus(const Container& visi, Container& vargsiukai, Containe
     }
 }
 
+template <typename Container>
+void skirstymas_2(Container& studentai, Container& vargsiukai) {
+    auto it = remove_if(studentai.begin(), studentai.end(), [&](const Student& s) {
+        if (skaiciuotiVidurki(s.namu_darbai, s.egzaminas) < 5.0) {
+            vargsiukai.push_back(s);
+            return true;
+        }
+        return false;
+    });
+    studentai.erase(it, studentai.end()); // studentai lieka tik kietiakiai
+}
+
+template <typename Container>
+void skirstymas_3(Container& studentai, Container& vargsiukai) {
+    auto it = partition(studentai.begin(), studentai.end(), [](const Student& s) {
+        return skaiciuotiVidurki(s.namu_darbai, s.egzaminas) >= 5.0;
+    });
+    vargsiukai.insert(vargsiukai.end(), it, studentai.end());
+    studentai.erase(it, studentai.end()); // liko tik kietiakiai
+}
 
 template <typename Container>
 void issaugotiStudentusIFaila(const Container& studentai, const string& failoPavadinimas) {
