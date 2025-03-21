@@ -70,9 +70,7 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
 template <typename Container>
 void suskirstytiStudentus(const Container& studentai, Container& vargsiukai, Container& kietiakiai) {
     for (const auto& studentas : studentai) {
-        double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-
-        if (galutinis < 5.0) {
+        if (skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas) < 5.0) {
             vargsiukai.push_back(studentas);
         } else {
             kietiakiai.push_back(studentas);
