@@ -68,14 +68,34 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
 
 
 template <typename Container>
-void suskirstytiStudentus(const Container& studentai, Container& vargsiukai, Container& kietiakiai) {
-    for (const auto& studentas : studentai) {
-        if (skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas) < 5.0) {
-            vargsiukai.push_back(studentas);
-        } else {
-            kietiakiai.push_back(studentas);
-        }
+void skirstymas_1(const Container& visi, Container& vargsiukai, Container& kietiakiai) {
+    for (const auto& s : visi) {
+        if (skaiciuotiVidurki(s.namu_darbai, s.egzaminas) < 5.0)
+            vargsiukai.push_back(s);
+        else
+            kietiakiai.push_back(s);
     }
+}
+
+template <typename Container>
+void skirstymas_2(Container& studentai, Container& vargsiukai) {
+    auto it = remove_if(studentai.begin(), studentai.end(), [&](const Student& s) {
+        if (skaiciuotiVidurki(s.namu_darbai, s.egzaminas) < 5.0) {
+            vargsiukai.push_back(s);
+            return true;
+        }
+        return false;
+    });
+    studentai.erase(it, studentai.end()); // studentai lieka tik kietiakiai
+}
+
+template <typename Container>
+void skirstymas_3(Container& studentai, Container& vargsiukai) {
+    auto it = partition(studentai.begin(), studentai.end(), [](const Student& s) {
+        return skaiciuotiVidurki(s.namu_darbai, s.egzaminas) >= 5.0;
+    });
+    vargsiukai.insert(vargsiukai.end(), it, studentai.end());
+    studentai.erase(it, studentai.end()); // liko tik kietiakiai
 }
 
 template <typename Container>
@@ -103,6 +123,24 @@ void issaugotiStudentusIFaila(const Container& studentai, const string& failoPav
         out << left << setw(20) << studentas.vardas
             << setw(25) << studentas.pavarde
             << fixed << setprecision(2) << setw(10) << galutinis << endl;
+    }
+
+    int klaidos = 0;
+
+    for (const auto& studentas : studentai) {
+        double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
+
+        if (failoPavadinimas.find("kietiakiai") != string::npos && galutinis < 5.0) {
+            cerr << "Klaida: i kietiakiai faila patenka studentas su galutiniu < 5.0: "
+                 << studentas.vardas << " " << studentas.pavarde << " (" << galutinis << ")" << endl;
+            klaidos++;
+        }
+
+        if (failoPavadinimas.find("vargsiukai") != string::npos && galutinis >= 5.0) {
+            cerr << "Klaida: i vargsiukai faila patenka studentas su galutiniu >= 5.0: "
+                 << studentas.vardas << " " << studentas.pavarde << " (" << galutinis << ")" << endl;
+            klaidos++;
+        }
     }
 
     cout << "Failas '" << failoPavadinimas << "' sekmingai sukurtas su " << studentai.size() << " studentu(-ais)." << endl;
