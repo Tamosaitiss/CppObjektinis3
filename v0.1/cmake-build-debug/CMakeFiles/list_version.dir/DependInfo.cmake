@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/v0.1/List_versija/list_versija.cpp" "CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj" "gcc" "CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj.d"
-  "C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/v0.1/List_versija/studentai.cpp" "CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj" "gcc" "CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj.d"
+  "C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/List_versija/list_versija.cpp" "CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj" "gcc" "CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj.d"
+  "C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/List_versija/studentai.cpp" "CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj" "gcc" "CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

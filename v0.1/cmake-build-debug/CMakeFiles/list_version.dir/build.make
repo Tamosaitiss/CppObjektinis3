@@ -52,10 +52,10 @@ RM = "C:\Program Files\JetBrains\CLion 2024.3.3\bin\cmake\win\x64\bin\cmake.exe"
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1
+CMAKE_SOURCE_DIR = C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/list_version.dir/depend.make
@@ -70,33 +70,33 @@ include CMakeFiles/list_version.dir/flags.make
 
 CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj: CMakeFiles/list_version.dir/flags.make
 CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj: CMakeFiles/list_version.dir/includes_CXX.rsp
-CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj: C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/v0.1/List_versija/list_versija.cpp
+CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj: C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/List_versija/list_versija.cpp
 CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj: CMakeFiles/list_version.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj -MF CMakeFiles\list_version.dir\List_versija\list_versija.cpp.obj.d -o CMakeFiles\list_version.dir\List_versija\list_versija.cpp.obj -c C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\List_versija\list_versija.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/list_version.dir/List_versija/list_versija.cpp.obj -MF CMakeFiles\list_version.dir\List_versija\list_versija.cpp.obj.d -o CMakeFiles\list_version.dir\List_versija\list_versija.cpp.obj -c C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\List_versija\list_versija.cpp
 
 CMakeFiles/list_version.dir/List_versija/list_versija.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/list_version.dir/List_versija/list_versija.cpp.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\List_versija\list_versija.cpp > CMakeFiles\list_version.dir\List_versija\list_versija.cpp.i
+	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\List_versija\list_versija.cpp > CMakeFiles\list_version.dir\List_versija\list_versija.cpp.i
 
 CMakeFiles/list_version.dir/List_versija/list_versija.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/list_version.dir/List_versija/list_versija.cpp.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\List_versija\list_versija.cpp -o CMakeFiles\list_version.dir\List_versija\list_versija.cpp.s
+	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\List_versija\list_versija.cpp -o CMakeFiles\list_version.dir\List_versija\list_versija.cpp.s
 
 CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj: CMakeFiles/list_version.dir/flags.make
 CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj: CMakeFiles/list_version.dir/includes_CXX.rsp
-CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj: C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/v0.1/List_versija/studentai.cpp
+CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj: C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/List_versija/studentai.cpp
 CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj: CMakeFiles/list_version.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj -MF CMakeFiles\list_version.dir\List_versija\studentai.cpp.obj.d -o CMakeFiles\list_version.dir\List_versija\studentai.cpp.obj -c C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\List_versija\studentai.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/list_version.dir/List_versija/studentai.cpp.obj -MF CMakeFiles\list_version.dir\List_versija\studentai.cpp.obj.d -o CMakeFiles\list_version.dir\List_versija\studentai.cpp.obj -c C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\List_versija\studentai.cpp
 
 CMakeFiles/list_version.dir/List_versija/studentai.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/list_version.dir/List_versija/studentai.cpp.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\List_versija\studentai.cpp > CMakeFiles\list_version.dir\List_versija\studentai.cpp.i
+	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\List_versija\studentai.cpp > CMakeFiles\list_version.dir\List_versija\studentai.cpp.i
 
 CMakeFiles/list_version.dir/List_versija/studentai.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/list_version.dir/List_versija/studentai.cpp.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\List_versija\studentai.cpp -o CMakeFiles\list_version.dir\List_versija\studentai.cpp.s
+	C:\PROGRA~1\JETBRA~1\CLION2~1.3\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\List_versija\studentai.cpp -o CMakeFiles\list_version.dir\List_versija\studentai.cpp.s
 
 # Object files for target list_version
 list_version_OBJECTS = \
@@ -112,7 +112,7 @@ list_version.exe: CMakeFiles/list_version.dir/build.make
 list_version.exe: CMakeFiles/list_version.dir/linkLibs.rsp
 list_version.exe: CMakeFiles/list_version.dir/objects1.rsp
 list_version.exe: CMakeFiles/list_version.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable list_version.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable list_version.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\list_version.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -124,6 +124,6 @@ CMakeFiles/list_version.dir/clean:
 .PHONY : CMakeFiles/list_version.dir/clean
 
 CMakeFiles/list_version.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1 C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1 C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\cmake-build-debug C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\cmake-build-debug C:\Users\igniu\Documents\GitHub\ObjektinisProgramavimas\v0.1\cmake-build-debug\CMakeFiles\list_version.dir\DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1 C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1 C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\cmake-build-debug C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\cmake-build-debug C:\Users\igniu\Documents\GitHub\AntrojiRepo\v0.1\cmake-build-debug\CMakeFiles\list_version.dir\DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/list_version.dir/depend
 

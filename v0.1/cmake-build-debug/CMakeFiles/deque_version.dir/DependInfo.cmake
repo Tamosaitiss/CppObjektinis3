@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/v0.1/Deque_versija/deque_versija.cpp" "CMakeFiles/deque_version.dir/Deque_versija/deque_versija.cpp.obj" "gcc" "CMakeFiles/deque_version.dir/Deque_versija/deque_versija.cpp.obj.d"
-  "C:/Users/igniu/Documents/GitHub/ObjektinisProgramavimas/v0.1/Deque_versija/studentai.cpp" "CMakeFiles/deque_version.dir/Deque_versija/studentai.cpp.obj" "gcc" "CMakeFiles/deque_version.dir/Deque_versija/studentai.cpp.obj.d"
+  "C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/Deque_versija/deque_versija.cpp" "CMakeFiles/deque_version.dir/Deque_versija/deque_versija.cpp.obj" "gcc" "CMakeFiles/deque_version.dir/Deque_versija/deque_versija.cpp.obj.d"
+  "C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/Deque_versija/studentai.cpp" "CMakeFiles/deque_version.dir/Deque_versija/studentai.cpp.obj" "gcc" "CMakeFiles/deque_version.dir/Deque_versija/studentai.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
