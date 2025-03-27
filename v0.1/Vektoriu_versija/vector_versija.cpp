@@ -1,51 +1,78 @@
 #include "studentas.h"
+#include <vector>
+#include <chrono>
+#include <iostream>
 
-Studentas::Studentas() : vardas_(""), pavarde_(""), egzaminas_(0) {}
-Studentas::Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas)
-    : vardas_(vardas), pavarde_(pavarde), nd_(nd), egzaminas_(egzaminas) {}
-Studentas::Studentas(istream& is) { read(is); }
-Studentas::~Studentas() {}
+using namespace std;
+using namespace chrono;
 
-string Studentas::vardas() const { return vardas_; }
-string Studentas::pavarde() const { return pavarde_; }
-vector<int> Studentas::nd() const { return nd_; }
-int Studentas::egzaminas() const { return egzaminas_; }
+void testuotiStrategijas(const string& failoPavadinimas) {
+    vector<Studentas> pradiniai;
+    nuskaitytiIsFailo(pradiniai, failoPavadinimas);
+    string dydis = failoPavadinimas.substr(9, failoPavadinimas.find(".") - 9);
 
-istream& Studentas::read(istream& is) {
-    is >> vardas_ >> pavarde_;
-    nd_.clear();
-    int pazymys;
-    for (int i = 0; i < 5; i++) {
-        is >> pazymys;
-        nd_.push_back(pazymys);
+    // Strategija 1
+    {
+        vector<Studentas> vargsiukai, kietiakiai;
+        auto start = high_resolution_clock::now();
+        skirstymas_1(pradiniai, vargsiukai, kietiakiai);
+        auto end = high_resolution_clock::now();
+        double laikas = duration<double>(end - start).count();
+
+        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija1_vector.txt");
+        issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + dydis + "_strategija1_vector.txt");
+
+        cout << fixed << setprecision(7);
+        cout << "Strategija 1: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << kietiakiai.size() << ")" << endl;
     }
-    is >> egzaminas_;
-    return is;
+
+    // Strategija 2
+    {
+        vector<Studentas> studentai = pradiniai;
+        vector<Studentas> vargsiukai;
+        auto start = high_resolution_clock::now();
+        skirstymas_2(studentai, vargsiukai);
+        auto end = high_resolution_clock::now();
+        double laikas = duration<double>(end - start).count();
+
+        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija2_vector.txt");
+        issaugotiStudentusIFaila(studentai, "kietiakiai_" + dydis + "_strategija2_vector.txt");
+
+        cout << fixed << setprecision(7);
+        cout << "Strategija 2: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << studentai.size() << ")" << endl;
+    }
+
+    // Strategija 3
+    {
+        vector<Studentas> studentai = pradiniai;
+        vector<Studentas> vargsiukai;
+        auto start = high_resolution_clock::now();
+        skirstymas_3(studentai, vargsiukai);
+        auto end = high_resolution_clock::now();
+        double laikas = duration<double>(end - start).count();
+
+        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija3_vector.txt");
+        issaugotiStudentusIFaila(studentai, "kietiakiai_" + dydis + "_strategija3_vector.txt");
+
+        cout << fixed << setprecision(7);
+        cout << "Strategija 3: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << studentai.size() << ")" << endl;
+    }
+
+    cout << "---------------------------------------------\n";
 }
 
-double Studentas::galutinisVidurkis() const {
-    if (nd_.empty()) return egzaminas_;
-    double suma = accumulate(nd_.begin(), nd_.end(), 0.0);
-    double vidurkis = suma / nd_.size();
-    return 0.4 * vidurkis + 0.6 * egzaminas_;
-}
+int main() {
+    vector<string> failai = {
+        "studentai1000.txt",
+        "studentai10000.txt",
+        "studentai100000.txt",
+        "studentai1000000.txt"
+    };
 
-double Studentas::galutinisMediana() const {
-    if (nd_.empty()) return egzaminas_;
-    vector<int> visi = nd_;
-    visi.push_back(egzaminas_);
-    sort(visi.begin(), visi.end());
-    int dydis = visi.size();
-    if (dydis % 2 == 0) return (visi[dydis / 2 - 1] + visi[dydis / 2]) / 2.0;
-    else return visi[dydis / 2];
-}
+    for (const auto& failas : failai) {
+        cout << "Failas: " << failas << endl;
+        testuotiStrategijas(failas);
+    }
 
-bool compare(const Studentas& a, const Studentas& b) {
-    return a.vardas_ < b.vardas_;
-}
-bool comparePagalPavarde(const Studentas& a, const Studentas& b) {
-    return a.pavarde_ < b.pavarde_;
-}
-bool comparePagalEgza(const Studentas& a, const Studentas& b) {
-    return a.egzaminas_ > b.egzaminas_;
+    return 0;
 }
