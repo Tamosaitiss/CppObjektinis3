@@ -130,7 +130,7 @@ Kiekvienai strategijai buvo išmatuotas veikimo laikas su skirtingo dydžio stud
 
 ---
 
-**## Struct ir Class studentų palyginimas (3 strategija)**
+## Struct ir Class studentų palyginimas (3 strategija)
 
 Naudotas konteineris: `std::vector`  
 Naudota strategija: 3 strategija (`std::partition`)  
