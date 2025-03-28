@@ -1,64 +1,60 @@
 #include "studentas.h"
 #include <vector>
 #include <chrono>
-#include <iostream>
+#include <iomanip>
 
 using namespace std;
-using namespace chrono;
+using namespace std::chrono;
 
-void testuotiStrategijas(const string& failoPavadinimas) {
-    vector<Studentas> pradiniai;
-    nuskaitytiIsFailo(pradiniai, failoPavadinimas);
-    string dydis = failoPavadinimas.substr(9, failoPavadinimas.find(".") - 9);
+void paleistiStrategija1(const string& failas) {
+    vector<Studentas> studentai, vargsiukai, kietiakiai;
+    nuskaitytiIsFailo(studentai, failas);
 
-    // Strategija 1
-    {
-        vector<Studentas> vargsiukai, kietiakiai;
-        auto start = high_resolution_clock::now();
-        skirstymas_1(pradiniai, vargsiukai, kietiakiai);
-        auto end = high_resolution_clock::now();
-        double laikas = duration<double>(end - start).count();
+    auto start = high_resolution_clock::now();
+    skirstymas_1(studentai, vargsiukai, kietiakiai);
+    auto end = high_resolution_clock::now();
 
-        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija1_vector.txt");
-        issaugotiStudentusIFaila(kietiakiai, "kietiakiai_" + dydis + "_strategija1_vector.txt");
+    double trukme = duration<double>(end - start).count();
+    cout << "Strategija 1: " << fixed << setprecision(6) << trukme << " s"
+         << " (vargsiukai: " << vargsiukai.size()
+         << ", kietiakiai: " << kietiakiai.size() << ")" << endl;
 
-        cout << fixed << setprecision(7);
-        cout << "Strategija 1: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << kietiakiai.size() << ")" << endl;
-    }
+    issaugotiStudentusIFaila(vargsiukai, "vector_vargsiukai1.txt");
+    issaugotiStudentusIFaila(kietiakiai, "vector_kietiakiai1.txt");
+}
 
-    // Strategija 2
-    {
-        vector<Studentas> studentai = pradiniai;
-        vector<Studentas> vargsiukai;
-        auto start = high_resolution_clock::now();
-        skirstymas_2(studentai, vargsiukai);
-        auto end = high_resolution_clock::now();
-        double laikas = duration<double>(end - start).count();
+void paleistiStrategija2(const string& failas) {
+    vector<Studentas> studentai, vargsiukai;
+    nuskaitytiIsFailo(studentai, failas);
 
-        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija2_vector.txt");
-        issaugotiStudentusIFaila(studentai, "kietiakiai_" + dydis + "_strategija2_vector.txt");
+    auto start = high_resolution_clock::now();
+    skirstymas_2(studentai, vargsiukai);
+    auto end = high_resolution_clock::now();
 
-        cout << fixed << setprecision(7);
-        cout << "Strategija 2: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << studentai.size() << ")" << endl;
-    }
+    double trukme = duration<double>(end - start).count();
+    cout << "Strategija 2: " << fixed << setprecision(6) << trukme << " s"
+         << " (vargsiukai: " << vargsiukai.size()
+         << ", kietiakiai: " << studentai.size() << ")" << endl;
 
-    // Strategija 3
-    {
-        vector<Studentas> studentai = pradiniai;
-        vector<Studentas> vargsiukai;
-        auto start = high_resolution_clock::now();
-        skirstymas_3(studentai, vargsiukai);
-        auto end = high_resolution_clock::now();
-        double laikas = duration<double>(end - start).count();
+    issaugotiStudentusIFaila(vargsiukai, "vector_vargsiukai2.txt");
+    issaugotiStudentusIFaila(studentai, "vector_kietiakiai2.txt");
+}
 
-        issaugotiStudentusIFaila(vargsiukai, "vargsiukai_" + dydis + "_strategija3_vector.txt");
-        issaugotiStudentusIFaila(studentai, "kietiakiai_" + dydis + "_strategija3_vector.txt");
+void paleistiStrategija3(const string& failas) {
+    vector<Studentas> studentai, vargsiukai;
+    nuskaitytiIsFailo(studentai, failas);
 
-        cout << fixed << setprecision(7);
-        cout << "Strategija 3: " << laikas << " s (vargsiukai: " << vargsiukai.size() << ", kietiakiai: " << studentai.size() << ")" << endl;
-    }
+    auto start = high_resolution_clock::now();
+    skirstymas_3(studentai, vargsiukai);
+    auto end = high_resolution_clock::now();
 
-    cout << "---------------------------------------------\n";
+    double trukme = duration<double>(end - start).count();
+    cout << "Strategija 3: " << fixed << setprecision(6) << trukme << " s"
+         << " (vargsiukai: " << vargsiukai.size()
+         << ", kietiakiai: " << studentai.size() << ")" << endl;
+
+    issaugotiStudentusIFaila(vargsiukai, "vector_vargsiukai3.txt");
+    issaugotiStudentusIFaila(studentai, "vector_kietiakiai3.txt");
 }
 
 int main() {
@@ -71,7 +67,10 @@ int main() {
 
     for (const auto& failas : failai) {
         cout << "Failas: " << failas << endl;
-        testuotiStrategijas(failas);
+        paleistiStrategija1(failas);
+        paleistiStrategija2(failas);
+        paleistiStrategija3(failas);
+        cout << "---------------------------------------------" << endl;
     }
 
     return 0;

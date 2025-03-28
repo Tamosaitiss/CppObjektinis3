@@ -1,84 +1,60 @@
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <list>
-#include <algorithm>
-#include <chrono>
-#include <string>
 #include "studentas.h"
+#include <list>
+#include <chrono>
+#include <iomanip>
 
 using namespace std;
+using namespace std::chrono;
 
-template <typename Container>
-void strategija1(Container& studentai, Container& vargsiukai, Container& kietiakiai) {
-    for (auto& s : studentai) {
-        if (s.galutinis() < 5.0) vargsiukai.push_back(s);
-        else kietiakiai.push_back(s);
-    }
+void paleistiStrategija1(const string& failas) {
+    list<Studentas> studentai, vargsiukai, kietiakiai;
+    nuskaitytiIsFailo(studentai, failas);
+
+    auto start = high_resolution_clock::now();
+    skirstymas_1(studentai, vargsiukai, kietiakiai);
+    auto end = high_resolution_clock::now();
+
+    double trukme = duration<double>(end - start).count();
+    cout << "Strategija 1: " << fixed << setprecision(6) << trukme << " s"
+         << " (vargsiukai: " << vargsiukai.size()
+         << ", kietiakiai: " << kietiakiai.size() << ")" << endl;
+
+    issaugotiStudentusIFaila(vargsiukai, "list_vargsiukai1.txt");
+    issaugotiStudentusIFaila(kietiakiai, "list_kietiakiai1.txt");
 }
 
-template <typename Container>
-void strategija2(Container& studentai, Container& vargsiukai, Container& kietiakiai) {
-    auto it = remove_if(studentai.begin(), studentai.end(), [&](const auto& s) {
-        if (s.galutinis() < 5.0) {
-            vargsiukai.push_back(move(s));
-            return true;
-        }
-        return false;
-    });
-    studentai.erase(it, studentai.end());
-    kietiakiai = studentai;
+void paleistiStrategija2(const string& failas) {
+    list<Studentas> studentai, vargsiukai;
+    nuskaitytiIsFailo(studentai, failas);
+
+    auto start = high_resolution_clock::now();
+    skirstymas_2(studentai, vargsiukai);
+    auto end = high_resolution_clock::now();
+
+    double trukme = duration<double>(end - start).count();
+    cout << "Strategija 2: " << fixed << setprecision(6) << trukme << " s"
+         << " (vargsiukai: " << vargsiukai.size()
+         << ", kietiakiai: " << studentai.size() << ")" << endl;
+
+    issaugotiStudentusIFaila(vargsiukai, "list_vargsiukai2.txt");
+    issaugotiStudentusIFaila(studentai, "list_kietiakiai2.txt");
 }
 
-template <typename Container>
-void strategija3(Container& studentai, Container& vargsiukai, Container& kietiakiai) {
-    auto it = partition(studentai.begin(), studentai.end(), [](const auto& s) {
-        return s.galutinis() < 5.0;
-    });
-    vargsiukai.assign(make_move_iterator(studentai.begin()), make_move_iterator(it));
-    kietiakiai.assign(make_move_iterator(it), make_move_iterator(studentai.end()));
-}
+void paleistiStrategija3(const string& failas) {
+    list<Studentas> studentai, vargsiukai;
+    nuskaitytiIsFailo(studentai, failas);
 
-template <typename Container>
-void testuotiStrategijas(const string& failo_pavadinimas) {
-    vector<Studentas> visi_studentai;
-    ifstream in(failo_pavadinimas);
-    string vardas, pavarde;
-    int nd;
-    int egz;
-    string temp;
-    getline(in, temp); // skip header
+    auto start = high_resolution_clock::now();
+    skirstymas_3(studentai, vargsiukai);
+    auto end = high_resolution_clock::now();
 
-    while (in >> vardas >> pavarde) {
-        vector<int> nd_;
-        for (int i = 0; i < 5; ++i) {
-            in >> nd;
-            nd_.push_back(nd);
-        }
-        in >> egz;
-        visi_studentai.emplace_back(vardas, pavarde, nd_, egz);
-    }
+    double trukme = duration<double>(end - start).count();
+    cout << "Strategija 3: " << fixed << setprecision(6) << trukme << " s"
+         << " (vargsiukai: " << vargsiukai.size()
+         << ", kietiakiai: " << studentai.size() << ")" << endl;
 
-    cout << "Failas: " << failo_pavadinimas << fixed << setprecision(6) << endl;
-
-    for (int s = 1; s <= 3; ++s) {
-        Container studentai(visi_studentai.begin(), visi_studentai.end());
-        Container vargsiukai, kietiakiai;
-
-        auto start = chrono::high_resolution_clock::now();
-
-        if (s == 1) strategija1(studentai, vargsiukai, kietiakiai);
-        else if (s == 2) strategija2(studentai, vargsiukai, kietiakiai);
-        else strategija3(studentai, vargsiukai, kietiakiai);
-
-        auto end = chrono::high_resolution_clock::now();
-        chrono::duration<double> trukme = end - start;
-
-        cout << "Strategija " << s << ": " << trukme.count() << " s (vargsiukai: "
-             << vargsiukai.size() << ", kietiakiai: " << kietiakiai.size() << ")" << endl;
-    }
-
-    cout << "---------------------------------------------" << endl;
+    issaugotiStudentusIFaila(vargsiukai, "list_vargsiukai3.txt");
+    issaugotiStudentusIFaila(studentai, "list_kietiakiai3.txt");
 }
 
 int main() {
@@ -90,7 +66,11 @@ int main() {
     };
 
     for (const auto& failas : failai) {
-        testuotiStrategijas<list<Studentas>>(failas);
+        cout << "Failas: " << failas << endl;
+        paleistiStrategija1(failas);
+        paleistiStrategija2(failas);
+        paleistiStrategija3(failas);
+        cout << "---------------------------------------------" << endl;
     }
 
     return 0;
