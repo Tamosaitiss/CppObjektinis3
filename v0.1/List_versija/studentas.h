@@ -1,38 +1,57 @@
-#ifndef VEKTORIAI_H
-#define VEKTORIAI_H
+#ifndef STUDENTAS_H
+#define STUDENTAS_H
 
 #include <iostream>
-#include <vector>
-#include <list>
-#include <deque>
-#include <string>
 #include <fstream>
-#include <chrono>
+#include <sstream>
 #include <iomanip>
+#include <vector>
+#include <string>
 #include <algorithm>
-#include <random>
 #include <numeric>
-#include <filesystem>
+
+using std::ifstream;
+using std::ofstream;
+using std::stringstream;
+using std::getline;
+using std::setw;
+using std::setprecision;
+using std::left;
+using std::right;
+using std::string;
+using std::vector;
+using std::endl;
+using std::cout;
 
 using namespace std;
 
-// Studentų struktūra
-struct Student {
-    string vardas;
-    string pavarde;
-    vector<int> namu_darbai;
-    int egzaminas;
+class Studentas {
+private:
+    string vardas_;
+    string pavarde_;
+    vector<int> nd_;
+    int egzaminas_;
+
+public:
+    Studentas();
+    Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas);
+    Studentas(istream& is);
+    ~Studentas();
+
+    string vardas() const;
+    string pavarde() const;
+    vector<int> nd() const;
+    int egzaminas() const;
+
+    double galutinisVidurkis() const;
+    double galutinisMediana() const;
+    istream& read(istream& is);
+
+    friend bool compare(const Studentas& a, const Studentas& b);
+    friend bool comparePagalPavarde(const Studentas& a, const Studentas& b);
+    friend bool comparePagalEgza(const Studentas& a, const Studentas& b);
 };
 
-//funkcijos iš `v0.4`
-string gautiVarda(int indeksas);
-string gautiPavarde(int indeksas);
-double skaiciuotiVidurki(const vector<int>& pazymiai, int egzaminas);
-double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas);
-vector<int> generuotiAtsitiktiniusPazymius(int kiekis);
-int generuotiAtsitiktiniEgzaminoBala();
-
-//Šabloninės funkcijos, veikiančios su visais konteineriais (vector, list, deque)
 template <typename Container>
 void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
     ifstream in(failoPavadinimas);
@@ -43,34 +62,25 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
 
     studentai.clear();
     string line;
-    getline(in, line); // Skip header row
+    getline(in, line); // Skip header
 
     while (getline(in, line)) {
         istringstream iss(line);
-        Student studentas;
-        iss >> studentas.vardas >> studentas.pavarde;
+        string vardas, pavarde;
+        vector<int> nd(5);
+        int egzaminas;
 
-        for (int i = 0; i < 5; i++) {  // Read 5 ND scores
-            int pazymys;
-            iss >> pazymys;
-            studentas.namu_darbai.push_back(pazymys);
-        }
+        iss >> vardas >> pavarde;
+        for (int& pazymys : nd) iss >> pazymys;
+        iss >> egzaminas;
 
-        // Read egzaminas
-        if (!(iss >> studentas.egzaminas)) {
-            cerr << "Klaida: Nepavyko nuskaityti egzamino studentui " << studentas.vardas << " " << studentas.pavarde << endl;
-            studentas.egzaminas = -1; // Assign an invalid value to detect errors
-        }
-
-        studentai.push_back(studentas);
+        studentai.emplace_back(vardas, pavarde, nd, egzaminas);
     }
 }
-
-
 template <typename Container>
 void skirstymas_1(const Container& visi, Container& vargsiukai, Container& kietiakiai) {
     for (const auto& s : visi) {
-        if (skaiciuotiVidurki(s.namu_darbai, s.egzaminas) < 5.0)
+        if (s.galutinisVidurkis() < 5.0)
             vargsiukai.push_back(s);
         else
             kietiakiai.push_back(s);
@@ -79,37 +89,30 @@ void skirstymas_1(const Container& visi, Container& vargsiukai, Container& kieti
 
 template <typename Container>
 void skirstymas_2(Container& studentai, Container& vargsiukai) {
-    auto it = remove_if(studentai.begin(), studentai.end(), [&](const Student& s) {
-        if (skaiciuotiVidurki(s.namu_darbai, s.egzaminas) < 5.0) {
+    auto it = remove_if(studentai.begin(), studentai.end(), [&](const Studentas& s) {
+        if (s.galutinisVidurkis() < 5.0) {
             vargsiukai.push_back(s);
             return true;
         }
         return false;
     });
-    studentai.erase(it, studentai.end()); // studentai lieka tik kietiakiai
+    studentai.erase(it, studentai.end()); // lieka tik kietiakiai
 }
 
 template <typename Container>
 void skirstymas_3(Container& studentai, Container& vargsiukai) {
-    auto it = partition(studentai.begin(), studentai.end(), [](const Student& s) {
-        return skaiciuotiVidurki(s.namu_darbai, s.egzaminas) >= 5.0;
+    auto it = partition(studentai.begin(), studentai.end(), [](const Studentas& s) {
+        return s.galutinisVidurkis() >= 5.0;
     });
     vargsiukai.insert(vargsiukai.end(), it, studentai.end());
-    studentai.erase(it, studentai.end()); // liko tik kietiakiai
+    studentai.erase(it, studentai.end());
 }
 
 template <typename Container>
 void issaugotiStudentusIFaila(const Container& studentai, const string& failoPavadinimas) {
     ofstream out(failoPavadinimas);
-
     if (!out) {
         cerr << "Klaida: Nepavyko sukurti failo '" << failoPavadinimas << "'!" << endl;
-        return;
-    }
-
-    // Write only if there are students
-    if (studentai.empty()) {
-        cerr << "Ispejimas: failas '" << failoPavadinimas << "' yra tuscias, nes nera studentu." << endl;
         return;
     }
 
@@ -117,40 +120,11 @@ void issaugotiStudentusIFaila(const Container& studentai, const string& failoPav
         << setw(25) << "Pavarde"
         << setw(10) << "Galutinis" << endl;
 
-    for (const auto& studentas : studentai) {
-        double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-
-        out << left << setw(20) << studentas.vardas
-            << setw(25) << studentas.pavarde
-            << fixed << setprecision(2) << setw(10) << galutinis << endl;
+    for (const auto& s : studentai) {
+        out << left << setw(20) << s.vardas()
+            << setw(25) << s.pavarde()
+            << fixed << setprecision(2) << setw(10) << s.galutinisVidurkis() << endl;
     }
-
-    int klaidos = 0;
-
-    for (const auto& studentas : studentai) {
-        double galutinis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-
-        if (failoPavadinimas.find("kietiakiai") != string::npos && galutinis < 5.0) {
-            cerr << "Klaida: i kietiakiai faila patenka studentas su galutiniu < 5.0: "
-                 << studentas.vardas << " " << studentas.pavarde << " (" << galutinis << ")" << endl;
-            klaidos++;
-        }
-
-        if (failoPavadinimas.find("vargsiukai") != string::npos && galutinis >= 5.0) {
-            cerr << "Klaida: i vargsiukai faila patenka studentas su galutiniu >= 5.0: "
-                 << studentas.vardas << " " << studentas.pavarde << " (" << galutinis << ")" << endl;
-            klaidos++;
-        }
-    }
-
-    cout << "Failas '" << failoPavadinimas << "' sekmingai sukurtas su " << studentai.size() << " studentu(-ais)." << endl;
 }
-
-
-//papildomos funkcijos iš `v0.4`
-void generuotiFailus(const vector<int>& kiekiai);
-void rikiuotiStudentus(vector<Student>& studentai, int rikiavimoPasirinkimas);
-void spausdintiStudentus(const vector<Student>& studentai, bool irasyti);
-void vykdytiPrograma();
 
 #endif
