@@ -22,8 +22,7 @@ using std::string;
 using std::vector;
 using std::endl;
 using std::cout;
-
-using namespace std;
+using std::cerr;
 
 class Studentas {
 private:
@@ -35,7 +34,7 @@ private:
 public:
     Studentas();
     Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas);
-    Studentas(istream& is);
+    Studentas(std::istream& is);
     ~Studentas();
 
     string vardas() const;
@@ -45,13 +44,18 @@ public:
 
     double galutinisVidurkis() const;
     double galutinisMediana() const;
-    istream& read(istream& is);
+
+    // Papildomas metodas strategijoms
+    double galutinis() const { return galutinisVidurkis(); }
+
+    std::istream& read(std::istream& is);
 
     friend bool compare(const Studentas& a, const Studentas& b);
     friend bool comparePagalPavarde(const Studentas& a, const Studentas& b);
     friend bool comparePagalEgza(const Studentas& a, const Studentas& b);
 };
 
+// Šabloninės funkcijos darbui su bet kokiu konteineriu
 template <typename Container>
 void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
     ifstream in(failoPavadinimas);
@@ -65,7 +69,7 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
     getline(in, line); // Skip header
 
     while (getline(in, line)) {
-        istringstream iss(line);
+        std::istringstream iss(line);
         string vardas, pavarde;
         vector<int> nd(5);
         int egzaminas;
@@ -77,10 +81,11 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
         studentai.emplace_back(vardas, pavarde, nd, egzaminas);
     }
 }
+
 template <typename Container>
 void skirstymas_1(const Container& visi, Container& vargsiukai, Container& kietiakiai) {
     for (const auto& s : visi) {
-        if (s.galutinisVidurkis() < 5.0)
+        if (s.galutinis() < 5.0)
             vargsiukai.push_back(s);
         else
             kietiakiai.push_back(s);
@@ -89,8 +94,8 @@ void skirstymas_1(const Container& visi, Container& vargsiukai, Container& kieti
 
 template <typename Container>
 void skirstymas_2(Container& studentai, Container& vargsiukai) {
-    auto it = remove_if(studentai.begin(), studentai.end(), [&](const Studentas& s) {
-        if (s.galutinisVidurkis() < 5.0) {
+    auto it = std::remove_if(studentai.begin(), studentai.end(), [&](const Studentas& s) {
+        if (s.galutinis() < 5.0) {
             vargsiukai.push_back(s);
             return true;
         }
@@ -101,8 +106,8 @@ void skirstymas_2(Container& studentai, Container& vargsiukai) {
 
 template <typename Container>
 void skirstymas_3(Container& studentai, Container& vargsiukai) {
-    auto it = partition(studentai.begin(), studentai.end(), [](const Studentas& s) {
-        return s.galutinisVidurkis() >= 5.0;
+    auto it = std::partition(studentai.begin(), studentai.end(), [](const Studentas& s) {
+        return s.galutinis() >= 5.0;
     });
     vargsiukai.insert(vargsiukai.end(), it, studentai.end());
     studentai.erase(it, studentai.end());
@@ -123,7 +128,7 @@ void issaugotiStudentusIFaila(const Container& studentai, const string& failoPav
     for (const auto& s : studentai) {
         out << left << setw(20) << s.vardas()
             << setw(25) << s.pavarde()
-            << fixed << setprecision(2) << setw(10) << s.galutinisVidurkis() << endl;
+            << std::fixed << setprecision(2) << setw(10) << s.galutinis() << endl;
     }
 }
 
