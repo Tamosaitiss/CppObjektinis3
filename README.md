@@ -127,3 +127,42 @@ Kiekvienai strategijai buvo išmatuotas veikimo laikas su skirtingo dydžio stud
 **Rezultatai išsaugomi į failus:**
 - vargsiukai_<dydis>_strategijaX_<konteineris>.txt
 - kietiakiai_<dydis>_strategijaX_<konteineris>.txt
+
+---
+
+**## Struct ir Class studentų palyginimas (3 strategija)**
+
+Naudotas konteineris: `std::vector`  
+Naudota strategija: 3 strategija (`std::partition`)  
+Failai: `studentai100000.txt` ir `studentai1000000.txt`
+
+| Failas              | Struktūra (struct) | Klasė (class) |
+|---------------------|--------------------|---------------|
+| studentai100000.txt | 0.0040873 s        | 0.003692 s    |
+| studentai1000000.txt| 0.0398828 s        | 0.037380 s    |
+
+**Išvada:**  
+Klasės versija yra šiek tiek greitesnė už struktūrinę. Skirtumas nedidelis, tačiau klasė leidžia lengviau plėsti funkcionalumą, todėl ji tinkamesnė didesnėms sistemoms.
+
+---
+
+## Kompiliatoriaus optimizavimo flag'ų įtaka
+
+Testuota naudojant:  
+- `class` versiją  
+- `std::vector` konteinerį  
+- 3 strategiją (`std::partition`)  
+
+| Flag'as | studentai100000.txt | studentai1000000.txt |
+|--------|----------------------|----------------------|
+| -O0    | 0.005663 s           | 0.054703 s           |
+| -O1    | 0.004873 s           | 0.039828 s           |
+| -O2    | 0.0040873 s          | 0.0398828 s          |
+| -O3    | 0.003692 s           | 0.037380 s           |
+
+**Išvada:**  
+Programos veikimo sparta labai priklauso nuo kompiliatoriaus optimizavimo lygio. Aukštesnis optimizavimo lygis (ypač `-O3`) ženkliai pagerina veikimo laiką, ypač su dideliais duomenų kiekiais.
+
+---
+
+
