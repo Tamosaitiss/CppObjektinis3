@@ -52,8 +52,6 @@ public:
     friend bool comparePagalEgza(const Studentas& a, const Studentas& b);
 };
 
-// === ŠABLONINĖS FUNKCIJOS ===
-
 template <typename Container>
 void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
     ifstream in(failoPavadinimas);
