@@ -1,91 +1,62 @@
-#include "vektoriai.h"
+#include "studentas.h"
 
-//Pilnai atkurtos funkcijos iš `v0.4`
-vector<int> generuotiAtsitiktiniusPazymius(int kiekis) {
-    vector<int> pazymiai;
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(1, 10);
+Studentas::Studentas() : vardas_(""), pavarde_(""), egzaminas_(0) {}
 
-    for (int i = 0; i < kiekis; i++) {
-        pazymiai.push_back(dist(gen));
-    }
-    return pazymiai;
+Studentas::Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas)
+    : vardas_(vardas), pavarde_(pavarde), nd_(nd), egzaminas_(egzaminas) {}
+
+Studentas::Studentas(std::istream& is) {
+    read(is);
 }
 
-int generuotiAtsitiktiniEgzaminoBala() {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(1, 10);
-    return dist(gen);
+Studentas::~Studentas() {}
+
+string Studentas::vardas() const { return vardas_; }
+string Studentas::pavarde() const { return pavarde_; }
+vector<int> Studentas::nd() const { return nd_; }
+int Studentas::egzaminas() const { return egzaminas_; }
+
+double Studentas::galutinisVidurkis() const {
+    if (nd_.empty()) return 0.4 * 0 + 0.6 * egzaminas_;
+    double suma = std::accumulate(nd_.begin(), nd_.end(), 0.0);
+    return 0.4 * (suma / nd_.size()) + 0.6 * egzaminas_;
 }
 
-double skaiciuotiVidurki(const vector<int>& namu_darbai, int egzaminas) {
-    if (namu_darbai.empty()) return egzaminas;  // Prevent division by zero
-
-    double suma = accumulate(namu_darbai.begin(), namu_darbai.end(), 0.0);
-    double vidurkis = suma / namu_darbai.size();
-    double galutinis = 0.4 * vidurkis + 0.6 * egzaminas;
-
-
-    return galutinis;
+double Studentas::galutinisMediana() const {
+    if (nd_.empty()) return 0.4 * 0 + 0.6 * egzaminas_;
+    vector<int> nd_kopija = nd_;
+    std::sort(nd_kopija.begin(), nd_kopija.end());
+    size_t dydis = nd_kopija.size();
+    double mediana;
+    if (dydis % 2 == 0)
+        mediana = (nd_kopija[dydis / 2 - 1] + nd_kopija[dydis / 2]) / 2.0;
+    else
+        mediana = nd_kopija[dydis / 2];
+    return 0.4 * mediana + 0.6 * egzaminas_;
 }
 
-
-double skaiciuotiMediana(const vector<int>& pazymiai, int egzaminas) {
-    if (pazymiai.empty()) return egzaminas;
-
-    vector<int> visiPazymiai = pazymiai;
-    visiPazymiai.push_back(egzaminas);
-    sort(visiPazymiai.begin(), visiPazymiai.end());
-
-    int dydis = visiPazymiai.size();
-    if (dydis % 2 == 0) {
-        return (visiPazymiai[dydis / 2 - 1] + visiPazymiai[dydis / 2]) / 2.0;
-    } else {
-        return visiPazymiai[dydis / 2];
+std::istream& Studentas::read(std::istream& is) {
+    is >> vardas_ >> pavarde_;
+    int pazymys;
+    nd_.clear();
+    while (is >> pazymys) {
+        nd_.push_back(pazymys);
     }
+    if (!nd_.empty()) {
+        egzaminas_ = nd_.back();
+        nd_.pop_back();
+    }
+    return is;
 }
 
-//Pridėtos funkcijos studentų duomenų spausdinimui ir rikiavimui
-void spausdintiStudentus(const vector<Student>& studentai, bool irasyti) {
-    if (studentai.empty()) {
-        cout << "Nėra įvestų studentų duomenų.\n";
-        return;
-    }
-
-    cout << left << setw(15) << "Vardas" << setw(15) << "Pavarde"
-         << setw(15) << "Galutinis (Vid.)" << setw(15) << "Galutinis (Med.)" << endl;
-
-    for (const auto& studentas : studentai) {
-        double vidurkis = skaiciuotiVidurki(studentas.namu_darbai, studentas.egzaminas);
-        double mediana = skaiciuotiMediana(studentas.namu_darbai, studentas.egzaminas);
-
-        cout << left << setw(15) << studentas.vardas << setw(15) << studentas.pavarde
-             << setw(15) << fixed << setprecision(2) << vidurkis
-             << setw(15) << fixed << setprecision(2) << mediana << endl;
-    }
+bool compare(const Studentas& a, const Studentas& b) {
+    return a.vardas_ < b.vardas_;
 }
 
-void rikiuotiStudentus(vector<Student>& studentai, int rikiavimoPasirinkimas) {
-    switch (rikiavimoPasirinkimas) {
-    case 1:
-        sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            return a.vardas < b.vardas;
-        });
-        break;
-    case 2:
-        sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            return a.pavarde < b.pavarde;
-        });
-        break;
-    case 3:
-        sort(studentai.begin(), studentai.end(), [](const Student& a, const Student& b) {
-            return skaiciuotiVidurki(a.namu_darbai, a.egzaminas) > skaiciuotiVidurki(b.namu_darbai, b.egzaminas);
-        });
-        break;
-    default:
-        cout << "Klaida! Netinkami kriterijai rūšiavimui." << endl;
-        break;
-    }
+bool comparePagalPavarde(const Studentas& a, const Studentas& b) {
+    return a.pavarde_ < b.pavarde_;
+}
+
+bool comparePagalEgza(const Studentas& a, const Studentas& b) {
+    return a.egzaminas_ > b.egzaminas_;
 }
