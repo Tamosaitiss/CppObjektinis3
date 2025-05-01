@@ -35,10 +35,12 @@ public:
     Studentas();
     Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas);
     Studentas(std::istream& is);
+
     Studentas(const Studentas& other);                    // Copy constructor
     Studentas& operator=(const Studentas& other);         // Copy assignment
     Studentas(Studentas&& other) noexcept;                // Move constructor
     Studentas& operator=(Studentas&& other) noexcept;     // Move assignment
+
     ~Studentas();
 
     string vardas() const;
@@ -53,6 +55,9 @@ public:
     double galutinis() const { return galutinisVidurkis(); }
 
     std::istream& read(std::istream& is);
+
+    friend std::ostream& operator<<(std::ostream& os, const Studentas& s);
+    friend std::istream& operator>>(std::istream& is, Studentas& s);
 
     friend bool compare(const Studentas& a, const Studentas& b);
     friend bool comparePagalPavarde(const Studentas& a, const Studentas& b);

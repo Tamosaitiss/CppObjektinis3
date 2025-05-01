@@ -57,6 +57,40 @@ void paleistiStrategija3(const string& failas) {
     issaugotiStudentusIFaila(studentai, "deque_kietiakiai3.txt");
 }
 
+void testuokStudentas() {
+    std::cout << "TESTAVIMAS PRASIDEDA..." << std::endl;
+
+    // Sukuriamas studentas naudojant parametrizuotą konstruktorių
+    vector<int> nd = {10, 9, 8};
+    Studentas s1("Jonas", "Jonaitis", nd, 10);
+
+    // Testuojamas kopijavimo konstruktorius
+    Studentas s2 = s1;
+    std::cout << "Kopijavimo konstruktorius: " << s2 << std::endl;
+
+    // Testuojamas kopijavimo priskyrimo operatorius
+    Studentas s3;
+    s3 = s1;
+    std::cout << "Kopijavimo priskyrimo operatorius: " << s3 << std::endl;
+
+    // Testuojamas perkėlimo konstruktorius
+    Studentas s4 = std::move(s1);
+    std::cout << "Perkėlimo konstruktorius: " << s4 << std::endl;
+
+    // Testuojamas perkėlimo priskyrimo operatorius
+    Studentas s5;
+    s5 = std::move(s2);
+    std::cout << "Perkėlimo priskyrimo operatorius: " << s5 << std::endl;
+
+    // Testuojamas operatorius >>
+    std::stringstream input("Tomas Tomaitis 7 8 9 10 6");
+    Studentas s6;
+    input >> s6;
+    std::cout << "Nuskaitytas studentas (>>): " << s6 << std::endl;
+
+    std::cout << "TESTAVIMAS BAIGTAS" << std::endl;
+}
+
 int main() {
     vector<string> failai = {
         "studentai1000.txt",
@@ -72,6 +106,8 @@ int main() {
         paleistiStrategija3(failas);
         cout << "---------------------------------------------" << endl;
     }
+
+    testuokStudentas();
 
     return 0;
 }
