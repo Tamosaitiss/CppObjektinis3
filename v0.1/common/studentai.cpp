@@ -1,18 +1,15 @@
 #include "studentas.h"
-#include <iomanip>     // setw, setprecision
-#include <numeric>     // accumulate
-#include <algorithm>   // sort
-#include <utility>     // move
 
 Studentas::Studentas() : vardas_(""), pavarde_(""), egzaminas_(0) {}
 
 Studentas::Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas)
     : vardas_(vardas), pavarde_(pavarde), nd_(nd), egzaminas_(egzaminas) {}
 
-Studentas::Studentas(std::istream& is) {
+Studentas::Studentas(istream& is) {
     read(is);
 }
 
+// Rule of Five
 Studentas::Studentas(const Studentas& other)
     : vardas_(other.vardas_), pavarde_(other.pavarde_), nd_(other.nd_), egzaminas_(other.egzaminas_) {}
 
@@ -42,11 +39,16 @@ Studentas& Studentas::operator=(Studentas&& other) noexcept {
 
 Studentas::~Studentas() {}
 
+// Getteriai
 string Studentas::vardas() const { return vardas_; }
+
 string Studentas::pavarde() const { return pavarde_; }
+
 vector<int> Studentas::nd() const { return nd_; }
+
 int Studentas::egzaminas() const { return egzaminas_; }
 
+// Galutinis
 double Studentas::galutinisVidurkis() const {
     if (nd_.empty()) return 0.4 * 0 + 0.6 * egzaminas_;
     double suma = std::accumulate(nd_.begin(), nd_.end(), 0.0);
@@ -66,7 +68,8 @@ double Studentas::galutinisMediana() const {
     return 0.4 * mediana + 0.6 * egzaminas_;
 }
 
-std::istream& Studentas::read(std::istream& is) {
+// Nuskaitymas
+istream& Studentas::read(istream& is) {
     is >> vardas_ >> pavarde_;
     int pazymys;
     nd_.clear();
@@ -80,14 +83,15 @@ std::istream& Studentas::read(std::istream& is) {
     return is;
 }
 
-std::ostream& operator<<(std::ostream& os, const Studentas& s) {
+// Operatoriai
+ostream& operator<<(ostream& os, const Studentas& s) {
     os << std::left << std::setw(20) << s.vardas_
        << std::setw(25) << s.pavarde_
        << std::fixed << std::setprecision(2) << s.galutinis();
     return os;
 }
 
-std::istream& operator>>(std::istream& is, Studentas& s) {
+istream& operator>>(istream& is, Studentas& s) {
     s.nd_.clear();
     is >> s.vardas_ >> s.pavarde_;
     int pazymys;
@@ -101,6 +105,7 @@ std::istream& operator>>(std::istream& is, Studentas& s) {
     return is;
 }
 
+// Lyginimo funkcijos
 bool compare(const Studentas& a, const Studentas& b) {
     return a.vardas_ < b.vardas_;
 }

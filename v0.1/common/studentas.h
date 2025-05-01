@@ -1,6 +1,7 @@
 #ifndef STUDENTAS_H
 #define STUDENTAS_H
 
+#include "zmogus.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -29,7 +30,7 @@ using std::endl;
 using std::cout;
 using std::cerr;
 
-class Studentas {
+class Studentas : public Zmogus {
 private:
     string vardas_;
     string pavarde_;
@@ -41,28 +42,26 @@ public:
     Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas);
     Studentas(std::istream& is);
 
-    Studentas(const Studentas& other);                    // Copy constructor
-    Studentas& operator=(const Studentas& other);         // Copy assignment
-    Studentas(Studentas&& other) noexcept;                // Move constructor
-    Studentas& operator=(Studentas&& other) noexcept;     // Move assignment
+    Studentas(const Studentas& other);
+    Studentas& operator=(const Studentas& other);
+    Studentas(Studentas&& other) noexcept;
+    Studentas& operator=(Studentas&& other) noexcept;
 
     ~Studentas();
 
-    string vardas() const;
-    string pavarde() const;
+    string vardas() const override;
+    string pavarde() const override;
     vector<int> nd() const;
     int egzaminas() const;
 
     double galutinisVidurkis() const;
     double galutinisMediana() const;
-
-    // Papildomas metodas strategijoms
     double galutinis() const { return galutinisVidurkis(); }
 
-    std::istream& read(std::istream& is);
+    istream& read(std::istream& is);
 
-    friend std::ostream& operator<<(std::ostream& os, const Studentas& s);
-    friend std::istream& operator>>(std::istream& is, Studentas& s);
+    friend ostream& operator<<(ostream& os, const Studentas& s);
+    friend istream& operator>>(istream& is, Studentas& s);
 
     friend bool compare(const Studentas& a, const Studentas& b);
     friend bool comparePagalPavarde(const Studentas& a, const Studentas& b);
