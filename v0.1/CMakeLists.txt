@@ -3,26 +3,26 @@ project(ObjektinisProgramavimas)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# Include headers from common
+include_directories(common)
+
 # Add vector version
 add_executable(vector_version
-        "Vektoriu_versija/vector_versija.cpp"
-        "Vektoriu_versija/studentai.cpp"
+        Vektoriu_versija/vector_versija.cpp
+        common/studentai.cpp
 )
 
 # Add list version
 add_executable(list_version
-        "List_versija/list_versija.cpp"
-        "List_versija/studentai.cpp"
+        List_versija/list_versija.cpp
+        common/studentai.cpp
 )
 
 # Add deque version
 add_executable(deque_version
-        "Deque_versija/deque_versija.cpp"
-        "Deque_versija/studentai.cpp"
+        Deque_versija/deque_versija.cpp
+        common/studentai.cpp
 )
-
-# Include headers
-include_directories("Vektoriu_versija" "List_versija" "Deque_versija")
 
 # Compiler flags for warnings & optimizations
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")

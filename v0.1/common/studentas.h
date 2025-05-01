@@ -10,6 +10,11 @@
 #include <algorithm>
 #include <numeric>
 
+using std::string;
+using std::vector;
+using std::istream;
+using std::ostream;
+
 using std::ifstream;
 using std::ofstream;
 using std::stringstream;

@@ -1,4 +1,8 @@
 #include "studentas.h"
+#include <iomanip>     // setw, setprecision
+#include <numeric>     // accumulate
+#include <algorithm>   // sort
+#include <utility>     // move
 
 Studentas::Studentas() : vardas_(""), pavarde_(""), egzaminas_(0) {}
 
