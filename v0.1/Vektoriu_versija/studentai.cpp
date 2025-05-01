@@ -9,6 +9,33 @@ Studentas::Studentas(std::istream& is) {
     read(is);
 }
 
+Studentas::Studentas(const Studentas& other)
+    : vardas_(other.vardas_), pavarde_(other.pavarde_), nd_(other.nd_), egzaminas_(other.egzaminas_) {}
+
+Studentas& Studentas::operator=(const Studentas& other) {
+    if (this != &other) {
+        vardas_ = other.vardas_;
+        pavarde_ = other.pavarde_;
+        nd_ = other.nd_;
+        egzaminas_ = other.egzaminas_;
+    }
+    return *this;
+}
+
+Studentas::Studentas(Studentas&& other) noexcept
+    : vardas_(std::move(other.vardas_)), pavarde_(std::move(other.pavarde_)),
+      nd_(std::move(other.nd_)), egzaminas_(other.egzaminas_) {}
+
+Studentas& Studentas::operator=(Studentas&& other) noexcept {
+    if (this != &other) {
+        vardas_ = std::move(other.vardas_);
+        pavarde_ = std::move(other.pavarde_);
+        nd_ = std::move(other.nd_);
+        egzaminas_ = other.egzaminas_;
+    }
+    return *this;
+}
+
 Studentas::~Studentas() {}
 
 string Studentas::vardas() const { return vardas_; }
@@ -45,6 +72,27 @@ std::istream& Studentas::read(std::istream& is) {
     if (!nd_.empty()) {
         egzaminas_ = nd_.back();
         nd_.pop_back();
+    }
+    return is;
+}
+
+std::ostream& operator<<(std::ostream& os, const Studentas& s) {
+    os << std::left << std::setw(20) << s.vardas_
+       << std::setw(25) << s.pavarde_
+       << std::fixed << std::setprecision(2) << s.galutinis();
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, Studentas& s) {
+    s.nd_.clear();
+    is >> s.vardas_ >> s.pavarde_;
+    int pazymys;
+    while (is >> pazymys) {
+        s.nd_.push_back(pazymys);
+    }
+    if (!s.nd_.empty()) {
+        s.egzaminas_ = s.nd_.back();
+        s.nd_.pop_back();
     }
     return is;
 }

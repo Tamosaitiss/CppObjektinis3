@@ -57,9 +57,37 @@ void paleistiStrategija3(const string& failas) {
     issaugotiStudentusIFaila(studentai, "vector_kietiakiai3.txt");
 }
 
+void testuokStudentas() {
+    std::cout << "TESTAVIMAS PRASIDEDA..." << std::endl;
+
+    vector<int> nd = {10, 9, 8, 7};
+    Studentas s1("Jonas", "Jonaitis", nd, 6);
+    Studentas s2 = s1;              // Copy constructor
+    Studentas s3; s3 = s1;          // Copy assignment
+    Studentas s4 = std::move(s1);   // Move constructor
+    Studentas s5; s5 = std::move(s2); // Move assignment
+
+    std::cout << std::left
+              << std::setw(20) << "Vardas"
+              << std::setw(25) << "Pavarde"
+              << std::setw(10) << "Galutinis" << std::endl;
+
+    std::cout << s3 << std::endl;
+    std::cout << s4 << std::endl;
+    std::cout << s5 << std::endl;
+
+    std::stringstream input("Tomas Tomaitis 7 8 9 10 6");
+    Studentas s6;
+    input >> s6;
+
+    std::cout << s6 << std::endl;
+
+    std::cout << "TESTAVIMAS BAIGTAS" << std::endl;
+}
+
 int main() {
     vector<string> failai = {
-        "studentai1000.txt",
+        //"studentai1000.txt",
         "studentai10000.txt",
         "studentai100000.txt",
         "studentai1000000.txt"
@@ -72,6 +100,8 @@ int main() {
         paleistiStrategija3(failas);
         cout << "---------------------------------------------" << endl;
     }
+
+    testuokStudentas();
 
     return 0;
 }
