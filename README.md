@@ -1,14 +1,38 @@
-## Projekto versija `v1.2`
+## Nauji pakeitimai `v1.5` versijoje
 
-Šiame projekte įgyvendintos trys studentų rūšiavimo strategijos naudojant skirtingus konteinerius:
-- `std::vector`
-- `std::list`
-- `std::deque`
+Šioje versijoje klasė `Studentas` buvo refaktorizuota pagal objektinio programavimo principus:
 
-Visuose konteineriuose ištestuotos trys strategijos:
-1. Kopijavimas į du atskirus konteinerius (`skirstymas_1`)
-2. Perkėlimas "vargšiukų" į kitą konteinerį su `remove_if` (`skirstymas_2`)
-3. Naudojamas `std::partition` (`skirstymas_3`)
+- Sukurta **abstrakti bazinė klasė `Zmogus`**, kuri apibrėžia bendrus metodus `vardas()` ir `pavarde()`.
+- Klasė `Studentas` dabar **paveldi** `Zmogus` ir **realizuoja visus reikalingus metodus**.
+- `Zmogus` negali būti instancijuojama (demonstracija pridėta testavimo kode).
+- Išlaikytas **pilnas Rule of Five** įgyvendinimas:
+  - Kopijavimo konstruktorius
+  - Kopijavimo priskyrimo operatorius
+  - Perkėlimo konstruktorius
+  - Perkėlimo priskyrimo operatorius
+  - Destruktorius
+- Išlieka visos `v1.2` funkcijos ir testai veikia be pakeitimų.
+
+---
+
+## 🧱 Klasės struktūra
+
+### Zmogus (abstrakti)
+```cpp
+class Zmogus {
+public:
+    virtual ~Zmogus() = default;
+    virtual string vardas() const = 0;
+    virtual string pavarde() const = 0;
+};
+```
+
+### Studentas (paveldėta)
+```cpp
+class Studentas : public Zmogus {
+    // paveldėjimas, papildomi metodai ir Rule of Five
+};
+```
 
 ---
 
@@ -67,12 +91,17 @@ Visuose konteineriuose ištestuotos trys strategijos:
 - Visi `Rule of Five` metodai: konstruktoriai, priskyrimai, destruktorius.
 - Veikiantys operatoriai `>>` ir `<<`.
 - Skaičiavimas `galutinisVidurkis()`.
+- - Demonstracija, kad `Zmogus` objektų sukurti neįmanoma (komentuota eilutė):
+
+```cpp
+// Zmogus z; // tai būtų klaida: negalima kurti abstrakčios klasės objekto
+```
 
 ---
 
 ## Failai
 
-- `studentas.h`, `studentai.cpp` – klasė ir metodai
-- `vector_versija.cpp`, `list_versija.cpp`, `deque_versija.cpp` – strategijų palyginimas
-- `main versiju .cpp` – Rule of Five ir operatorių testai
-- `README.md` – dokumentacija
+- `zmogus.h` – abstrakti bazinė klasė
+- `studentas.h`, `studentai.cpp` – `Studentas` klasė ir metodai
+- `test.cpp` – testavimo failas
+- `vector_versija.cpp`, `list_versija.cpp`, `deque_versija.cpp` – konteinerių strategijų palyginimai
