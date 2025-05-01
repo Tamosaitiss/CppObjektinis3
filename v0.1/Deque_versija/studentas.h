@@ -35,6 +35,10 @@ public:
     Studentas();
     Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas);
     Studentas(std::istream& is);
+    Studentas(const Studentas& other);                    // Copy constructor
+    Studentas& operator=(const Studentas& other);         // Copy assignment
+    Studentas(Studentas&& other) noexcept;                // Move constructor
+    Studentas& operator=(Studentas&& other) noexcept;     // Move assignment
     ~Studentas();
 
     string vardas() const;
