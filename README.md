@@ -1,5 +1,3 @@
-# Studentų rūšiavimo našumo analizė
-
 ## Projekto versija `v1.2`
 
 Šiame projekte įgyvendintos trys studentų rūšiavimo strategijos naudojant skirtingus konteinerius:
@@ -33,13 +31,13 @@ Visuose konteineriuose ištestuotos trys strategijos:
 ## Ekrano nuotraukos
 
 ### Vector versija:
-![Vector](./734686f4-5f2b-420c-8fdf-e1ec17c4ea28.png)
+![Vector](https://github.com/user-attachments/assets/5b3a3eb7-cddc-4401-95ab-6644ab71713a)
 
 ### List versija:
-![List](./37e4f292-715e-4d32-afa8-aa674754fe0c.png)
+![List](https://github.com/user-attachments/assets/92afe394-b512-4bf0-b400-87c4bc84b6dd)
 
 ### Deque versija:
-![Deque](./9740431f-c023-4e84-b0bd-f7b3235ef266.png)
+![Deque](https://github.com/user-attachments/assets/16641568-d16d-41fa-afe3-d4af4a5413dd)
 
 ---
 
@@ -65,14 +63,7 @@ Visuose konteineriuose ištestuotos trys strategijos:
 
 ---
 
-## Testavimas
-
-```bash
-make test
-./test
-```
-
-### Tikrinama:
+### Testavime tikrinama:
 - Visi `Rule of Five` metodai: konstruktoriai, priskyrimai, destruktorius.
 - Veikiantys operatoriai `>>` ir `<<`.
 - Skaičiavimas `galutinisVidurkis()`.
