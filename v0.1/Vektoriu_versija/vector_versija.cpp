@@ -58,31 +58,51 @@ void paleistiStrategija3(const string& failas) {
 }
 
 void testuokStudentas() {
-    std::cout << "TESTAVIMAS PRASIDEDA..." << std::endl;
+    cout << "Rule of Five testas\n";
 
-    vector<int> nd = {10, 9, 8, 7};
-    Studentas s1("Jonas", "Jonaitis", nd, 6);
-    Studentas s2 = s1;              // Copy constructor
-    Studentas s3; s3 = s1;          // Copy assignment
-    Studentas s4 = std::move(s1);   // Move constructor
-    Studentas s5; s5 = std::move(s2); // Move assignment
+    Studentas s1("Testas", "Testavicius", {10, 9, 9}, 9.6);
+    cout << left << setw(25) << "s1 sukurtas:" << s1 << endl;
 
-    std::cout << std::left
-              << std::setw(20) << "Vardas"
-              << std::setw(25) << "Pavarde"
-              << std::setw(10) << "Galutinis" << std::endl;
+    Studentas s2(s1); // kopijavimo konstruktorius
+    cout << left << setw(25) << "s2 (kopija s1):" << s2 << endl;
 
-    std::cout << s3 << std::endl;
-    std::cout << s4 << std::endl;
-    std::cout << s5 << std::endl;
+    cout << left << setw(25) << "s1 po kopijavimo:" << s1 << endl;
 
-    std::stringstream input("Tomas Tomaitis 7 8 9 10 6");
-    Studentas s6;
-    input >> s6;
+    Studentas s3(std::move(s1)); // perkėlimo konstruktorius
+    cout << left << setw(25) << "s3 (perkeltas s1):" << s3 << endl;
+    cout << left << setw(25) << "s1 po perkelimo:" << s1 << endl;
 
-    std::cout << s6 << std::endl;
+    Studentas s4 = s2; // kopijavimo priskyrimo operatorius
+    cout << left << setw(25) << "s4 (priskirtas s2):" << s4 << endl;
+    cout << left << setw(25) << "s2 po priskyrimo:" << s2 << endl;
 
-    std::cout << "TESTAVIMAS BAIGTAS" << std::endl;
+    Studentas s5 = std::move(s3); // perkėlimo priskyrimo operatorius
+    cout << left << setw(25) << "s5 (perkeltas s3):" << s5 << endl;
+    cout << left << setw(25) << "s3 po perkelimo:" << s3 << endl;
+
+    cout << "\nGalutines objektu busenos:\n";
+    cout << left << setw(25) << "s1:" << s1 << endl;
+    cout << left << setw(25) << "s2:" << s2 << endl;
+    cout << left << setw(25) << "s3:" << s3 << endl;
+    cout << left << setw(25) << "s4:" << s4 << endl;
+    cout << left << setw(25) << "s5:" << s5 << endl;
+
+    cout << "Rule of Five testas\n";
+    // ... (jau tavo tvarkingai išdėliotas Rule of Five testas)
+
+    cout << "\nDestruktoriaus testas\n";
+    {
+        Studentas laikinas("Testas", "Testavicius", {7, 8, 9}, 7.2);
+        cout << "Laikinas studentas sukurtas: " << laikinas << endl;
+    }
+    cout << "Isejome is bloko, destruktorius turejo buti iskvieciamas.\n";
+
+    cout << "\nIvesties ir isvesties operatoriu testas\n";
+    istringstream fakeInput("Testas Testavicius 10 8 7 9 8");
+    Studentas ivestas;
+    fakeInput >> ivestas;
+
+    cout << "Nuskaitytas studentas:\n" << ivestas << endl;
 
     // Demonstracija: negalima kurti Zmogus objekto
     // Zmogus z; // <- Tai būtų kompiliavimo klaida, nes Zmogus yra abstrakti klasė
