@@ -84,10 +84,14 @@ istream& Studentas::read(istream& is) {
 }
 
 // Operatoriai
-ostream& operator<<(ostream& os, const Studentas& s) {
-    os << std::left << std::setw(20) << s.vardas_
-       << std::setw(25) << s.pavarde_
-       << std::fixed << std::setprecision(2) << s.galutinis();
+std::ostream& operator<<(std::ostream& os, const Studentas& s) {
+    string vardas = s.vardas_.empty() ? "-" : s.vardas_;
+    string pavarde = s.pavarde_.empty() ? "-" : s.pavarde_;
+    double galutinis = s.nd_.empty() && s.vardas_.empty() && s.pavarde_.empty() ? 0.0 : s.galutinis();
+
+    os << std::left << std::setw(20) << vardas
+       << std::setw(25) << pavarde
+       << std::fixed << std::setprecision(2) << galutinis;
     return os;
 }
 
