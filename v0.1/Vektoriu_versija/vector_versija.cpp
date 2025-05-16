@@ -84,8 +84,9 @@ void testuokStudentas() {
 
     std::cout << "TESTAVIMAS BAIGTAS" << std::endl;
 
-    // Demonstracija: negalima kurti Zmogus objekto (komentuojama)
+    // Demonstracija: negalima kurti Zmogus objekto
     // Zmogus z; // <- Tai būtų kompiliavimo klaida, nes Zmogus yra abstrakti klasė
+    // Zmogus z("Jonas", "Jonaitis");
 }
 
 int main() {
