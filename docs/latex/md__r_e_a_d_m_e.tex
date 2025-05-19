@@ -1,0 +1,122 @@
+\chapter{Nauji pakeitimai \texorpdfstring{$<$}{<}tt\texorpdfstring{$>$}{>}v1.5\texorpdfstring{$<$}{<}/tt\texorpdfstring{$>$}{>} versijoje}
+\hypertarget{md__r_e_a_d_m_e}{}\label{md__r_e_a_d_m_e}\index{Nauji pakeitimai $<$tt$>$v1.5$<$/tt$>$ versijoje@{Nauji pakeitimai $<$tt$>$v1.5$<$/tt$>$ versijoje}}
+\label{md__r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__r_e_a_d_m_e_autotoc_md0}%
+
+
+Šioje versijoje klasė {\ttfamily Studentas} buvo refaktorizuota pagal objektinio programavimo principus\+:
+
+
+\begin{DoxyItemize}
+\item Sukurta {\bfseries{abstrakti bazinė klasė {\ttfamily Zmogus}}}, kuri apibrėžia bendrus metodus {\ttfamily vardas()} ir {\ttfamily pavarde()}.
+\item Klasė {\ttfamily Studentas} dabar {\bfseries{paveldi}} {\ttfamily Zmogus} ir {\bfseries{realizuoja visus reikalingus metodus}}.
+\item {\ttfamily Zmogus} negali būti instancijuojama (demonstracija pridėta testavimo kode).
+\item Išlaikytas {\bfseries{pilnas Rule of Five}} įgyvendinimas\+:
+\begin{DoxyItemize}
+\item Kopijavimo konstruktorius
+\item Kopijavimo priskyrimo operatorius
+\item Perkėlimo konstruktorius
+\item Perkėlimo priskyrimo operatorius
+\item Destruktorius
+\end{DoxyItemize}
+\item Išlieka visos {\ttfamily v1.\+2} funkcijos ir testai veikia be pakeitimų.
+\item {\bfseries{Rūšiavimas pagal galutinį vidurkį\+:}} studentai failuose {\ttfamily vargsiukai} ir {\ttfamily kietiakiai} yra išrikiuojami {\bfseries{nuo mažiausio iki didžiausio}} galutinio balo.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{Klasės struktūra}{Klasės struktūra}}\label{md__r_e_a_d_m_e_autotoc_md2}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{\texorpdfstring{Zmogus (abstrakti)}{Zmogus (abstrakti)}}\label{md__r_e_a_d_m_e_autotoc_md3}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{class\ }Zmogus\ \{}
+\DoxyCodeLine{\textcolor{keyword}{protected}:}
+\DoxyCodeLine{\ \ \ \ std::string\ vardas\_;}
+\DoxyCodeLine{\ \ \ \ std::string\ pavarde\_;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{public}:}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{virtual}\ \string~Zmogus()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{\ \ \ \ std::string\ vardas()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\ \ \ \ std::string\ pavarde()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{virtual}\ std::ostream\&\ spausdinti(std::ostream\&\ os)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{\texorpdfstring{Studentas (paveldėta)}{Studentas (paveldėta)}}\label{md__r_e_a_d_m_e_autotoc_md4}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{class\ }Studentas\ :\ \textcolor{keyword}{public}\ Zmogus\ \{}
+\DoxyCodeLine{\textcolor{keyword}{private}:}
+\DoxyCodeLine{\ \ \ \ std::vector<int>\ nd\_;}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{int}\ egzaminas\_;}
+\DoxyCodeLine{\ \ \ \ \textcolor{comment}{//\ ...}}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keyword}{public}:}
+\DoxyCodeLine{\ \ \ \ \textcolor{comment}{//\ Rule\ of\ Five,\ paveldėti\ metodai,\ galutiniai\ skaičiavimai}}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysection{\texorpdfstring{Veikimo laikų palyginimo lentelė (s)}{Veikimo laikų palyginimo lentelė (s)}}\label{md__r_e_a_d_m_e_autotoc_md6}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{5}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Konteineris   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Strategija   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 10k   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 100k   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1M    }\\\cline{1-5}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Konteineris   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Strategija   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 10k   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 100k   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 1M    }\\\cline{1-5}
+\endhead
+{\bfseries{vector}}   &1   &0.\+000860   &0.\+006967   &0.\+078577    \\\cline{1-5}
+&2   &0.\+000511   &0.\+004362   &0.\+045950    \\\cline{1-5}
+&3   &0.\+000264   &0.\+003232   &0.\+037041   \\\cline{1-5}
+\end{longtabu}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md8}{}\doxysection{\texorpdfstring{Output nuotraukos}{Output nuotraukos}}\label{md__r_e_a_d_m_e_autotoc_md8}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md9}{}\doxysubsection{\texorpdfstring{Vector versija\+:}{Vector versija\+:}}\label{md__r_e_a_d_m_e_autotoc_md9}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md11}{}\doxysection{\texorpdfstring{Perdengti metodai}{Perdengti metodai}}\label{md__r_e_a_d_m_e_autotoc_md11}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md12}{}\doxysubsection{\texorpdfstring{Operatorius {\ttfamily \texorpdfstring{$>$}{>}\texorpdfstring{$>$}{>}}}{Operatorius {\ttfamily \texorpdfstring{$>$}{>}\texorpdfstring{$>$}{>}}}}\label{md__r_e_a_d_m_e_autotoc_md12}
+
+\begin{DoxyItemize}
+\item Skaito studento duomenis iš {\ttfamily std\+::istream}.
+\item Leidžia įvesti iš failo, {\ttfamily std\+::cin} arba {\ttfamily stringstream}.
+\item Paskutinis įrašytas pažymys laikomas egzaminu.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md13}{}\doxysubsection{\texorpdfstring{Operatorius {\ttfamily \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}}}{Operatorius {\ttfamily \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}}}}\label{md__r_e_a_d_m_e_autotoc_md13}
+
+\begin{DoxyItemize}
+\item Išveda studento duomenis (vardas, pavardė, galutinis balas) lygiuotai į {\ttfamily std\+::ostream}.
+\item Naudojamas išvedimui į ekraną arba į failą.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md15}{}\doxysubsection{\texorpdfstring{Testavime tikrinama\+:}{Testavime tikrinama\+:}}\label{md__r_e_a_d_m_e_autotoc_md15}
+
+\begin{DoxyItemize}
+\item Visi {\ttfamily Rule of Five} metodai\+: konstruktoriai, priskyrimai, destruktorius.
+\item Veikiantys operatoriai {\ttfamily \texorpdfstring{$>$}{>}\texorpdfstring{$>$}{>}} ir {\ttfamily \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}}.
+\item Skaičiavimas {\ttfamily galutinis\+Vidurkis()}.
+\item Demonstracija, kad {\ttfamily Zmogus} objektų sukurti neįmanoma (komentuota eilutė)\+:
+\end{DoxyItemize}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{//\ Zmogus\ z;\ //\ tai\ būtų\ klaida:\ negalima\ kurti\ abstrakčios\ klasės\ objekto}}
+
+\end{DoxyCode}
+
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md17}{}\doxysection{\texorpdfstring{Failai}{Failai}}\label{md__r_e_a_d_m_e_autotoc_md17}
+
+\begin{DoxyItemize}
+\item {\ttfamily zmogus.\+h} – abstrakti bazinė klasė
+\item {\ttfamily studentas.\+h}, {\ttfamily studentai.\+cpp} – {\ttfamily Studentas} klasės ir metodai
+\item {\ttfamily vector\+\_\+versija.\+cpp} – konteinerių strategijų palyginimai ir testavimai 
+\end{DoxyItemize}
