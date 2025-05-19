@@ -11,36 +11,17 @@
 #include <algorithm>
 #include <numeric>
 
-using std::string;
-using std::vector;
-using std::istream;
-using std::ostream;
-
-using std::ifstream;
-using std::ofstream;
-using std::stringstream;
-using std::getline;
-using std::setw;
-using std::setprecision;
-using std::left;
-using std::right;
-using std::string;
-using std::vector;
-using std::endl;
-using std::cout;
-using std::cerr;
+using namespace std;
 
 class Studentas : public Zmogus {
 private:
-    string vardas_;
-    string pavarde_;
     vector<int> nd_;
     int egzaminas_;
 
 public:
     Studentas();
     Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas);
-    Studentas(std::istream& is);
+    Studentas(istream& is);
 
     Studentas(const Studentas& other);
     Studentas& operator=(const Studentas& other);
@@ -49,8 +30,7 @@ public:
 
     ~Studentas();
 
-    string vardas() const override;
-    string pavarde() const override;
+    // paveldeti metodai vardas() ir pavarde() jau yra Zmogus klasėje
     vector<int> nd() const;
     int egzaminas() const;
 
@@ -58,7 +38,9 @@ public:
     double galutinisMediana() const;
     double galutinis() const { return galutinisVidurkis(); }
 
-    istream& read(std::istream& is);
+    istream& read(istream& is);
+
+    std::ostream& spausdinti(std::ostream& os) const override;
 
     friend ostream& operator<<(ostream& os, const Studentas& s);
     friend istream& operator>>(istream& is, Studentas& s);
@@ -82,7 +64,7 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
     getline(in, line); // Skip header
 
     while (getline(in, line)) {
-        std::istringstream iss(line);
+        istringstream iss(line);
         string vardas, pavarde;
         vector<int> nd(5);
         int egzaminas;
@@ -114,7 +96,7 @@ void skirstymas_2(Container& studentai, Container& vargsiukai) {
         }
         return false;
     });
-    studentai.erase(it, studentai.end()); // lieka tik kietiakiai
+    studentai.erase(it, studentai.end());
 }
 
 template <typename Container>
@@ -141,7 +123,7 @@ void issaugotiStudentusIFaila(const Container& studentai, const string& failoPav
     for (const auto& s : studentai) {
         out << left << setw(20) << s.vardas()
             << setw(25) << s.pavarde()
-            << std::fixed << setprecision(2) << setw(10) << s.galutinis() << endl;
+            << fixed << setprecision(2) << setw(10) << s.galutinis() << endl;
     }
 }
 

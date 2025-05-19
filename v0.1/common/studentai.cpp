@@ -1,9 +1,13 @@
 #include "studentas.h"
+#include <numeric>
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
 
-Studentas::Studentas() : vardas_(""), pavarde_(""), egzaminas_(0) {}
+Studentas::Studentas() : Zmogus("", ""), egzaminas_(0) {}
 
 Studentas::Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas)
-    : vardas_(vardas), pavarde_(pavarde), nd_(nd), egzaminas_(egzaminas) {}
+    : Zmogus(vardas, pavarde), nd_(nd), egzaminas_(egzaminas) {}
 
 Studentas::Studentas(istream& is) {
     read(is);
@@ -11,7 +15,7 @@ Studentas::Studentas(istream& is) {
 
 // Rule of Five
 Studentas::Studentas(const Studentas& other)
-    : vardas_(other.vardas_), pavarde_(other.pavarde_), nd_(other.nd_), egzaminas_(other.egzaminas_) {}
+    : Zmogus(other.vardas_, other.pavarde_), nd_(other.nd_), egzaminas_(other.egzaminas_) {}
 
 Studentas& Studentas::operator=(const Studentas& other) {
     if (this != &other) {
@@ -24,8 +28,14 @@ Studentas& Studentas::operator=(const Studentas& other) {
 }
 
 Studentas::Studentas(Studentas&& other) noexcept
-    : vardas_(std::move(other.vardas_)), pavarde_(std::move(other.pavarde_)),
-      nd_(std::move(other.nd_)), egzaminas_(other.egzaminas_) {}
+    : Zmogus(std::move(other.vardas_), std::move(other.pavarde_)),
+      nd_(std::move(other.nd_)), egzaminas_(other.egzaminas_) {
+    //resetina objekto reiksmes
+    other.vardas_.clear();
+    other.pavarde_.clear();
+    other.nd_.clear();
+    other.egzaminas_ = 0;
+}
 
 Studentas& Studentas::operator=(Studentas&& other) noexcept {
     if (this != &other) {
@@ -33,22 +43,22 @@ Studentas& Studentas::operator=(Studentas&& other) noexcept {
         pavarde_ = std::move(other.pavarde_);
         nd_ = std::move(other.nd_);
         egzaminas_ = other.egzaminas_;
+
+        //resetina objekto reiksmes
+        other.vardas_.clear();
+        other.pavarde_.clear();
+        other.nd_.clear();
+        other.egzaminas_ = 0;
     }
     return *this;
 }
 
 Studentas::~Studentas() {}
 
-// Getteriai
-string Studentas::vardas() const { return vardas_; }
-
-string Studentas::pavarde() const { return pavarde_; }
-
 vector<int> Studentas::nd() const { return nd_; }
 
 int Studentas::egzaminas() const { return egzaminas_; }
 
-// Galutinis
 double Studentas::galutinisVidurkis() const {
     if (nd_.empty()) return 0.4 * 0 + 0.6 * egzaminas_;
     double suma = std::accumulate(nd_.begin(), nd_.end(), 0.0);
@@ -68,9 +78,11 @@ double Studentas::galutinisMediana() const {
     return 0.4 * mediana + 0.6 * egzaminas_;
 }
 
-// Nuskaitymas
 istream& Studentas::read(istream& is) {
-    is >> vardas_ >> pavarde_;
+    string v, p;
+    is >> v >> p;
+    setVardas(v);
+    setPavarde(p);
     int pazymys;
     nd_.clear();
     while (is >> pazymys) {
@@ -83,41 +95,34 @@ istream& Studentas::read(istream& is) {
     return is;
 }
 
-// Operatoriai
-std::ostream& operator<<(std::ostream& os, const Studentas& s) {
-    string vardas = s.vardas_.empty() ? "-" : s.vardas_;
-    string pavarde = s.pavarde_.empty() ? "-" : s.pavarde_;
-    double galutinis = s.nd_.empty() && s.vardas_.empty() && s.pavarde_.empty() ? 0.0 : s.galutinis();
+ostream& Studentas::spausdinti(ostream& os) const {
+    string v = vardas_.empty() ? "-" : vardas_;
+    string p = pavarde_.empty() ? "-" : pavarde_;
+    double g = nd_.empty() && v == "-" && p == "-" ? 0.0 : galutinis();
 
-    os << std::left << std::setw(20) << vardas
-       << std::setw(25) << pavarde
-       << std::fixed << std::setprecision(2) << galutinis;
+    os << std::left << std::setw(20) << v
+       << std::setw(25) << p
+       << std::fixed << std::setprecision(2) << g;
     return os;
 }
 
+ostream& operator<<(ostream& os, const Studentas& s) {
+    return s.spausdinti(os);
+}
+
 istream& operator>>(istream& is, Studentas& s) {
-    s.nd_.clear();
-    is >> s.vardas_ >> s.pavarde_;
-    int pazymys;
-    while (is >> pazymys) {
-        s.nd_.push_back(pazymys);
-    }
-    if (!s.nd_.empty()) {
-        s.egzaminas_ = s.nd_.back();
-        s.nd_.pop_back();
-    }
-    return is;
+    return s.read(is);
 }
 
 // Lyginimo funkcijos
 bool compare(const Studentas& a, const Studentas& b) {
-    return a.vardas_ < b.vardas_;
+    return a.vardas() < b.vardas();
 }
 
 bool comparePagalPavarde(const Studentas& a, const Studentas& b) {
-    return a.pavarde_ < b.pavarde_;
+    return a.pavarde() < b.pavarde();
 }
 
 bool comparePagalEgza(const Studentas& a, const Studentas& b) {
-    return a.egzaminas_ > b.egzaminas_;
+    return a.egzaminas() > b.egzaminas();
 }

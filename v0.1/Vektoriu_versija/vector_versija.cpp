@@ -17,10 +17,17 @@ void paleistiStrategija1(const string& failas) {
     double trukme = duration<double>(end - start).count();
     cout << "Strategija 1: " << fixed << setprecision(6) << trukme << " s"
          << " (vargsiukai: " << vargsiukai.size()
-         << ", kietiakiai: " << kietiakiai.size() << ")" << endl;
+         << ", kietiakai: " << kietiakiai.size() << ")" << endl;
+
+    std::sort(vargsiukai.begin(), vargsiukai.end(), [](const Studentas& a, const Studentas& b) {
+    return a.galutinis() < b.galutinis();
+});
+    std::sort(kietiakiai.begin(), kietiakiai.end(), [](const Studentas& a, const Studentas& b) {
+        return a.galutinis() < b.galutinis();
+    });
 
     issaugotiStudentusIFaila(vargsiukai, "vector_vargsiukai1.txt");
-    issaugotiStudentusIFaila(kietiakiai, "vector_kietiakiai1.txt");
+    issaugotiStudentusIFaila(kietiakiai, "vector_kietiakai1.txt");
 }
 
 void paleistiStrategija2(const string& failas) {
@@ -34,10 +41,17 @@ void paleistiStrategija2(const string& failas) {
     double trukme = duration<double>(end - start).count();
     cout << "Strategija 2: " << fixed << setprecision(6) << trukme << " s"
          << " (vargsiukai: " << vargsiukai.size()
-         << ", kietiakiai: " << studentai.size() << ")" << endl;
+         << ", kietiakai: " << studentai.size() << ")" << endl;
+
+    std::sort(vargsiukai.begin(), vargsiukai.end(), [](const Studentas& a, const Studentas& b) {
+    return a.galutinis() < b.galutinis();
+});
+    std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+        return a.galutinis() < b.galutinis();
+    });
 
     issaugotiStudentusIFaila(vargsiukai, "vector_vargsiukai2.txt");
-    issaugotiStudentusIFaila(studentai, "vector_kietiakiai2.txt");
+    issaugotiStudentusIFaila(studentai, "vector_kietiakai2.txt");
 }
 
 void paleistiStrategija3(const string& failas) {
@@ -51,10 +65,17 @@ void paleistiStrategija3(const string& failas) {
     double trukme = duration<double>(end - start).count();
     cout << "Strategija 3: " << fixed << setprecision(6) << trukme << " s"
          << " (vargsiukai: " << vargsiukai.size()
-         << ", kietiakiai: " << studentai.size() << ")" << endl;
+         << ", kietiakai: " << studentai.size() << ")" << endl;
+
+    std::sort(vargsiukai.begin(), vargsiukai.end(), [](const Studentas& a, const Studentas& b) {
+    return a.galutinis() < b.galutinis();
+});
+    std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+        return a.galutinis() < b.galutinis();
+    });
 
     issaugotiStudentusIFaila(vargsiukai, "vector_vargsiukai3.txt");
-    issaugotiStudentusIFaila(studentai, "vector_kietiakiai3.txt");
+    issaugotiStudentusIFaila(studentai, "vector_kietiakai3.txt");
 }
 
 void testuokStudentas() {
@@ -88,7 +109,6 @@ void testuokStudentas() {
     cout << left << setw(25) << "s5:" << s5 << endl;
 
     cout << "Rule of Five testas\n";
-    // ... (jau tavo tvarkingai išdėliotas Rule of Five testas)
 
     cout << "\nDestruktoriaus testas\n";
     {
