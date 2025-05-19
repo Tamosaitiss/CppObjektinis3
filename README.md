@@ -62,7 +62,7 @@ public:
 ## Output nuotraukos
 
 ### Vector versija:
-![Vector](![image](https://github.com/user-attachments/assets/17680c42-4659-418f-bf07-847fb36a17ad))
+![Vector](https://github.com/user-attachments/assets/30f40a68-cbd1-430e-ad77-72aadc0519d1)
 
 ---
 
