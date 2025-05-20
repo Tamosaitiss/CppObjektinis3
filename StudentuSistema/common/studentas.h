@@ -109,12 +109,17 @@ void skirstymas_3(Container& studentai, Container& vargsiukai) {
 }
 
 template <typename Container>
-void issaugotiStudentusIFaila(const Container& studentai, const string& failoPavadinimas) {
+void issaugotiStudentusIFaila(Container studentai, const string& failoPavadinimas) {
     ofstream out(failoPavadinimas);
     if (!out) {
         cerr << "Klaida: Nepavyko sukurti failo '" << failoPavadinimas << "'!" << endl;
         return;
     }
+
+    // Rūšiuojame pagal galutinį vidurkį (mažėjimo tvarka)
+    std::sort(studentai.begin(), studentai.end(), [](const Studentas& a, const Studentas& b) {
+        return a.galutinis() < b.galutinis();
+    });
 
     out << left << setw(20) << "Vardas"
         << setw(25) << "Pavarde"
