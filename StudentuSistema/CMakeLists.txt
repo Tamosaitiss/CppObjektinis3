@@ -12,7 +12,13 @@ add_executable(vector_version
         common/studentai.cpp
 )
 
+add_executable(tests
+        tests/test_studentas.cpp
+        common/studentai.cpp
+)
+
 # Compiler flags for warnings & optimizations
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(vector_version PRIVATE -O2 -Wall -Wextra -pedantic)
+    target_include_directories(tests PRIVATE external/catch2 common)
 endif()
