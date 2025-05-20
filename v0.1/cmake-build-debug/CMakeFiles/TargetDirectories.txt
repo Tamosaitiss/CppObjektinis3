@@ -1,5 +1,0 @@
-C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/cmake-build-debug/CMakeFiles/vector_version.dir
-C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/cmake-build-debug/CMakeFiles/list_version.dir
-C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/cmake-build-debug/CMakeFiles/deque_version.dir
-C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/igniu/Documents/GitHub/AntrojiRepo/v0.1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
