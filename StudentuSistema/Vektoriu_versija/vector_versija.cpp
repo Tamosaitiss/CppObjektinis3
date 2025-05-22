@@ -62,7 +62,7 @@ void paleistiStrategija3(const string& failas) {
     issaugotiStudentusIFaila(studentai, "vector_kietiakai3.txt");
 }
 
-/*void testuokStudentas() {
+void testuokStudentas() {
     cout << "Rule of Five testas\n";
 
     Studentas s1("Testas", "Testavicius", {10, 9, 9}, 9.6);
@@ -111,48 +111,63 @@ void paleistiStrategija3(const string& failas) {
     // Demonstracija: negalima kurti Zmogus objekto
     // Zmogus z; // <- Tai būtų kompiliavimo klaida, nes Zmogus yra abstrakti klasė
     // Zmogus z("Jonas", "Jonaitis");
-}*/
+}
 
 int main() {
-    cout << "Darbinis katalogas: " << current_path() << endl;
-
-    ifstream test1("studentai10000.txt");
-    if (!test1.is_open()) {
-        cerr << "Failas studentai10000.txt nerastas!" << endl;
-    } else {
-        cout << "Failas studentai10000.txt atidarytas sekmingai." << endl;
-    }
-
-    ifstream test2("studentai100000.txt");
-    if (!test2.is_open()) {
-        cerr << "Failas studentai100000.txt nerastas!" << endl;
-    } else {
-        cout << "Failas studentai100000.txt atidarytas sekmingai." << endl;
-    }
-
     Vector<string> failai = {
         "studentai10000.txt",
-        "studentai100000.txt",
+        "studentai100000.txt"
     };
 
-    for (const auto& failas : failai) {
-        cout << "Failas: " << failas << endl;
-        paleistiStrategija1(failas);
-        paleistiStrategija2(failas);
-        paleistiStrategija3(failas);
-        cout << "---------------------------------------------" << endl;
+    while (true) {
+        cout << "==============================\n";
+        cout << "  STUDENTU SISTEMA v3.0\n";
+        cout << "==============================\n";
+        cout << "Pasirinkite veiksma:\n";
+        cout << "1 - Vykdyti strategija 1\n";
+        cout << "2 - Vykdyti strategija 2\n";
+        cout << "3 - Vykdyti strategija 3\n";
+        cout << "4 - Vykdyti visas strategijas\n";
+        cout << "5 - Rule of Five testas\n";
+        cout << "6 - Strategijos + Rule of Five testas\n";
+        cout << "0 - Iseiti\n";
+        cout << "--------------------------------------\n";
+        cout << "Iveskite pasirinkima: ";
+
+        int pasirinkimas;
+        cin >> pasirinkimas;
+        cin.ignore(); // nuvalo \n po skaiciaus
+
+        if (pasirinkimas == 0) break;
+
+        if (pasirinkimas >= 1 && pasirinkimas <= 4 || pasirinkimas == 6) {
+            for (const auto& failas : failai) {
+                cout << "\nFailas: " << failas << endl;
+
+                switch (pasirinkimas) {
+                case 1: paleistiStrategija1(failas); break;
+                case 2: paleistiStrategija2(failas); break;
+                case 3: paleistiStrategija3(failas); break;
+                case 4:
+                case 6:
+                    paleistiStrategija1(failas);
+                    paleistiStrategija2(failas);
+                    paleistiStrategija3(failas);
+                    break;
+                }
+
+                cout << "---------------------------------------------" << endl;
+            }
+        }
+
+        if (pasirinkimas == 5 || pasirinkimas == 6) {
+            testuokStudentas();
+        }
+
+        cout << "\nPaspausk ENTER, kad testi...";
+        string stop;
+        getline(cin, stop);
     }
-
-    ifstream test("studentai10000.txt");
-    if (!test) {
-        cerr << "Klaida: nerastas studentai.txt failas." << endl;
-    }
-
-    //testuokStudentas();
-
-    string stop;
-    cout << "Spausk ENTER, kad uzdaryti programa...";
-    getline(cin, stop);
 
     return 0;
 }
