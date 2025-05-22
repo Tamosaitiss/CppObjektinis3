@@ -60,7 +60,7 @@ void paleistiStrategija3(const string& failas) {
     issaugotiStudentusIFaila(studentai, "vector_kietiakai3.txt");
 }
 
-void testuokStudentas() {
+/*void testuokStudentas() {
     cout << "Rule of Five testas\n";
 
     Studentas s1("Testas", "Testavicius", {10, 9, 9}, 9.6);
@@ -109,7 +109,7 @@ void testuokStudentas() {
     // Demonstracija: negalima kurti Zmogus objekto
     // Zmogus z; // <- Tai būtų kompiliavimo klaida, nes Zmogus yra abstrakti klasė
     // Zmogus z("Jonas", "Jonaitis");
-}
+}*/
 
 int main() {
     Vector<string> failai = {
@@ -127,7 +127,7 @@ int main() {
         cout << "---------------------------------------------" << endl;
     }
 
-    testuokStudentas();
+    //testuokStudentas();
 
 
     return 0;
