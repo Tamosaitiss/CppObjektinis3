@@ -1,135 +1,140 @@
-# CppObjektinis2 – v2.0
+# Studentų Valdymo Sistema – Versija 3.0
 
-## ✅ Versijų istorija
+## 🧠 Aprašymas
 
-### `v1.5` – Pagrindinis objektinis pertvarkymas
-- Sukurta **abstrakti bazinė klasė `Zmogus`**, kurios negalima instancijuoti.
-- Klasė `Studentas` paveldi `Zmogus` ir realizuoja visus metodus.
-- Įgyvendinta **Rule of Five**: kopijavimo/perkėlimo konstruktoriai, priskyrimai ir destruktorius.
-- Palaikomas operatorių `>>`, `<<` veikimas.
-- Studentai failuose išrikiuoti pagal **galutinį vidurkį** (didėjimo tvarka).
+Galutinė (v3.0) C++ projektinė versija su nuosava `Vector` klase vietoje `std::vector`. Ši versija apima:
 
-### `v2.0` – Dokumentacija + Testavimas
-- Sukurta dokumentacija naudojant **Doxygen**:
-  - `docs/html/` – HTML dokumentacija
-  - `docs/latex/` – LaTeX šaltiniai
-  - `docs/latex/latex.pdf` – Sugeneruota PDF dokumentacija
-- Realizuoti **Unit testai su Catch2**:
-  - Tikrinami visi `Rule of Five` metodai
-  - Testuojami `galutinisVidurkis`, `galutinisMediana`, operatoriai `>>` ir `<<`
-- Paruoštas **`CMakeLists.txt`** – universalus (visoms OS)
-- Repozitorija išvalyta nuo IDE šiukšlių, struktūra švari
+- Visišką `Vector` integraciją į programą.
+- Instaliacinį `setup.exe` failą be `admin` teisių.
+- Strategijų testavimo sistemą.
+- Rule of Five testus.
+- Vartotojo sąsajos meniu.
+- Vienetinius testus ir Doxygen dokumentaciją.
 
 ---
 
-## 🧪 Unit testai (Catch2)
+## ✅ Funkcijos
 
-Testuojami metodai:
-
-- `Studentas(const Studentas&)` – kopijavimo konstruktorius
-- `Studentas& operator=(const Studentas&)` – kopijavimo priskyrimas
-- `Studentas(Studentas&&)` – perkėlimo konstruktorius
-- `Studentas& operator=(Studentas&&)` – perkėlimo priskyrimas
-- `~Studentas()` – destruktorius
-- `galutinisVidurkis()` ir `galutinisMediana()`
-- `operator>>` ir `operator<<`
-
-```bash
-# Paleidimas:
-mkdir build && cd build
-cmake ..
-make tests
-./tests
-```
+- Nuosava `Vector` klasė.
+- 3 studentų skirstymo strategijos.
+- Rule of Five + I/O operatorių testavimas.
+- Greičio analizė (vektorius vs std::vector).
+- `Catch2` unit testai.
+- Sugeneruota dokumentacija su Doxygen.
+- Sukurtas `setup.exe` diegimo failas.
 
 ---
 
-## 📸 Veikimo laikų palyginimas
+## 📦 Diegimo instrukcija
 
-| Konteineris | Strategija | 10k      | 100k     | 1M       |
-|-------------|------------|----------|----------|----------|
-| vector      | 1          | 0.000860 | 0.006967 | 0.078577 |
-|             | 2          | 0.000511 | 0.004362 | 0.045950 |
-|             | 3          | 0.000264 | 0.003232 | 0.037041 |
+1. Paleiskite `setup.exe` failą.
+2. Pasirinkite diegimo vietą (rekomenduojama: `C:\StudentuSistema`).
+3. Baigus diegimą, paleiskite „Studentu Sistema“ per Start meniu arba `vector_version.exe`.
 
 ---
 
-## 📝 Naudojimosi instrukcija
+## 🧑‍💻 Naudojimosi instrukcija
 
-1. Paleisk `vector_versija` programą:
+Paleidus programą, rodoma meniu:
 
-```bash
-./vector_version
-```
+====== STUDENTU SISTEMA ======
+1 - Testuoti strategijas (1, 2, 3)
+2 - Vykdyti tik Rule of Five testą
+3 - Vykdyti strategijas + Rule of Five testą
+4 - Išeiti
+Pasirinkimas: _
 
-2. Ji perskaitys pasirinktus failus (pvz. `studentai10000.txt`) ir sukurs:
 
-- `vector_vargsiukaiX.txt`
-- `vector_kietiakiaiX.txt`
-
-Failai bus išrikiuoti pagal galutinį balą nuo mažiausio iki didžiausio.
+Failai turi būti tame pačiame kataloge kaip ir `.exe`.
 
 ---
 
-## ⚙️ Įdiegimo instrukcija
+## 📊 Spartos analizė
 
-1. Klonuoti repozitoriją:
+Palyginta `std::vector` ir `Vector` užpildymo sparta su `push_back()`:
 
-```bash
-git clone https://github.com/Tamosaitiss/CppObjektinis2.git
-cd CppObjektinis2
-```
+| Elementų kiekis | std::vector (s) | Vector (s) |
+|------------------|------------------|------------|
+| 10,000           | 0.00193          | 0.00084    |
+| 100,000          | 0.01694          | 0.00741    |
+| 1,000,000        | 0.17904          | 0.09541    |
 
-2. Sukurti `build/` katalogą ir sukompiliuoti:
+---
 
-```bash
-mkdir build
-cd build
-cmake ..
-make
-```
+## 🧪 Unit testai
 
-3. Paleisti programą arba testus:
+Sukurti `Catch2` testai `Vector` klasei:
 
-```bash
-./vector_version
-./tests
-```
+- Konstrukcijos, destrukcija, `push_back`, `at`, `insert`, `erase`, `move`, `copy`, `front`, `back`, `resize`, `clear`.
+- `std::out_of_range` tikrinimas su `at()`.
+- Iteratorių palaikymas.
+
+---
+
+## 📚 Dokumentacija
+
+- Sugeneruota su `Doxygen`.
+- Galima rasti kataloge `docs/`:
+  - `docs/html/index.html`
+  - `docs/latex/refman.pdf`
 
 ---
 
 ## 📁 Projekto struktūra
 
-```
-CppObjektinis2/
-├── common/              ← studentai.cpp, studentas.h, zmogus.h
-├── Vektoriu_versija/    ← vector_versija.cpp
-├── tests/               ← test_studentas.cpp (Catch2)
-├── external/catch2/     ← catch.hpp
-├── docs/                ← Doxygen dokumentacija (html + latex)
-├── CMakeLists.txt       ← Build sistema
-```
+CppObjektinis3/
+│
+├── Vektoriu_versija/
+│ └── vector_versija.cpp
+├── common/
+│ ├── studentai.cpp
+│ ├── studentas.h
+│ ├── Vector.h
+│ └── Vector.tpp
+├── tests/
+│ ├── test_vector.cpp
+│ ├── test_studentas.cpp
+│ ├── bench_pushback.cpp
+│ └── bench_rollback.cpp
+├── docs/
+│ ├── html/
+│ └── latex/latex_7.pdf
+├── studentai10000.txt
+├── studentai100000.txt
+├── CMakeLists.txt
+└── setup.exe
+
 
 ---
 
-## 📚 Doxygen dokumentacija
+## 📌 Versijos istorija
 
-- Doxygen failas: `Doxyfile`
-- Sugeneruoti formatai:
-  - HTML: `docs/html/index.html`
-  - PDF: `docs/latex/latex.pdf`
-  - LaTeX: `docs/latex/`
+- `v1.0` – Strategijų palyginimas su STL konteineriais.
+- `v2.0` – Rule of Five, unit testai, Doxygen dokumentacija.
+- `v3.0` – Savarankiškas `Vector`, veikimo analizė, `setup.exe`.
 
 ---
 
-## 🧹 Švari struktūra
+## ℹ️ Pastabos
 
-- `.idea/`, `cmake-build-*/`, `*.o`, `*.exe` ir kiti IDE failai **neįtraukti į repozitoriją**
-- `.gitignore` prižiūri tvarką
+Programa neišsaugos failų į `Program Files`, jei neturite rašymo teisių. Rekomenduojama diegti į kitą katalogą (pvz. `C:\StudentuSistema`).
 
 ---
 
-## 📌 Autorius
+[Setup]
+AppName=Studentu Sistema
+AppVersion=3.0
+DefaultDirName={pf}\StudentuSistema
+DefaultGroupName=Studentu Sistema
+OutputBaseFilename=setup
+PrivilegesRequired=lowest
+DisableWelcomePage=no
 
-- Tamosaitiss @ GitHub
-- Vilniaus universitetas, 2025 m.
+[Files]
+Source: "cmake-build-release\vector_version.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "studentai10000.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "studentai100000.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "README.md"; DestDir: "{app}"; Flags: ignoreversion
+
+[Icons]
+Name: "{group}\Paleisti programą"; Filename: "{app}\vector_version.exe"
