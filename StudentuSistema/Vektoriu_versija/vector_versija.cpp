@@ -127,6 +127,8 @@ int main() {
         cout << "---------------------------------------------" << endl;
     }
 
+    system("pause");
+
     //testuokStudentas();
 
 
