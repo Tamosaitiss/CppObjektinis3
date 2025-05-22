@@ -2,11 +2,10 @@
 #include <numeric>
 #include <algorithm>
 #include <iomanip>
-#include <iostream>
 
 Studentas::Studentas() : Zmogus("", ""), egzaminas_(0) {}
 
-Studentas::Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas)
+Studentas::Studentas(string vardas, string pavarde, Vector<int> nd, int egzaminas)
     : Zmogus(vardas, pavarde), nd_(nd), egzaminas_(egzaminas) {}
 
 Studentas::Studentas(istream& is) {
@@ -55,7 +54,7 @@ Studentas& Studentas::operator=(Studentas&& other) noexcept {
 
 Studentas::~Studentas() {}
 
-vector<int> Studentas::nd() const { return nd_; }
+Vector<int> Studentas::nd() const { return nd_; }
 
 int Studentas::egzaminas() const { return egzaminas_; }
 
@@ -67,7 +66,7 @@ double Studentas::galutinisVidurkis() const {
 
 double Studentas::galutinisMediana() const {
     if (nd_.empty()) return 0.4 * 0 + 0.6 * egzaminas_;
-    vector<int> nd_kopija = nd_;
+    Vector<int> nd_kopija = nd_;
     std::sort(nd_kopija.begin(), nd_kopija.end());
     size_t dydis = nd_kopija.size();
     double mediana;
