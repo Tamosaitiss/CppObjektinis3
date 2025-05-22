@@ -6,21 +6,20 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
-#include <vector>
+#include "Vector.h"
 #include <string>
 #include <algorithm>
-#include <numeric>
 
 using namespace std;
 
 class Studentas : public Zmogus {
 private:
-    vector<int> nd_;
+    Vector<int> nd_;
     int egzaminas_;
 
 public:
     Studentas();
-    Studentas(string vardas, string pavarde, vector<int> nd, int egzaminas);
+    Studentas(string vardas, string pavarde, Vector<int> nd, int egzaminas);
     Studentas(istream& is);
 
     Studentas(const Studentas& other);
@@ -31,7 +30,7 @@ public:
     ~Studentas();
 
     // paveldeti metodai vardas() ir pavarde() jau yra Zmogus klasėje
-    vector<int> nd() const;
+    Vector<int> nd() const;
     int egzaminas() const;
 
     double galutinisVidurkis() const;
@@ -66,14 +65,14 @@ void nuskaitytiIsFailo(Container& studentai, const string& failoPavadinimas) {
     while (getline(in, line)) {
         istringstream iss(line);
         string vardas, pavarde;
-        vector<int> nd(5);
+        Vector<int> nd(5);
         int egzaminas;
 
         iss >> vardas >> pavarde;
         for (int& pazymys : nd) iss >> pazymys;
         iss >> egzaminas;
 
-        studentai.emplace_back(vardas, pavarde, nd, egzaminas);
+        studentai.push_back(Studentas(vardas, pavarde, nd, egzaminas));
     }
 }
 
