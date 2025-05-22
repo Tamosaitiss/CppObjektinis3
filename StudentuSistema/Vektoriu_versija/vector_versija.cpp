@@ -127,10 +127,11 @@ int main() {
         cout << "---------------------------------------------" << endl;
     }
 
-    system("pause");
-
     //testuokStudentas();
 
+    string stop;
+    cout << "Spausk ENTER, kad uzdaryti programa...";
+    getline(cin, stop);
 
     return 0;
 }
