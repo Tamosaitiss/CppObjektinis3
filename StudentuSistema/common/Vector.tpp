@@ -200,3 +200,43 @@ template <typename T>
 const T* Vector<T>::end() const {
     return data_ + size_;
 }
+
+template <typename T>
+typename Vector<T>::iterator Vector<T>::insert(iterator pos, iterator first, iterator last) {
+    size_type insert_pos = pos - begin();
+    size_type insert_count = last - first;
+
+    if (insert_count == 0) return pos;
+
+    while (size_ + insert_count > capacity_) {
+        increase_capacity(capacity_ == 0 ? 1 : capacity_ * 2);
+    }
+
+    // Perstumiam elementus į dešinę
+    for (size_type i = size_; i > insert_pos; --i) {
+        data_[i + insert_count - 1] = std::move(data_[i - 1]);
+    }
+
+    // Kopijuojam naujus
+    for (size_type i = 0; i < insert_count; ++i) {
+        data_[insert_pos + i] = *(first + i);
+    }
+
+    size_ += insert_count;
+    return begin() + insert_pos;
+}
+
+template <typename T>
+typename Vector<T>::iterator Vector<T>::erase(iterator first, iterator last) {
+    if (first == last) return first;
+
+    size_type index = first - begin();
+    size_type count = last - first;
+
+    for (size_type i = index; i + count < size_; ++i) {
+        data_[i] = std::move(data_[i + count]);
+    }
+
+    size_ -= count;
+    return begin() + index;
+}
