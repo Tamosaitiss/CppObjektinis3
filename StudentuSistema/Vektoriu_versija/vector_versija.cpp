@@ -113,10 +113,8 @@ void paleistiStrategija3(const string& failas) {
 
 int main() {
     Vector<string> failai = {
-        //"studentai1000.txt",
         "studentai10000.txt",
         "studentai100000.txt",
-        "studentai1000000.txt"
     };
 
     for (const auto& failas : failai) {
