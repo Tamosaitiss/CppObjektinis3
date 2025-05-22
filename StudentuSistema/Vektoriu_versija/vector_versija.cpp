@@ -2,7 +2,9 @@
 #include <chrono>
 #include <iomanip>
 #include "../common/Vector.h"
+#include <filesystem>
 
+using namespace std::filesystem;
 using namespace std;
 using namespace std::chrono;
 
@@ -112,6 +114,22 @@ void paleistiStrategija3(const string& failas) {
 }*/
 
 int main() {
+    cout << "Darbinis katalogas: " << current_path() << endl;
+
+    ifstream test1("studentai10000.txt");
+    if (!test1.is_open()) {
+        cerr << "Failas studentai10000.txt nerastas!" << endl;
+    } else {
+        cout << "Failas studentai10000.txt atidarytas sekmingai." << endl;
+    }
+
+    ifstream test2("studentai100000.txt");
+    if (!test2.is_open()) {
+        cerr << "Failas studentai100000.txt nerastas!" << endl;
+    } else {
+        cout << "Failas studentai100000.txt atidarytas sekmingai." << endl;
+    }
+
     Vector<string> failai = {
         "studentai10000.txt",
         "studentai100000.txt",
@@ -123,6 +141,11 @@ int main() {
         paleistiStrategija2(failas);
         paleistiStrategija3(failas);
         cout << "---------------------------------------------" << endl;
+    }
+
+    ifstream test("studentai10000.txt");
+    if (!test) {
+        cerr << "Klaida: nerastas studentai.txt failas." << endl;
     }
 
     //testuokStudentas();
