@@ -1,14 +1,13 @@
 #include "studentas.h"
-#include "Vector.h"
-#include <vector>
 #include <chrono>
 #include <iomanip>
+#include "../common/Vector.h"
 
 using namespace std;
 using namespace std::chrono;
 
 void paleistiStrategija1(const string& failas) {
-    vector<Studentas> studentai, vargsiukai, kietiakiai;
+    Vector<Studentas> studentai, vargsiukai, kietiakiai;
     nuskaitytiIsFailo(studentai, failas);
 
     auto start = high_resolution_clock::now();
@@ -26,7 +25,7 @@ void paleistiStrategija1(const string& failas) {
 }
 
 void paleistiStrategija2(const string& failas) {
-    vector<Studentas> studentai, vargsiukai;
+    Vector<Studentas> studentai, vargsiukai;
     nuskaitytiIsFailo(studentai, failas);
 
     auto start = high_resolution_clock::now();
@@ -44,7 +43,7 @@ void paleistiStrategija2(const string& failas) {
 }
 
 void paleistiStrategija3(const string& failas) {
-    vector<Studentas> studentai, vargsiukai;
+    Vector<Studentas> studentai, vargsiukai;
     nuskaitytiIsFailo(studentai, failas);
 
     auto start = high_resolution_clock::now();
@@ -113,7 +112,7 @@ void testuokStudentas() {
 }
 
 int main() {
-    vector<string> failai = {
+    Vector<string> failai = {
         //"studentai1000.txt",
         "studentai10000.txt",
         "studentai100000.txt",
